@@ -1,0 +1,11 @@
+<!-- <div class="container-form" [class.hidden]="!open()"> -->
+@if(open()){
+  <div class="container-form">
+  <!-- @if (open()) { -->
+    <div class="backdrop" (click)="close()"></div>
+  <!-- } -->
+  <div class="dialog relative rounded-xl">
+    <ng-content></ng-content>
+  </div>
+</div>
+}
