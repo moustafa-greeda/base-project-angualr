@@ -1,6 +1,17 @@
 <section>
   <h3>task ==============>{{ task().name }}</h3>
   <p>siscriotion ==============>{{ task().discription }}</p>
-  <button (click)="onDelete()" class="bg-red-500 text-white px-4 py-2 rounded-xl cursor-pointer">delete</button>
+  <button (click)="openDelete()" class="bg-red-500 text-white px-4 py-2 rounded-xl cursor-pointer">
+    delete
+  </button>
   <hr />
 </section>
+
+<!-- <app-delete></app-delete> -->
+
+<app-dialog-delete
+  [title]="'Delete Item'"
+  [message]="'This action cannot be undone.'"
+  (confirmDelete)="onDelete()"
+>
+</app-dialog-delete>

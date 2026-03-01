@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { UserService } from '../users/service/user.service';
 import { Task } from './task/task';
 import { Add } from './add/add';
-import { ModalService } from '../../shared/modal/service/modal.service';
+import { FormDailogService } from '../../shared/components/dialog/dialog-form/service/form-dialog.service';
 interface ITask {
   id: number;
   userId: number;
@@ -16,21 +16,16 @@ interface ITask {
   styleUrl: './tasks.css',
 })
 export class Tasks {
-  modal = inject(ModalService);
+  _modal = inject(FormDailogService);
 
   selectedUserService = inject(UserService);
   user = this.selectedUserService.selectedUser;
 
   openForm() {
-    console.log("====>", this.modal.openModal())
-    this.modal.openModal();
+    this._modal.openModal();
   }
-  //    toggelForm(){
-  // this.showForm.update(v => !v);   }
 
-  ngOnInit() {
-    this.addTask();
-  }
+
   tasks = signal<ITask[]>([
     {
       id: 1,
@@ -104,11 +99,6 @@ export class Tasks {
     const userId = this.user();
     return this.tasks().filter((task) => task.userId == userId);
   });
-
-  // add task
-  addTask() {
-    console.log('add task');
-  }
 
   // delete task
   deleteTask(data: any) {
