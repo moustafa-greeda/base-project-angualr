@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-table',
@@ -7,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './table.css',
 })
 export class Table {
-
+  columns = input<{header : string , field: string}[]>([])
+  ngOnInit(){
+    console.log(this.columns())
+  }
+  data = input<any>([])
 }

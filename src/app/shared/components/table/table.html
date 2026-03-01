@@ -1,8 +1,18 @@
 <table>
-    <thead>
-        <tr></tr>
-    </thead>
-    <tbody>
-        
-    </tbody>
+  <thead>
+    <tr>
+      @for (col of columns();  track $index) {
+        <td>{{ col.header }}</td>
+      }
+    </tr>
+  </thead>
+  <tbody>
+    @for (row of data(); track $index) {
+      <tr>
+        @for (column of columns();  track $index) {
+          <td>{{ row[column.field] }}</td>
+        }
+      </tr>
+    }
+  </tbody>
 </table>

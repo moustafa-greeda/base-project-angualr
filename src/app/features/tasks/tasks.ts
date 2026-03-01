@@ -25,8 +25,18 @@ export class Tasks {
     this._modal.openModal();
   }
 
+  filterdTasks = computed(() => {
+    const userId = this.user();
+    return this.tasks().filter((task) => task.userId == userId);
+  });
 
-  tasks = signal<ITask[]>([
+  // delete task
+  deleteTask(data: any) {
+    this.tasks.update((task) => task.filter((t) => t.id !== data.id));
+  }
+
+
+    tasks = signal<ITask[]>([
     {
       id: 1,
       userId: 1,
@@ -95,13 +105,4 @@ export class Tasks {
     },
   ]);
 
-  filterdTasks = computed(() => {
-    const userId = this.user();
-    return this.tasks().filter((task) => task.userId == userId);
-  });
-
-  // delete task
-  deleteTask(data: any) {
-    this.tasks.update((task) => task.filter((t) => t.id !== data.id));
-  }
 }

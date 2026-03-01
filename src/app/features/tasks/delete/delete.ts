@@ -1,6 +1,6 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
+import { ConfirmDeleteService } from '../../../shared/components/dialog/dialog-delete/service/confirm-delete.service';
 import { DialogDelete } from '../../../shared/components/dialog/dialog-delete/dialog-delete';
-import { FormDailogService } from '../../../shared/components/dialog/dialog-form/service/form-dialog.service';
 
 @Component({
   selector: 'app-delete',
@@ -9,14 +9,18 @@ import { FormDailogService } from '../../../shared/components/dialog/dialog-form
   styleUrl: './delete.css',
 })
 export class Delete {
-  private _modal = inject(FormDailogService)
-
+  private _modal = inject(ConfirmDeleteService)
   task = input<any>();
+  message :any = computed(() => this.task()?.name)
   deleteTask = output();
-  openDelete() {
-    this._modal.openModal()
+  ngOnInit(){
+    console.log("task deleted is =========>" , this.task())
   }
   onDelete() {
     this.deleteTask.emit(this.task());
+  }
+
+    openDelete() {
+    this._modal.openModal()
   }
 }

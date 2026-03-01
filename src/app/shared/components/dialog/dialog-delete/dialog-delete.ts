@@ -11,7 +11,7 @@ export class DialogDelete {
   _modal = inject(ConfirmDeleteService);
 
   title = input<string>('Confirm Delete');
-  message = input<string>('Are you sure you want to delete this item?');
+  message = input<string>();
   confirmDelete = output<void>();
 
   confirm() {
