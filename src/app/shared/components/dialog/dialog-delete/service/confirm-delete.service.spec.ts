@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ModalService } from './modal.service';
+import { ConfirmDeleteService } from './confirm-delete.service';
 
-describe('ModalService', () => {
-  let service: ModalService;
+describe('ConfirmDeleteService', () => {
+  let service: ConfirmDeleteService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ModalService);
+    service = TestBed.inject(ConfirmDeleteService);
   });
 
   it('should be created', () => {

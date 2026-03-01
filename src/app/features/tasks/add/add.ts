@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { FormShell } from '../../../shared/form-shell/form-shell';
+import { DialogForm } from '../../../shared/components/dialog/dialog-form/dialog-form';
 
 @Component({
   selector: 'app-add',
-  imports: [ FormShell  ],
+  imports: [ DialogForm],
   templateUrl: './add.html',
   styleUrl: './add.css',
 })

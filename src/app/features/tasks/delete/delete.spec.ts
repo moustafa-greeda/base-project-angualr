@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FormShell } from './form-shell';
+import { Delete } from './delete';
 
-describe('FormShell', () => {
-  let component: FormShell;
-  let fixture: ComponentFixture<FormShell>;
+describe('Delete', () => {
+  let component: Delete;
+  let fixture: ComponentFixture<Delete>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FormShell]
+      imports: [Delete]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(FormShell);
+    fixture = TestBed.createComponent(Delete);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

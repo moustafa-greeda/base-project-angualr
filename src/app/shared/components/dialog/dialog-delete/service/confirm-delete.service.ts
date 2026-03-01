@@ -3,8 +3,8 @@ import { Injectable, signal } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class ModalService {
-    // state
+export class ConfirmDeleteService {
+      // state
   private _open = signal(false);
 
   // readonly signal
@@ -18,7 +18,4 @@ export class ModalService {
     this._open.set(false);
   }
 
-  toggle() {
-    this._open.update(v => !v);
-  }
 }
