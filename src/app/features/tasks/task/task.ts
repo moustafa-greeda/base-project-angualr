@@ -1,6 +1,5 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { DialogDelete } from '../../../shared/components/dialog/dialog-delete/dialog-delete';
-import { Delete } from '../delete/delete';
 import { ConfirmDeleteService } from '../../../shared/components/dialog/dialog-delete/service/confirm-delete.service';
 import { Table } from '../../../shared/components/table/table';
 
@@ -13,10 +12,12 @@ import { Table } from '../../../shared/components/table/table';
 export class Task {
   private _modal = inject(ConfirmDeleteService);
 
-  task = input<any>();
+  task = input<any | null>(null);
   message: any = computed(() => this.task()?.name);
   deleteTask = output();
-  openDelete() {    console.log(this.task());
+  rows = computed(() => (this.task() ? [this.task()] : []));
+
+  openDelete() {   
     this._modal.openModal();
   }
 

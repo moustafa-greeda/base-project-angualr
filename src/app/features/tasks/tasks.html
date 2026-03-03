@@ -1,10 +1,10 @@
 @if (user()) {
   <button class="px-5 py-2 m-5 bg-green-500" (click)="openForm()">add task</button>
   <app-add></app-add>
-  <!-- <p>{{ user() }}</p> -->
-  @for (task of filterdTasks(); track task.id) {
-    <app-task [task]="task" (deleteTask)="deleteTask($event)"></app-task>
-  }
+
+      <app-table [columns]="columns" [data]="filterdTasks()"></app-table>
+
+    <!-- <app-task [task]="filterdTasks()"></app-task> -->
 } @else {
   <p>no user selected yet!</p>
 }

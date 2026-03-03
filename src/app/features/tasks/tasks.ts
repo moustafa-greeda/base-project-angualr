@@ -3,6 +3,7 @@ import { UserService } from '../users/service/user.service';
 import { Task } from './task/task';
 import { Add } from './add/add';
 import { FormDailogService } from '../../shared/components/dialog/dialog-form/service/form-dialog.service';
+import { Table } from '../../shared/components/table/table';
 interface ITask {
   id: number;
   userId: number;
@@ -11,13 +12,12 @@ interface ITask {
 }
 @Component({
   selector: 'app-tasks',
-  imports: [Task, Add],
+  imports: [Table, Add],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
 export class Tasks {
   _modal = inject(FormDailogService);
-
   selectedUserService = inject(UserService);
   user = this.selectedUserService.selectedUser;
 
@@ -104,5 +104,9 @@ export class Tasks {
       discription: ' any words in dicriotion',
     },
   ]);
-
+  columns = [
+    { header: 'id', field: 'id' },
+    { header: 'name', field: 'name' },
+    { header: 'discription', field: 'discription' },
+  ];
 }
