@@ -1,10 +1,19 @@
-@if (user()) {
-  <button class="px-5 py-2 m-5 bg-green-500" (click)="openForm()">add task</button>
-  <app-add></app-add>
+<div class="tasks-container">
+  <div class="tasks-header">
+    <h2>Tasks</h2>
+    <button class="btn-add bg-gray-500 rounded-2xl px-8 py-2 my-2" (click)="openForm()">
+      + Add Task
+    </button>
+  </div>
 
-      <app-table [columns]="columns" [data]="filterdTasks()"></app-table>
+  <app-table
+    [data]="filterdTasks()"
+    [columns]="columns"
+    (deleteRow)="onDeleteClick($event)"
+    (rowEdited)="onEditClick($event)"
+  />
 
-    <!-- <app-task [task]="filterdTasks()"></app-task> -->
-} @else {
-  <p>no user selected yet!</p>
-}
+  <app-task-form [task]="selectedTask()" (submitForm)="onConfirmForm($event)" />
+
+  <app-delete [task]="selectedTask()" (confirmDelete)="onConfirmDelete()" />
+</div>

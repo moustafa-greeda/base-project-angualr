@@ -1,18 +1,35 @@
-<table>
-  <thead>
-    <tr>
-      @for (col of columns();  track $index) {
-        <th>{{ col.header }}</th>
-      }
-    </tr>
-  </thead>
-  <tbody>
-    @for (row of data(); track $index) {
+<div class="table-wrapper">
+  <table>
+    <thead>
       <tr>
-        @for (column of columns();  track $index) {
-          <td>{{ row[column.field] }}</td>
+        @for (col of columns(); track col.field) {
+          <th>{{ col.header }}</th>
         }
       </tr>
-    }
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      @for (row of data(); track row.id) {
+        <tr>
+          @for (col of columns(); track col.field) {
+            <td>
+              @if (col.field === 'actions') {
+                <div class="actions">
+                  <button class="btn-edit"   (click)="onEdit(row)">  ✏️ Edit   </button>
+                  <button class="btn-delete" (click)="onDelete(row)">🗑️ Delete </button>
+                </div>
+              } @else {
+                {{ row[col.field] ?? '—' }}
+              }
+            </td>
+          }
+        </tr>
+      } @empty {
+        <tr>
+          <td [attr.colspan]="columns().length" class="empty">
+            No data found
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

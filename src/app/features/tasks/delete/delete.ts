@@ -4,23 +4,30 @@ import { DialogDelete } from '../../../shared/components/dialog/dialog-delete/di
 
 @Component({
   selector: 'app-delete',
-  imports: [DialogDelete],
+  standalone: true,
+  imports: [DialogDelete], 
   templateUrl: './delete.html',
   styleUrl: './delete.css',
 })
 export class Delete {
-  private _modal = inject(ConfirmDeleteService)
-  task = input<any>();
-  message :any = computed(() => this.task()?.name)
-  deleteTask = output();
-  ngOnInit(){
-    console.log("task deleted is =========>" , this.task())
-  }
+  task          = input<any>(null);
+  confirmDelete = output<void>();
+
+  private _modalDelete = inject(ConfirmDeleteService);
+  isOpen = this._modalDelete.open;
+
+  // ✅ message computed من الـ task
+  message = computed(() => 
+    `Are you sure you want to delete "${this.task()?.name}"?`
+  );
+
+  // ✅ اسمه onDelete يتطابق مع الـ HTML
   onDelete() {
-    this.deleteTask.emit(this.task());
+    this.confirmDelete.emit();
+    this._modalDelete.closeModal();
   }
 
-    openDelete() {
-    this._modal.openModal()
+  cancel() {
+    this._modalDelete.closeModal();
   }
 }

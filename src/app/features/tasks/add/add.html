@@ -1,11 +1,16 @@
-<app-dialog-form [form]="form" title="Add User" (submitForm)="save($event)">
-  <div class="flex flex-col">
-    <label>ID</label>
-    <input formControlName="id" class="border border-amber-500 rounded-2xl" />
-  </div>
+<app-dialog-form [form]="form" [title]="title()" (submitForm)="save($event)">
+  <!-- ✅ لازم تلف الـ inputs بـ [formGroup] -->
+  <div [formGroup]="form" class="flex flex-col gap-4">
 
-  <div class="flex flex-col">
-    <label>Name</label>
-    <input formControlName="name" class="border border-amber-500 rounded-2xl" />
+    <div class="flex flex-col">
+      <label>Name</label>
+      <input formControlName="name" class="border border-amber-500 rounded-2xl" />
+    </div>
+
+    <div class="flex flex-col">
+      <label>Description</label>
+      <input formControlName="description" class="border border-amber-500 rounded-2xl" />
+    </div>
+
   </div>
 </app-dialog-form>
