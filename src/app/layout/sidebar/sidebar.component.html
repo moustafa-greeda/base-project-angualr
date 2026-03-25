@@ -1,0 +1,41 @@
+<aside class="sidebar" [class.collapsed]="collapsed" [class.open]="mobileOpen" role="navigation"
+  aria-label="Main navigation">
+  <div class="brand">
+    <div class="logo">PF</div>
+    @if(!collapsed){
+    <div class="brand-text">Prime Finance</div>
+    }
+  </div>
+  <nav class="nav">
+    <a class="nav-item active" title="Dashboard">
+      <i class="bi bi-house-door icon"></i>
+      @if(!collapsed){
+      <span class="label">Dashboard</span>
+      }
+    </a>
+    <a class="nav-item" title="Analytics">
+      <i class="bi bi-graph-up icon"></i>
+      @if(!collapsed){
+      <span class="label">Analytics</span>
+      }
+    </a>
+    <a class="nav-item" title="Payments">
+      <i class="bi bi-credit-card icon"></i>
+      <span class="label" *ngIf="!collapsed">Payments</span>
+    </a>
+    <a class="nav-item" title="Settings">
+      <i class="bi bi-gear icon"></i>
+      @if(!collapsed){
+      <span class="label">Settings</span>
+      }
+    </a>
+  </nav>
+
+  <div class="spacer"></div>
+  @if(!collapsed){
+  <div class="upgrade" (click)="logout()">sign out</div>
+  }
+  @if(mobileOpen){
+  <button class="mobile-close" (click)="onCloseMobile()">Close</button>
+  }
+</aside>

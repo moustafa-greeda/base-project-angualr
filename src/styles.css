@@ -1,3 +1,73 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles — include Bootstrap Icons then Tailwind */
+@import "bootstrap-icons/font/bootstrap-icons.css";
 
+/* You can add other global styles to this file, and also import other style files */
 @import "tailwindcss";
+/* Global theme tokens */
+:root {
+  --primary: #FF7F11;
+  --dark-bg: #262626;
+  --dark-card: #2E2E2E;
+  --light-bg: #F5F5F5;
+  --light-card: #FFFFFF;
+  --text-dark: #1A1A1A;
+  --muted-dark: #6B6B6B;
+  --text-light: #FFFFFF;
+  --muted-light: #B5B5B5;
+  --sidebar-width: 256px;
+  --sidebar-collapsed-width: 80px;
+
+
+  /* Default dark theme */
+  --bg: var(--dark-bg);
+  --card-bg: var(--dark-card);
+  --text-color: var(--text-light);
+  --muted: var(--muted-light);
+  --border:  1px solid var(--primary);
+}
+
+/* Light theme */
+:root[data-theme='light'] {
+    --bg: var(--light-bg);
+    --card-bg: var(--light-card);
+    --text-color: var(--text-dark);
+    --muted: var(--muted-dark);
+    --bg-active: var(--bg-active);
+    --bg-active: linear-gradient(135deg, #ff7f11, #ffb84d);
+    --color-error: linear-gradient(135deg , red, #ff7f11);
+
+
+}
+
+/* Dark theme (explicit) */
+:root[data-theme='dark'] {
+  --bg: var(--dark-bg);
+  --card-bg: var(--dark-card);
+  --text-color: var(--text-light);
+  --muted: var(--muted-light);
+  --bg-active: linear-gradient(135deg, #ff7f11, #ffb84d);
+    --color-error: linear-gradient(135deg , red, #ff7f11);
+
+}
+
+/* Global body styles */
+* {
+  /* margin: 0;
+  padding: 0; */
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  transition: background-color 240ms ease-in-out, color 240ms ease-in-out;
+}
+
+app-root {
+  display: block;
+  width: 100%;
+  height: 100%;
+}

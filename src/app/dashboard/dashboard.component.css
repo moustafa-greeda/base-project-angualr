@@ -1,0 +1,70 @@
+/* Base dashboard-container */
+.dashboard-container {
+  display: flex;
+  gap: 8px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-color);
+  transition:
+    background 240ms ease-in-out,
+    color 240ms ease-in-out,
+    margin-left 260ms ease-in-out;
+  margin-left: var(--sidebar-width, 256px);
+}
+
+.dashboard-container.sidebar-collapsed {
+  margin-left: 0;
+}
+
+.main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1050;
+  backdrop-filter: blur(4px);
+}
+
+/* Header sits at top */
+app-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: transparent;
+}
+
+.content {
+  padding: 2rem 1.5rem;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Responsive adjustments */
+
+.dashboard-container.sidebar-collapsed app-sidebar {
+  width: var(--sidebar-collapsed-width);
+}
+
+/* Smooth transitions */
+.dashboard-container,
+app-sidebar {
+  transition:
+    margin-left 260ms ease-in-out,
+    width 240ms ease-in-out;
+}
+
+/* Mobile layout */
+@media (max-width: 1023px) {
+  .dashboard-container {
+    margin-left: 0;
+  }
+}

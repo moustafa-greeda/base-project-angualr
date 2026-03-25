@@ -1,0 +1,6 @@
+/* form{
+  padding:10px;
+} */
+.invalid {
+  border: 1px solid red;
+}
