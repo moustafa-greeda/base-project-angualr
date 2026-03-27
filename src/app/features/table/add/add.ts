@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, input, output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { DialogForm } from '../../../shared/components/dialog/dialog-form/dialog-form';
 import { FormDailogService } from '../../../shared/components/dialog/dialog-form/service/form-dialog.service';
 
@@ -22,9 +22,34 @@ export class Add {
   form = this.fb.group({
     name: [''],
     description: [''],
+    address: this.fb.group({
+      phone: [''],
+      line1: [''],
+      line2:['']
+    }),
+    skills: this.fb.array([])
   });
+  get arrayFormSkills() {
+    return this.form .controls.skills as FormArray
+  }
+  addSkill() {
+    const fg = this.fb.group({
+      name: [''],
+      department: [''],
+      amount: ['']
+    });
+    console.log('from add')
 
-  // ✅ لما task يتغير → املأ الفورم
+    this.arrayFormSkills.push(fg)
+  }
+  save(data: any) {
+    console.log("data =====> " , data )
+    this.submitForm.emit({ ...data, id: this.task()?.id ?? null });
+    this._modal.closeModal();
+  }
+
+
+    // ✅ لما task يتغير → املأ الفورم
   constructor() {
     effect(() => {
       const task = this.task();
@@ -37,10 +62,5 @@ export class Add {
         this.form.reset();
       }
     });
-  }
-
-  save(data: any) {
-    this.submitForm.emit({ ...data, id: this.task()?.id ?? null });
-    this._modal.closeModal();
   }
 }

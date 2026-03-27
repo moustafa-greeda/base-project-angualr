@@ -1,0 +1,112 @@
+.sidebar {
+  width: var(--sidebar-width, 256px);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.5rem;
+  /* z-index: 1000; */
+  box-shadow: 1px 0 8px rgba(0, 0, 0, 0.06);
+  transition:
+    width 0.3s ease-in-out,
+    transform 0.2s ease-in-out;
+  background: var(--card-bg);
+  color: var(--text-color);
+}
+:host[data-theme='light'] .sidebar {
+  box-shadow: 1px 0 8px rgba(0, 0, 0, 0.04);
+}
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width, 80px);
+}
+.sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #ff7f11, #ffc07a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 1rem;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  margin: 2px 0;
+
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 240ms ease-in-out;
+  background: var(--bg);
+}
+.nav-item .icon {
+  width: 28px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+.nav-item.active {
+  background: var(--bg-active, transparent);
+  box-shadow: 0 4px 18px rgba(255, 127, 17, 0.08);
+}
+.nav-item:hover {
+  background: rgba(255, 127, 17, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+.spacer {
+  flex: 1;
+}
+.upgrade {
+  margin: 0.5rem 1rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  background: var(--color-error);
+  color: #fff;
+  text-align: center;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 240ms ease-in-out;
+}
+.upgrade:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 127, 17, 0.3);
+}
+.mobile-close {
+  display: none;
+}
+
+/* Mobile overlay behaviour */
+@media (max-width: 1023px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    transform: translateX(-112%);
+    z-index: 1100;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    width: var(--sidebar-width, 256px);
+  }
+  .mobile-close {
+    display: block;
+    margin: 1rem;
+  }
+}

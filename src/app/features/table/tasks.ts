@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { UserService } from '../users/service/user.service';
 import { FormDailogService } from '../../shared/components/dialog/dialog-form/service/form-dialog.service';
 import { Table } from '../../shared/components/table/table';
@@ -6,6 +6,7 @@ import { ConfirmDeleteService } from '../../shared/components/dialog/dialog-dele
 import { Delete } from './delete/delete';
 import { Add } from './add/add';
 import { TasksService } from './service/tasks.service';
+import { FormBuilder } from '@angular/forms';
 
 interface ITask {
   id: number;
@@ -25,15 +26,15 @@ export class Tasks {
   private _modal = inject(FormDailogService);
   private _modalDelete = inject(ConfirmDeleteService);
   private _userService = inject(UserService);
+  private _tasksService = inject(TasksService);
 
   user = this._userService.selectedUser;
   selectedTask = signal<ITask | null>(null);
-private _tasksService = inject(TasksService)
-ngOnInit(){
-  this._tasksService.getTasks().subscribe({
-    next :(data) => console.log(data)
-  })
-}
+  ngOnInit() {
+    this._tasksService.getTasks().subscribe({
+      next: (data) => console.log(data),
+    });
+  }
 
   // ───────────── Open Add Dialog ─────────────
   openForm() {
@@ -93,7 +94,7 @@ ngOnInit(){
     { id: 11, userId: 2, name: 'task 6 for user 2', discription: 'any words in description' },
   ]);
 
-  filterdTasks = computed(() => this.tasks().filter((task) => task.userId == this.user()));
+  // filterdTasks = computed(() => this.tasks().filter((task) => task.userId == this.user()));
 
   columns = [
     { header: 'ID', field: 'id' },

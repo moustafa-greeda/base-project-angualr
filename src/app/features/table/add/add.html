@@ -1,0 +1,79 @@
+<app-dialog-form [form]="form" [title]="title()" (submitForm)="save($event)">
+  <div [formGroup]="form" class="flex flex-col gap-6">
+
+    <div class="flex flex-col gap-3">
+      <label class="text-xl font-bold">Name</label>
+      <input formControlName="name"
+        class="p-3 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)] " />
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <label class="text-xl font-bold">Description</label>
+      <input formControlName="description"
+        class="p-3 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]" />
+    </div>
+    <!-- nested form group -->
+    <div formGroupName="address">
+      <div class="flex flex-col gap-3">
+        <label class="text-xl font-bold">phone</label>
+        <input formControlName="phone"
+          class="p-3 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]" />
+      </div>
+      <div class="flex flex-col gap-3">
+        <label class="text-xl font-bold">Line 1</label>
+        <input formControlName="line1"
+          class="p-3 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]" />
+      </div>
+      <div class="flex flex-col gap-3">
+        <label class="text-xl font-bold">line 2</label>
+        <input formControlName="line2"
+          class="p-3 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]" />
+      </div>
+    </div>
+    <!-- form  Array -->
+  <button type="button" (click)="addSkill()" class="bg-blue-500 p-2 text-2xl">Add Skill</button>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <ng-container formArrayName="skills">
+      @for(skill of arrayFormSkills.controls; let i = $index; track  i ){
+        <tr [formGroupName]="i" class="m-5 bg-gray-500">
+        
+        <!-- Name -->
+        <td>
+          <input type="text" formControlName="name" class="form-control border" />
+        </td>
+
+        <!-- Department -->
+        <td>
+          <input type="text" formControlName="department" class="form-control border " />
+        </td>
+
+        <!-- Amount -->
+        <td>
+          <input type="number" formControlName="amount" class="form-control border" />
+        </td>
+
+        <!-- Actions -->
+        <td>
+          <!-- <button type="button" (click)="removeSkill(i)">Delete</button> -->
+        </td>
+
+      </tr>
+      }
+      </ng-container>
+    </tbody>
+  </table>
+
+
+  </div>
+</app-dialog-form>

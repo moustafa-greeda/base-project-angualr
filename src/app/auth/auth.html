@@ -1,0 +1,27 @@
+<div class="login-container w-full h-full flex  justify-center items-center">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
+        class="p-[10px] w-[90%] lg:w-[400px] flex flex-col gap-6 rounded-2xl bg-gray-800">
+        <div class="flex flex-col gap-3">
+            <label class="font-bold text-2xl">userName:</label>
+            <input type="text"
+                [class.invalid]="loginForm.controls.username.invalid  && loginForm.controls.username.touched"
+                class="p-2 rounded-[8px] border-[2px] border-[var(--primary)] focus:outline-none focus:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                formControlName="username">
+            @if(loginForm.controls.username.invalid && loginForm.controls.username.touched &&
+            loginForm.controls.username.hasError('required')){
+            <!-- @if(loginForm.controls.username.required){ -->
+            <small>
+                username is required
+            </small>
+            <!-- } -->
+            }
+        </div>
+        <div class="flex flex-col gap-3">
+            <label class="font-bold text-2xl">Password:</label>
+            <input type="password"
+                class="p-2 rounded-[8px] border-[2px] border-[var(--primary)] focus:outline-none focus:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
+                formControlName="password">
+        </div>
+        <button type="submit" class="block py-2 rounded-[8px] text-white  border-[1px] border-[var(--primary)] bg-[var(--primary)]">دخول</button>
+    </form>
+</div>

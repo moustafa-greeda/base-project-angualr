@@ -1,6 +1,8 @@
 <div class="table-wrapper">
-  <table>
-    <thead>
+  <app-search-table/>
+
+  <table class="bg-[var(--card-bg)]">
+    <thead class="bg-red-400">
       <tr>
         @for (col of columns(); track col.field) {
           <th>{{ col.header }}</th>

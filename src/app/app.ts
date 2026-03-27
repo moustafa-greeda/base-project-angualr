@@ -1,15 +1,13 @@
-import { Tasks } from './features/tasks/tasks';
-import { IUser } from './features/users/service/user.service';
-import { Users } from './features/users/users';
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @Component({
   selector: 'app-root',
-  imports: [Users , Tasks],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
-selectedUser?: IUser;
+  protected readonly title = signal('base-angular');
 }

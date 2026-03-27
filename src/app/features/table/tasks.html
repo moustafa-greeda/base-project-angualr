@@ -1,13 +1,13 @@
 <div class="tasks-container">
   <div class="tasks-header">
     <h2>Tasks</h2>
-    <button class="btn-add bg-gray-500 rounded-2xl px-8 py-2 my-2" (click)="openForm()">
+    <button class="btn-add bg-[var(--primary)] rounded-2xl px-8 py-2 my-2" (click)="openForm()">
       + Add Task
     </button>
   </div>
 
   <app-table
-    [data]="filterdTasks()"
+    [data]="tasks()"
     [columns]="columns"
     (deleteRow)="onDeleteClick($event)"
     (rowEdited)="onEditClick($event)"

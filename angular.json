@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "project-rxjs": {
+    "base-angular": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -52,13 +52,7 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.development.ts"
-                }
-              ]
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -67,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "project-rxjs:build:production"
+              "buildTarget": "base-angular:build:production"
             },
             "development": {
-              "buildTarget": "project-rxjs:build:development"
+              "buildTarget": "base-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
