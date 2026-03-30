@@ -21,10 +21,7 @@ export class AuthComponent {
   _auth = inject(AuthService);
   _router = inject(Router);
   _fb = inject(FormBuilder);
-  // loginForm = new FormGroup({
-  //   username: new FormControl(''),
-  //   password: new FormControl(''),
-  // });
+
   loginForm = this._fb.group({
     username: ['', Validators.required],
     password: ['', Validators.required],
@@ -37,9 +34,6 @@ export class AuthComponent {
     };
 
     this._auth.login(mockUser);
-
-    console.log('login');
-
     this._router.navigateByUrl(this.ROLE_REDIRECT_MAP[mockUser.userType], { replaceUrl: true });
   }
 }

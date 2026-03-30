@@ -4,7 +4,7 @@ import { AuthService } from '../../../auth/service/auth';
 import { IuserType } from '../../../auth/model/Iuser';
 
 export const loginGuard: CanActivateFn = (route, state) => {
-  const ROLE_REDIRECT_MAP : Record<IuserType, string>= {
+  const ROLE_REDIRECT_MAP: Record<IuserType, string> = {
     admin: '/dashboard/admin',
     user: '/dashboard/user',
     sales: '/dashboard/sales',

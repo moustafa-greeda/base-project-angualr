@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation, inject } from '@angular/core';
+import { Component, ViewEncapsulation, inject, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/service/auth';
 import { RouterModule } from '@angular/router';
@@ -14,9 +14,10 @@ import { RouterModule } from '@angular/router';
 export class SidebarComponent {
   _auth = inject(AuthService);
 
-  @Input() collapsed = false; // desktop collapsed (icon-only)
-  @Input() mobileOpen = false; // mobile overlay
-  @Output() closeMobile = new EventEmitter<void>();
+  collapsed = input( false); // desktop collapsed (icon-only)
+  mobileOpen = input(false); // mobile overlay
+  // closeMobile = new EventEmitter<void>();
+  closeMobile = output()
 
   logout() {
     this._auth.logout();

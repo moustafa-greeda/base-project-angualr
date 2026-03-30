@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 import { UserService } from '../users/service/user.service';
 import { FormDailogService } from '../../shared/components/dialog/dialog-form/service/form-dialog.service';
 import { Table } from '../../shared/components/table/table';
@@ -6,7 +6,7 @@ import { ConfirmDeleteService } from '../../shared/components/dialog/dialog-dele
 import { Delete } from './delete/delete';
 import { Add } from './add/add';
 import { TasksService } from './service/tasks.service';
-import { FormBuilder } from '@angular/forms';
+import { interval, map } from 'rxjs';
 
 interface ITask {
   id: number;
@@ -28,9 +28,39 @@ export class Tasks {
   private _userService = inject(UserService);
   private _tasksService = inject(TasksService);
 
+  destroyRef = inject(DestroyRef);
+
   user = this._userService.selectedUser;
   selectedTask = signal<ITask | null>(null);
+
+  count = signal(0);
+
+  onClick() {
+    this.count.update((last) => last + 1);
+  }
+
+  constructor() {
+    effect(() => {
+      console.log('from effect =====>', this.count());
+    });
+  }
   ngOnInit() {
+    // rxjs
+    // const subscribtion = interval(1000)
+    //   .pipe(
+    //     map((val) => {
+    //       return val * 5;
+    //     }),
+    //   )
+    //   .subscribe({
+    //     next: (res: any) => {
+    //       console.log(res);
+    //     },
+    //   });
+    // this.destroyRef.onDestroy(() => {
+    //   subscribtion.unsubscribe();
+    // });
+    // =======================
     this._tasksService.getTasks().subscribe({
       next: (data) => console.log(data),
     });
@@ -38,13 +68,13 @@ export class Tasks {
 
   // ───────────── Open Add Dialog ─────────────
   openForm() {
-    this.selectedTask.set(null); // ✅ مهم — يخلي الفورم فاضية
+    this.selectedTask.set(null);
     this._modal.openModal();
   }
 
   // ───────────── Edit handler ─────────────
   onEditClick(task: ITask) {
-    this.selectedTask.set(task); // ✅ يملأ الفورم ببيانات الـ task
+    this.selectedTask.set(task);
     this._modal.openModal();
   }
   onConfirmForm(data: any) {

@@ -1,29 +1,54 @@
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../../../auth/service/auth';
-import { IuserType } from '../../../auth/model/Iuser';
+import { isPlatformBrowser } from '@angular/common';
+import { platformBrowser } from '@angular/platform-browser';
 
-const ROLE_REDIRECT_MAP: Record<IuserType, string> = {
-  admin: '/dashboard/admin',
-  user: '/dashboard/user',
-  sales: '/dashboard/sales',
-  telesales: '/dashboard/telesales',
-  accountant: '/dashboard/accountant',
-};
+// export const redirectDashboardGuard: CanActivateFn = (route, state) => {
+//   const router = inject(Router);
+//   const platformId = inject(PLATFORM_ID);
+
+//   // ✅ مهم جدًا: لو SSR → سيبه يعدي
+//   if (!isPlatformBrowser(platformId)) {
+//     return true;
+//   }
+
+//   // ✅ في المتصفح فقط
+//   const user = localStorage.getItem('user');
+
+//   if (!user) {
+//     return router.createUrlTree(['/login']);
+//   }
+
+//   const parsedUser = JSON.parse(user);
+
+//   // ✅ redirect بس لو داخل /dashboard
+//   if (state.url === '/dashboard') {
+//     return router.createUrlTree([`/dashboard/${parsedUser.userType}`]);
+//   }
+
+//   return true;
+// };
 
 export const redirectDashboardGuard: CanActivateFn = (route, state) => {
-  const _auth = inject(AuthService);
-  const _router = inject(Router);
-  const user = _auth.user();
+  const platformId = inject(PLATFORM_ID);
+  const router = inject(Router);
 
-  if (!user) {
-    return _router.createUrlTree(['/login']);
-    // return true; // سيبه يدخل login
+  //  مهم جدًا: لو SSR → سيبه يعدي
+  if (!isPlatformBrowser(platformId)) {
+    return true;
   }
 
-  // const redirectBath = ROLE_REDIRECT_MAP[user.userType];
+  const user = localStorage.getItem('user');
+  //  in browser
+  if (!user) {
+    return router.createUrlTree(['/login']);
+  }
 
-  // return _router.createUrlTree([redirectBath]);
-    return true; // ✨ يسمح
+  const parsedUser = JSON.parse(user);
 
+  if (state.url === '/dashboard') {
+    return router.createUrlTree([`/dashboard/${parsedUser.userType}`]);
+  }
+
+  return true;
 };

@@ -1,7 +1,8 @@
 import { Component, computed, effect, inject, input, output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogForm } from '../../../shared/components/dialog/dialog-form/dialog-form';
 import { FormDailogService } from '../../../shared/components/dialog/dialog-form/service/form-dialog.service';
+import { log } from 'node:console';
 
 @Component({
   selector: 'app-task-form',
@@ -20,36 +21,38 @@ export class Add {
   isEdit = computed(() => !!this.task());
 
   form = this.fb.group({
-    name: [''],
-    description: [''],
+    name: ['', [Validators.required, Validators.minLength(5)]],
+    description: ['', [Validators.required]],
     address: this.fb.group({
       phone: [''],
       line1: [''],
-      line2:['']
+      line2: [''],
     }),
-    skills: this.fb.array([])
+    skills: this.fb.array([]),
   });
   get arrayFormSkills() {
-    return this.form .controls.skills as FormArray
+    return this.form.controls.skills as FormArray;
   }
   addSkill() {
     const fg = this.fb.group({
       name: [''],
       department: [''],
-      amount: ['']
+      amount: [''],
     });
-    console.log('from add')
-
-    this.arrayFormSkills.push(fg)
+    this.arrayFormSkills.push(fg);
   }
   save(data: any) {
-    console.log("data =====> " , data )
+    console.log('data from function save ', data);
     this.submitForm.emit({ ...data, id: this.task()?.id ?? null });
     this._modal.closeModal();
+    this.form.reset();
   }
 
+  removeSkill(i: number) {
+    this.arrayFormSkills.removeAt(i);
+  }
 
-    // ✅ لما task يتغير → املأ الفورم
+  // ✅ لما task يتغير → املأ الفورم
   constructor() {
     effect(() => {
       const task = this.task();

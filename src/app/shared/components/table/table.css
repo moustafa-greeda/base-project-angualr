@@ -1,7 +1,9 @@
 .table-wrapper {
   overflow-x: auto;
   border-radius: 8px;
-  box-shadow: 2px 2px 8px var(--primary) , -2px -2px 8px var(--primary);
+  box-shadow:
+    2px 2px 8px var(--primary),
+    -2px -2px 8px var(--primary);
 }
 
 table {
@@ -16,7 +18,7 @@ table {
 thead tr {
   background: #232425;
 }
-thead tr th{
+thead tr th {
   padding: 20px;
   color: #fff;
   font-size: 16px;
@@ -48,7 +50,7 @@ th {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 16px;
   transition: opacity 0.2s;
 }
 
