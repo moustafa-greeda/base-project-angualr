@@ -54,7 +54,7 @@
   justify-content: center;
   transition: all 240ms ease-in-out;
   border-radius: 50%;
-  border:var(--border);
+  border: var(--border);
   color: var(--text-color);
   background: var(--bg);
 }

@@ -1,3 +1,3 @@
 export const environment = {
-    base_url :'https://petstore.swagger.io/v2/store'
+  base_url: 'http://172.16.0.108:8001/api',
 };

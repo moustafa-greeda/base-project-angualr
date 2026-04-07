@@ -40,6 +40,7 @@ export class Add {
       amount: [''],
     });
     this.arrayFormSkills.push(fg);
+    console.log('form controls =====>', this.form.controls.skills);
   }
   save(data: any) {
     console.log('data from function save ', data);

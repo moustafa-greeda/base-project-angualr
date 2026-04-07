@@ -1,5 +1,4 @@
 .app-footer {
-  /* background: linear-gradient(180deg, var(--card-bg) 0%, rgba(255, 127, 17, 0.03) 100%); */
   background: var(--card-bg);
   color: var(--text-color);
   border-top: 1px solid rgba(255, 127, 17, 0.1);

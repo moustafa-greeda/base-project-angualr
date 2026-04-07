@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-card-kpi',
@@ -7,5 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './card-kpi.css',
 })
 export class CardKpi {
-
+  icon = input<string>();
+  title = input<string>();
+  count = input<number>(0);
+  rate = input<string>();
 }

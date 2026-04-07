@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal, isDevMode } from '@angular/core';
 import { UserService } from '../users/service/user.service';
 import { FormDailogService } from '../../shared/components/dialog/dialog-form/service/form-dialog.service';
 import { Table } from '../../shared/components/table/table';
@@ -6,7 +6,7 @@ import { ConfirmDeleteService } from '../../shared/components/dialog/dialog-dele
 import { Delete } from './delete/delete';
 import { Add } from './add/add';
 import { TasksService } from './service/tasks.service';
-import { interval, map } from 'rxjs';
+import { log } from 'console';
 
 interface ITask {
   id: number;
@@ -18,7 +18,7 @@ interface ITask {
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [Table, Add, Delete],
+  imports: [Table, Add],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
@@ -27,56 +27,43 @@ export class Tasks {
   private _modalDelete = inject(ConfirmDeleteService);
   private _userService = inject(UserService);
   private _tasksService = inject(TasksService);
+  data = this._tasksService.allData;
+  current_page = signal(1);
+  last_page = signal(1);
+  prev_page = signal(1);
+  next_page = signal(1);
+  loading = signal(false);
 
   destroyRef = inject(DestroyRef);
 
   user = this._userService.selectedUser;
   selectedTask = signal<ITask | null>(null);
 
-  count = signal(0);
-
-  onClick() {
-    this.count.update((last) => last + 1);
-  }
-
-  constructor() {
-    effect(() => {
-      console.log('from effect =====>', this.count());
-    });
-  }
-  ngOnInit() {
-    // rxjs
-    // const subscribtion = interval(1000)
-    //   .pipe(
-    //     map((val) => {
-    //       return val * 5;
-    //     }),
-    //   )
-    //   .subscribe({
-    //     next: (res: any) => {
-    //       console.log(res);
-    //     },
-    //   });
-    // this.destroyRef.onDestroy(() => {
-    //   subscribtion.unsubscribe();
-    // });
-    // =======================
-    this._tasksService.getTasks().subscribe({
-      next: (data) => console.log(data),
-    });
-  }
+  // ngOnInit() {
+  //   this._tasksService.getTasks().subscribe((res) => {
+  //     this.current_page.set(res.data.current_page);
+  //     console.log('current ', this.current_page());
+  //     this.last_page.set(res.data.last_page);
+  //     console.log('last page ===== >', this.last_page());
+  //     this.last_page.set(res.data.last_page);
+  //     console.log('next page ===== >', this.next_page());
+  //     this.last_page.set(res.data.next_page);
+  //     console.log('last page ===== >', this.last_page());
+  //   });
+  // }
 
   // ───────────── Open Add Dialog ─────────────
   openForm() {
     this.selectedTask.set(null);
     this._modal.openModal();
+    console.log('aaaa open');
   }
 
   // ───────────── Edit handler ─────────────
-  onEditClick(task: ITask) {
-    this.selectedTask.set(task);
-    this._modal.openModal();
-  }
+  // onEditClick(task: ITask) {
+  //   this.selectedTask.set(task);
+  //   this._modal.openModal();
+  // }
   onConfirmForm(data: any) {
     if (data) {
       // Edit
@@ -97,17 +84,17 @@ export class Tasks {
   }
 
   // ── Delete handlers ──────────────────────────
-  onDeleteClick(task: ITask) {
-    this.selectedTask.set(task);
-    this._modalDelete.openModal();
-  }
+  // onDeleteClick(task: ITask) {
+  //   this.selectedTask.set(task);
+  //   this._modalDelete.openModal();
+  // }
 
-  onConfirmDelete() {
-    const task = this.selectedTask();
-    if (!task) return;
-    this.tasks.update((list) => list.filter((t) => t.id !== task.id));
-    this.selectedTask.set(null);
-  }
+  // onConfirmDelete() {
+  //   const task = this.selectedTask();
+  //   if (!task) return;
+  //   this.tasks.update((list) => list.filter((t) => t.id !== task.id));
+  //   this.selectedTask.set(null);
+  // }
 
   // ── Data ─────────────────────────────────────
   tasks = signal<ITask[]>([
@@ -128,8 +115,8 @@ export class Tasks {
 
   columns = [
     { header: 'ID', field: 'id' },
-    { header: 'Name', field: 'name' },
-    { header: 'Description', field: 'discription' },
+    { header: 'Name', field: 'first_name' },
+    { header: 'last_name', field: 'last_name' },
     { header: 'Actions', field: 'actions' },
   ];
 }
