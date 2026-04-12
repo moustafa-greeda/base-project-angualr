@@ -12,13 +12,13 @@ export class TasksService {
   private data = signal<any>([]);
   allData = this.data.asReadonly();
 
-  public getTasks(page: number = 1) {
-    return this._http.get<any>(`${this.baseUrl}/customers?page=${page}`).pipe(
-      tap((res) => this.data.set(res.data.data)),
-      catchError((err) => {
-        console.error('HTTP Error: ', err);
-        return throwError(() => err);
-      }),
-    );
-  }
+  // public getTasks(page: number = 1) {
+  //   return this._http.get<any>(`${this.baseUrl}/users`).pipe(
+  //     tap((res) => this.data.set(res)),
+  //     catchError((err) => {
+  //       console.error('HTTP Error: ', err);
+  //       return throwError(() => err);
+  //     }),
+  //   );
+  // }
 }

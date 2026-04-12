@@ -1,4 +1,4 @@
-import { Component, DestroyRef, effect, inject, signal, isDevMode } from '@angular/core';
+import { Component, DestroyRef, effect, inject, signal, isDevMode, output } from '@angular/core';
 import { UserService } from '../users/service/user.service';
 import { FormDailogService } from '../../shared/components/dialog/dialog-form/service/form-dialog.service';
 import { Table } from '../../shared/components/table/table';
@@ -6,19 +6,19 @@ import { ConfirmDeleteService } from '../../shared/components/dialog/dialog-dele
 import { Delete } from './delete/delete';
 import { Add } from './add/add';
 import { TasksService } from './service/tasks.service';
-import { log } from 'console';
+import { PageHeader } from '../../shared/components/page-header/page-header';
 
-interface ITask {
-  id: number;
-  userId: number;
-  name: string;
-  discription: string;
-}
+// interface ITask {
+//   id: number;
+//   userId: number;
+//   name: string;
+//   discription: string;
+// }
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [Table, Add],
+  imports: [Table, Add, PageHeader],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
@@ -37,18 +37,19 @@ export class Tasks {
   destroyRef = inject(DestroyRef);
 
   user = this._userService.selectedUser;
-  selectedTask = signal<ITask | null>(null);
+  selectedTask = signal<any | null>(null);
 
   // ngOnInit() {
   //   this._tasksService.getTasks().subscribe((res) => {
-  //     this.current_page.set(res.data.current_page);
-  //     console.log('current ', this.current_page());
-  //     this.last_page.set(res.data.last_page);
-  //     console.log('last page ===== >', this.last_page());
-  //     this.last_page.set(res.data.last_page);
-  //     console.log('next page ===== >', this.next_page());
-  //     this.last_page.set(res.data.next_page);
-  //     console.log('last page ===== >', this.last_page());
+  //     console.log(res);
+  //     // this.current_page.set(res.data.current_page);
+  //     // console.log('current ', this.current_page());
+  //     // this.last_page.set(res.data.last_page);
+  //     // console.log('last page ===== >', this.last_page());
+  //     // this.last_page.set(res.data.last_page);
+  //     // console.log('next page ===== >', this.next_page());
+  //     // this.last_page.set(res.data.next_page);
+  //     // console.log('last page ===== >', this.last_page());
   //   });
   // }
 
@@ -56,7 +57,6 @@ export class Tasks {
   openForm() {
     this.selectedTask.set(null);
     this._modal.openModal();
-    console.log('aaaa open');
   }
 
   // ───────────── Edit handler ─────────────
@@ -97,7 +97,7 @@ export class Tasks {
   // }
 
   // ── Data ─────────────────────────────────────
-  tasks = signal<ITask[]>([
+  tasks = signal<any[]>([
     { id: 1, userId: 1, name: 'task 1 for user 1', discription: 'any words in description' },
     { id: 2, userId: 1, name: 'task 2 for user 1', discription: 'any words in description' },
     { id: 3, userId: 2, name: 'task 1 for user 2', discription: 'any words in description' },

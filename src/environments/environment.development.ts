@@ -1,3 +1,3 @@
 export const environment = {
-  base_url: 'http://172.16.0.108:8001/api',
+  base_url: 'https://api.zikola.tech/api',
 };

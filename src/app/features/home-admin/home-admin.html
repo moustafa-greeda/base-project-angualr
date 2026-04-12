@@ -1,5 +1,5 @@
 <!-- KPI Cards -->
-<app-page-header [title]="'Dashborad Admin'" />
+<app-page-header [title]="'Dashborad Admin'" [showBtn]="false" />
 <div class="kpi-grid grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 -">
   @for (item of kpis(); track $index) {
     <app-card-kpi
@@ -10,3 +10,5 @@
     />
   }
 </div>
+
+<app-charts></app-charts>

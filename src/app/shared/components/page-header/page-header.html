@@ -1,7 +1,10 @@
-<div class="section-header">
+<div class="section-header pb-2 flex flex-row justify-between items-center">
   <h2
-    class="mb-3 text-(--text-color) font-bold text-4xl tracking-wider text-shadow-[2px_2px_2px_var(--primary)]"
+    class="text-(--text-color) font-bold text-4xl tracking-wider text-shadow-[2px_2px_2px_var(--primary)]"
   >
     {{ title() }}
   </h2>
+  @if (showBtn()) {
+    <app-button (click)="click($event)" [titleBtn]="titleBtn()" [icon]="icon()"></app-button>
+  }
 </div>

@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { CardKpi } from '../../shared/components/card-kpi/card-kpi';
 import { PageHeader } from '../../shared/components/page-header/page-header';
+import { Charts } from './charts/charts';
 
 @Component({
   selector: 'app-home-admin',
-  imports: [PageHeader, CardKpi],
+  imports: [PageHeader, CardKpi , Charts],
   templateUrl: './home-admin.html',
   styleUrl: './home-admin.css',
 })
