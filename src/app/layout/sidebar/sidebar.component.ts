@@ -1,7 +1,16 @@
-import { Component, OnInit, ViewEncapsulation, inject, input, output } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  OnInit,
+  ViewEncapsulation,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/service/auth';
 import { Router, RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-sidebar',
@@ -14,12 +23,13 @@ import { Router, RouterModule } from '@angular/router';
 export class SidebarComponent implements OnInit {
   _auth = inject(AuthService);
   _router = inject(Router);
+  _destroyRef = inject(DestroyRef);
   collapsed = input(false); // desktop collapsed (icon-only)
   mobileOpen = input(false); // mobile overlay
   closeMobile = output();
 
   ngOnInit() {
-    this._router.events.subscribe(() => {
+    this._router.events.pipe(takeUntilDestroyed(this._destroyRef)).subscribe(() => {
       this.closeMobile.emit();
     });
   }
