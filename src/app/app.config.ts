@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(withFetch()),
     provideBrowserGlobalErrorListeners(),
-    ...devProvider,
+    // ...devProvider,
     provideRouter(routes),
     provideHighcharts({
       instance: () => import('highcharts'),

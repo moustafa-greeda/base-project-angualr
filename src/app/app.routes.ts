@@ -10,6 +10,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFound } from './features/not-found/not-found';
 import { loginGuard } from './core/guard/login/login-guard';
 import { Tasks } from './features/table/tasks';
+import { Buttons } from './features/buttons/buttons';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -53,6 +54,10 @@ export const routes: Routes = [
       {
         path: 'table',
         component: Tasks,
+      },
+      {
+        path: 'button',
+        component: Buttons,
       },
       {
         path: '**',

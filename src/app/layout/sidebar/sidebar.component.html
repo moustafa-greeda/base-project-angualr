@@ -29,20 +29,16 @@
         <span class="label">Table</span>
       }
     </a>
-    <a class="nav-item" title="Analytics">
+    <!-- button component -->
+    <a
+      class="nav-item"
+      title="table"
+      routerLinkActive="active"
+      [routerLink]="['/dashboard/button']"
+    >
       <i class="bi bi-graph-up icon"></i>
       @if (!collapsed()) {
-        <span class="label">Analytics</span>
-      }
-    </a>
-    <a class="nav-item" title="Payments">
-      <i class="bi bi-credit-card icon"></i>
-      <span class="label" *ngIf="!collapsed()">Payments</span>
-    </a>
-    <a class="nav-item" title="Settings">
-      <i class="bi bi-gear icon"></i>
-      @if (!collapsed()) {
-        <span class="label">Settings</span>
+        <span class="label">Button</span>
       }
     </a>
   </nav>
