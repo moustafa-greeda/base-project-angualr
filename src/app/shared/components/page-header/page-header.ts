@@ -10,12 +10,11 @@ import { Button } from '../../ui/button/button';
 export class PageHeader {
   showBtn = input(true);
   title = input<string>('');
-  clickBtn = output<PointerEvent>();
+  clickBtn = output();
   titleBtn = input<string>('');
   icon = input<string>('');
 
-  click($event: PointerEvent) {
-    this.clickBtn.emit($event);
-    console.log($event);
+  click() {
+    this.clickBtn.emit();
   }
 }

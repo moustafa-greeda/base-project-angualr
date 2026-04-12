@@ -7,11 +7,11 @@ import { Component, input, output } from '@angular/core';
   styleUrl: './button.css',
 })
 export class Button {
-  click = output<PointerEvent>();
+  click = output();
   titleBtn = input<string>('');
   icon = input<string>('bi bi-plus-circle-fill');
 
-  clickEvt($event: PointerEvent) {
-    return this.click.emit($event);
+  clickEvt() {
+    return this.click.emit();
   }
 }
