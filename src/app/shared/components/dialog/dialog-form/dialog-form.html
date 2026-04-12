@@ -1,37 +1,111 @@
 @if (open()) {
-  <div class="container-form">
+<div class="container-form">
     <div class="backdrop" (click)="close()"></div>
     <div class="dialog relative rounded-xl shadow-[0_0_15px_var(--primary)]">
-      <form
-        [formGroup]="form()"
-        (ngSubmit)="submit()"
-        class="p-6  space-y-5 bg-[var(--card-bg)]"
-      >
-        <!-- title -->
-        <h2 class="text-3xl font-semibold text-[var(--primary)]">
-          {{ title() }}
-        </h2>
+        <form [formGroup]="form()" (ngSubmit)="submit()" class="p-4 md:p-6 bg-(--card-bg)">
 
-        <!-- projected fields -->
-        <ng-content></ng-content>
+            <h2 class="text-3xl font-semibold text-(--primary) mb-2">
+                {{ title() }}
+            </h2>
 
-        <!-- actions -->
-        <div class="flex justify-end pt-4 gap-5">
-          <button
-            type="button"
-            (click)="close()"
-            class="text-md px-4 py-2 rounded-lg hover:bg-red-700 bg-red-500 text-white"
-          >
-            close
-          </button>
-                    <button
-            type="submit"
-            class="text-lg font-bold px-4 py-2 rounded-lg hover:bg-blue-700 bg-blue-600 text-white"
-          >
-            Save
-          </button>
-        </div>
-      </form>
+            <div class="flex flex-col gap-3">
+                @for (item of formControllers(); track item.id) {
+
+                    <div class="form-group flex flex-col gap-2">
+
+                        @if (item.label && item.type !== 'group') {
+                            <label [for]="item.id">{{ item.label }}</label>
+                        }
+
+                        @switch (item.type) {
+
+                            @case ('input') {
+                                <input [id]="item.id" [type]="item.inputType" [placeholder]="item.placeholder"
+                                    [formControlName]="item.formControlName"
+                                    class="p-2 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]"
+                                />
+                            }
+
+                            @case ('textarea') {
+                                <textarea [id]="item.id" [placeholder]="item.placeholder"
+                                    [formControlName]="item.formControlName"
+                                ></textarea>
+                            }
+
+                            @case ('select') {
+                                <select [id]="item.id" [formControlName]="item.formControlName">
+                                    @for (opt of item.options; track opt.value) {
+                                        <option [value]="opt.value">
+                                            {{ opt.label }}
+                                        </option>
+                                    }
+                                </select>
+                            }
+
+                            @case ('group') {
+                                <div [formGroupName]="item.key" class="flex flex-col gap-3">
+
+                                    @if (item.label) {
+                                        <h3 class="text-xl font-bold mb-2">
+                                            {{ item.label }}
+                                        </h3>
+                                    }
+
+                                    @for (child of item.children; track child.id) {
+
+                                        <div class="form-group flex flex-col gap-2">
+
+                                            @if (child.label) {
+                                                <label [for]="child.id">{{ child.label }}</label>
+                                            }
+
+                                            @switch (child.type) {
+
+                                                @case ('input') {
+                                                    <input [id]="child.id" [type]="child.inputType" [placeholder]="child.placeholder"
+                                                        [formControlName]="child.formControlName"
+                                                        class="p-2 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]"
+                                                    />
+                                                }
+
+                                                @case ('textarea') {
+                                                    <textarea [id]="child.id" [placeholder]="child.placeholder"
+                                                        [formControlName]="child.formControlName"
+                                                    ></textarea>
+                                                }
+
+                                                @case ('select') {
+                                                    <select [id]="child.id" [formControlName]="child.formControlName">
+                                                        @for (opt of child.options; track opt.value) {
+                                                        <option [value]="opt.value">
+                                                            {{ opt.label }}
+                                                        </option>
+                                                        }
+                                                    </select>
+                                                }
+
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+
+            <div class="flex justify-end pt-4 gap-5">
+                <button type="button" (click)="close()"
+                    class="text-md px-4 py-2 rounded-lg hover:bg-red-700 bg-red-500 text-white">
+                    close
+                </button>
+                <button type="submit"
+                    class="text-lg font-bold px-4 py-2 rounded-lg hover:bg-blue-700 bg-blue-600 text-white">
+                    Save
+                </button>
+            </div>
+
+        </form>
     </div>
-  </div>
+</div>
 }

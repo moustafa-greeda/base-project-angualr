@@ -8,9 +8,8 @@
   />
 
   <app-table [data]="data()" [columns]="columns" />
-
+  
   <app-task-form [task]="selectedTask()" (submitForm)="onConfirmForm($event)" />
-
   <!-- <app-delete [task]="selectedTask()" (confirmDelete)="onConfirmDelete()" /> -->
 </div>
 

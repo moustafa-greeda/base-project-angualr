@@ -1,5 +1,5 @@
-<app-dialog-form [form]="form" [title]="title()" (submitForm)="save($event)">
-  <div [formGroup]="form" class="flex flex-col gap-2">
+<app-dialog-form [form]="form" [title]="title()" (submitForm)="save($event)" [formControllers]="formControllers">
+  <!-- <div [formGroup]="form" class="flex flex-col gap-2">
     <div class="flex flex-col gap-2">
       <label class="text-xl font-bold">Name</label>
       <input
@@ -28,7 +28,6 @@
         }
       }
     </div>
-    <!-- nested form group -->
     <div formGroupName="address">
       <div class="flex flex-col gap-3">
         <label class="text-xl font-bold">phone</label>
@@ -52,7 +51,6 @@
         />
       </div>
     </div>
-    <!-- form  Array -->
     <button
       type="button"
       (click)="addSkill()"
@@ -75,22 +73,18 @@
         <ng-container formArrayName="skills">
           @for (skill of arrayFormSkills.controls; let i = $index; track i) {
             <tr [formGroupName]="i" class="m-5 bg-gray-500">
-              <!-- Name -->
               <td>
                 <input type="text" formControlName="name" class="form-control border" />
               </td>
 
-              <!-- Department -->
               <td>
                 <input type="text" formControlName="department" class="form-control border" />
               </td>
 
-              <!-- Amount -->
               <td>
                 <input type="number" formControlName="amount" class="form-control border" />
               </td>
 
-              <!-- Actions -->
               <td>
                 <button type="button" (click)="removeSkill(i)">
                   <i class="bi bi-trash"></i>
@@ -101,5 +95,5 @@
         </ng-container>
       </tbody>
     </table>
-  </div>
+  </div> -->
 </app-dialog-form>
