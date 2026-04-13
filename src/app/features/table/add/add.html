@@ -1,0 +1,99 @@
+<app-dialog-form [form]="form" [title]="title()" (submitForm)="save($event)" [formControllers]="formControllers">
+  <!-- <div [formGroup]="form" class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2">
+      <label class="text-xl font-bold">Name</label>
+      <input
+        formControlName="name"
+        class="p-2 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]"
+      />
+      @if (form.controls.name.touched) {
+        @if (form.controls['name'].hasError('required')) {
+          <small class="text-red-500 text-lg">name is required</small>
+        }
+        @if (form.controls.name.hasError('minlength')) {
+          <small class="text-red-500">min lenght chracter 5</small>
+        }
+      }
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <label class="text-xl font-bold">Description</label>
+      <input
+        formControlName="description"
+        class="p-2 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]"
+      />
+      @if (form.controls.description.touched) {
+        @if (form.controls.description.hasError('required')) {
+          <small class="text-red-500 text-lg">description is required</small>
+        }
+      }
+    </div>
+    <div formGroupName="address">
+      <div class="flex flex-col gap-3">
+        <label class="text-xl font-bold">phone</label>
+        <input
+          formControlName="phone"
+          class="p-2 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]"
+        />
+      </div>
+      <div class="flex flex-col gap-3">
+        <label class="text-xl font-bold">Line 1</label>
+        <input
+          formControlName="line1"
+          class="p-2 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]"
+        />
+      </div>
+      <div class="flex flex-col gap-3">
+        <label class="text-xl font-bold">line 2</label>
+        <input
+          formControlName="line2"
+          class="p-2 text-xl border border-amber-500 rounded-2xl focus:outline-none focus:shadow-[0_0_10px_var(--primary)]"
+        />
+      </div>
+    </div>
+    <button
+      type="button"
+      (click)="addSkill()"
+      class="w-40 p-1 text-2xl rounded-lg bg-blue-500 text-white"
+    >
+      Add Skill
+    </button>
+
+    <table class="table border">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Department</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <ng-container formArrayName="skills">
+          @for (skill of arrayFormSkills.controls; let i = $index; track i) {
+            <tr [formGroupName]="i" class="m-5 bg-gray-500">
+              <td>
+                <input type="text" formControlName="name" class="form-control border" />
+              </td>
+
+              <td>
+                <input type="text" formControlName="department" class="form-control border" />
+              </td>
+
+              <td>
+                <input type="number" formControlName="amount" class="form-control border" />
+              </td>
+
+              <td>
+                <button type="button" (click)="removeSkill(i)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </ng-container>
+      </tbody>
+    </table>
+  </div> -->
+</app-dialog-form>

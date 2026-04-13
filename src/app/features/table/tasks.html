@@ -1,0 +1,17 @@
+<div class="tasks-container">
+  <!-- page header for title & button add  -->
+  <app-page-header
+    [title]="'item'"
+    [titleBtn]="'add item'"
+    [icon]="'bi bi-plus-circle'"
+    (clickBtn)="openForm()"
+  />
+
+  <app-table [data]="data()" [columns]="columns" />
+  
+  <app-task-form [task]="selectedTask()" (submitForm)="onConfirmForm($event)" />
+  <!-- <app-delete [task]="selectedTask()" (confirmDelete)="onConfirmDelete()" /> -->
+</div>
+
+<!-- (deleteRow)="onDeleteClick($event)"
+    (rowEdited)="onEditClick($event)" -->

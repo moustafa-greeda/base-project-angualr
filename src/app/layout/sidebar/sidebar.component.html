@@ -1,0 +1,53 @@
+<aside
+  class="sidebar"
+  [class.collapsed]="collapsed()"
+  [class.open]="mobileOpen()"
+  role="navigation"
+  aria-label="Main navigation"
+>
+  <div class="brand" [routerLink]="['/dashboard/admin']">
+    <div class="logo">PF</div>
+    @if (!collapsed()) {
+      <div class="brand-text">Prime Finance</div>
+    }
+  </div>
+  <nav class="nav">
+    <a
+      class="nav-item"
+      routerLinkActive="active"
+      title="Dashboard"
+      [routerLink]="['/dashboard/admin']"
+    >
+      <i class="bi bi-house-door icon"></i>
+      @if (!collapsed()) {
+        <span class="label">Dashboard</span>
+      }
+    </a>
+    <a class="nav-item" title="table" routerLinkActive="active" [routerLink]="['/dashboard/table']">
+      <i class="bi bi-graph-up icon"></i>
+      @if (!collapsed()) {
+        <span class="label">Table</span>
+      }
+    </a>
+    <!-- button component -->
+    <a
+      class="nav-item"
+      title="table"
+      routerLinkActive="active"
+      [routerLink]="['/dashboard/button']"
+    >
+      <i class="bi bi-graph-up icon"></i>
+      @if (!collapsed()) {
+        <span class="label">Button</span>
+      }
+    </a>
+  </nav>
+
+  <div class="spacer"></div>
+  @if (!collapsed()) {
+    <div class="upgrade" (click)="logout()">sign out</div>
+  }
+  @if (mobileOpen()) {
+    <button class="mobile-close" (click)="onCloseMobile()">Close</button>
+  }
+</aside>

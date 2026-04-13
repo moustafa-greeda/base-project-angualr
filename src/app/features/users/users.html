@@ -1,0 +1,5 @@
+@for(user of allusers ; track $index){
+    <div class="card" (click)="selectedUser(user.id)" [class.active]="user.id === activeUser() ">
+        <h1 class="cursor-pointer">{{user.name}}</h1>
+    </div>
+}
