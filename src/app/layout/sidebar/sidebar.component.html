@@ -41,6 +41,18 @@
         <span class="label">Button</span>
       }
     </a>
+    <!-- loader component -->
+    <a
+      class="nav-item"
+      title="loader"
+      routerLinkActive="active"
+      [routerLink]="['/dashboard/loader']"
+    >
+      <i class="bi bi-arrow-repeat"></i>
+      @if (!collapsed()) {
+        <span class="label">Loader</span>
+      }
+    </a>
   </nav>
 
   <div class="spacer"></div>

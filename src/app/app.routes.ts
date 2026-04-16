@@ -11,6 +11,7 @@ import { NotFound } from './features/not-found/not-found';
 import { loginGuard } from './core/guard/login/login-guard';
 import { Tasks } from './features/table/tasks';
 import { Buttons } from './features/buttons/buttons';
+import { Loader } from './features/loader/loader';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -54,6 +55,10 @@ export const routes: Routes = [
       {
         path: 'table',
         component: Tasks,
+      },
+      {
+        path: 'loader',
+        component: Loader
       },
       {
         path: 'button',
