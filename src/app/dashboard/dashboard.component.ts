@@ -45,6 +45,10 @@ export class DashboardComponent implements OnInit {
     window.addEventListener('resize', () => this.updateViewport());
   }
 
+//   ngAfterViewInit(): void {
+//   this.updateViewport();
+// }
+
   updateViewport() {
     this.isMobile = window.innerWidth < 1024;
     if (this.isMobile) {

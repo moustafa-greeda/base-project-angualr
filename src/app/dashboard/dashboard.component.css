@@ -34,6 +34,7 @@ app-header {
 .content {
   padding: 1.5rem;
   width: 100%;
+  min-width: 0;
   margin: 0 auto;
   box-sizing: border-box;
   background-color: var(--bg);

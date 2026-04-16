@@ -1,2 +1,11 @@
-<p>buttons سسس</p>
-<!-- // how can i run angular21 i am install SSR ولازم اعمل refresh on browser to show updates -->
+<app-button titleBtn="primary with icon"></app-button>
+<!-- button primary without icon -->
+<app-button titleBtn="primary without icon" [showIcon]="false"></app-button>
+
+<app-button titleBtn="primary with icon" [varianet]="'secondary'"></app-button>
+<app-button titleBtn="primary with icon" [varianet]="'success'"></app-button>
+<app-button titleBtn="primary with icon" [varianet]="'warning'"></app-button>
+<app-button titleBtn="primary with icon" [varianet]="'error'"></app-button>
+<app-button titleBtn="primary with loading" [loading]="isLoading()"  (click)="save()"></app-button>
+
+
