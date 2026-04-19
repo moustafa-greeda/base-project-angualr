@@ -1,0 +1,12 @@
+:host {
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  background-color: var(--card-bg);
+}
+
+@media (max-width: 1024px) {
+  :host {
+    flex-direction: column;
+  }
+}
