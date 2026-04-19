@@ -1,4 +1,13 @@
-import { Component, DestroyRef, effect, inject, signal, isDevMode, output } from '@angular/core';
+import {
+  Component,
+  DestroyRef,
+  effect,
+  inject,
+  signal,
+  isDevMode,
+  output,
+  computed,
+} from '@angular/core';
 import { UserService } from '../users/service/user.service';
 import { FormDailogService } from '../../shared/components/dialog/dialog-form/service/form-dialog.service';
 import { Table } from '../../shared/components/table/table';
@@ -7,18 +16,20 @@ import { Delete } from './delete/delete';
 import { Add } from './add/add';
 import { TasksService } from './service/tasks.service';
 import { PageHeader } from '../../shared/components/page-header/page-header';
+import { TableSpacer } from '../../shared/components/table-spacer/table-spacer';
+import { CommonModule } from '@angular/common';
 
-// interface ITask {
-//   id: number;
-//   userId: number;
-//   name: string;
-//   discription: string;
-// }
+interface ITask {
+  id: number;
+  userId: number;
+  name: string;
+  discription: string;
+}
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [Table, Add, PageHeader],
+  imports: [TableSpacer, Add, PageHeader, CommonModule],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
@@ -37,22 +48,9 @@ export class Tasks {
   destroyRef = inject(DestroyRef);
 
   user = this._userService.selectedUser;
-  selectedTask = signal<any | null>(null);
-
-  // ngOnInit() {
-  //   this._tasksService.getTasks().subscribe((res) => {
-  //     console.log(res);
-  //     // this.current_page.set(res.data.current_page);
-  //     // console.log('current ', this.current_page());
-  //     // this.last_page.set(res.data.last_page);
-  //     // console.log('last page ===== >', this.last_page());
-  //     // this.last_page.set(res.data.last_page);
-  //     // console.log('next page ===== >', this.next_page());
-  //     // this.last_page.set(res.data.next_page);
-  //     // console.log('last page ===== >', this.last_page());
-  //   });
-  // }
-
+  selectedTask = signal<ITask | null>(null);
+  ngOnInit() {
+  }
   // ───────────── Open Add Dialog ─────────────
   openForm() {
     this.selectedTask.set(null);
@@ -98,25 +96,32 @@ export class Tasks {
 
   // ── Data ─────────────────────────────────────
   tasks = signal<any[]>([
-    { id: 1, userId: 1, name: 'task 1 for user 1', discription: 'any words in description' },
-    { id: 2, userId: 1, name: 'task 2 for user 1', discription: 'any words in description' },
+    { id: 1, userId: 1, name: 'pending', discription: 'any words in description' },
+    { id: 2, userId: 1, name: 's 2 for user 1', discription: 'any words in description' },
     { id: 3, userId: 2, name: 'task 1 for user 2', discription: 'any words in description' },
-    { id: 4, userId: 2, name: 'task 2 for user 2', discription: 'any words in description' },
+    { id: 4, userId: 2, name: 'done', discription: 'any words in description' },
     { id: 5, userId: 3, name: 'task 2 for user 3', discription: 'any words in description' },
     { id: 6, userId: 3, name: 'task 1 for user 3', discription: 'any words in description' },
     { id: 7, userId: 3, name: 'task 3 for user 3', discription: 'any words in description' },
     { id: 8, userId: 2, name: 'task 3 for user 2', discription: 'any words in description' },
     { id: 9, userId: 2, name: 'task 4 for user 2', discription: 'any words in description' },
     { id: 10, userId: 2, name: 'task 5 for user 2', discription: 'any words in description' },
-    { id: 11, userId: 2, name: 'task 6 for user 2', discription: 'any words in description' },
+    { id: 11, userId: 2, name: 'sss 6 for user 2', discription: 'any words in description' },
   ]);
 
-  // filterdTasks = computed(() => this.tasks().filter((task) => task.userId == this.user()));
+  filterdTasks = computed(() => this.tasks().filter((task) => task.userId == this.user()));
 
-  columns = [
-    { header: 'ID', field: 'id' },
-    { header: 'Name', field: 'first_name' },
-    { header: 'last_name', field: 'last_name' },
-    { header: 'Actions', field: 'actions' },
-  ];
+
+  getStatusClass(status: string): string{
+    switch (status) {
+      case'pending':
+        return 'bg-green-500 px-4 py-2';
+      break;
+      case 'done':
+        return 'bg-green-500 px-4 py-2';
+      break;
+      default:
+        return 'bg-green-500 px-4 py-2';
+      }
+    }
 }

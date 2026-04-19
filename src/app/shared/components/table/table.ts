@@ -1,5 +1,5 @@
 import { Component, input, output } from '@angular/core';
-import { SerachTable } from './serach-table/serach-table';
+import { SerachTable } from '../table-spacer/serach-table/serach-table';
 
 @Component({
   selector: 'app-table',
