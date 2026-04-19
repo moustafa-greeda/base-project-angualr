@@ -1,0 +1,11 @@
+<app-button [titleBtn]="'show loader page'" (click)="loaderPage()"></app-button>
+<app-button [titleBtn]="'show loader table'" (click)="loaderTable()"></app-button>
+<app-button [titleBtn]="'show loader card'" (click)="loaderCard()"></app-button>
+
+@if (loadingTable()) {
+  <app-loader-table></app-loader-table>
+}
+
+@if (loadingCard()) {
+  <app-loader-card></app-loader-card>
+}
