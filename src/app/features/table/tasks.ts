@@ -16,7 +16,6 @@ import { Delete } from './delete/delete';
 import { Add } from './add/add';
 import { TasksService } from './service/tasks.service';
 import { PageHeader } from '../../shared/components/page-header/page-header';
-import { TableSpacer } from '../../shared/components/table-spacer/table-spacer';
 import { CommonModule } from '@angular/common';
 
 interface ITask {
@@ -29,7 +28,7 @@ interface ITask {
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [TableSpacer, Add, PageHeader, CommonModule],
+  imports: [Table, Add, PageHeader, CommonModule],
   templateUrl: './tasks.html',
   styleUrl: './tasks.css',
 })
@@ -49,8 +48,7 @@ export class Tasks {
 
   user = this._userService.selectedUser;
   selectedTask = signal<ITask | null>(null);
-  ngOnInit() {
-  }
+  ngOnInit() {}
   // ───────────── Open Add Dialog ─────────────
   openForm() {
     this.selectedTask.set(null);
@@ -102,7 +100,7 @@ export class Tasks {
     { id: 4, userId: 2, name: 'done', discription: 'any words in description' },
     { id: 5, userId: 3, name: 'task 2 for user 3', discription: 'any words in description' },
     { id: 6, userId: 3, name: 'task 1 for user 3', discription: 'any words in description' },
-    { id: 7, userId: 3, name: 'task 3 for user 3', discription: 'any words in description' },
+    { id: 7, userId: 3, name: 'task 3 for user 3', discription: 'any words in description , Hello moustafa mohamed greeda i am egyption from mansoura i,m graduated from misr higher institute for ecommerce and computer science' },
     { id: 8, userId: 2, name: 'task 3 for user 2', discription: 'any words in description' },
     { id: 9, userId: 2, name: 'task 4 for user 2', discription: 'any words in description' },
     { id: 10, userId: 2, name: 'task 5 for user 2', discription: 'any words in description' },
@@ -111,17 +109,16 @@ export class Tasks {
 
   filterdTasks = computed(() => this.tasks().filter((task) => task.userId == this.user()));
 
-
-  getStatusClass(status: string): string{
+  getStatusClass(status: string): string {
     switch (status) {
-      case'pending':
-        return 'bg-green-500 px-4 py-2';
-      break;
+      case 'pending':
+        return 'bg-yellow-500 px-4 py-2 rounded';
+        break;
       case 'done':
-        return 'bg-green-500 px-4 py-2';
-      break;
+        return 'bg-green-500 px-4 py-2 rounded';
+        break;
       default:
-        return 'bg-green-500 px-4 py-2';
-      }
+        return 'bg-blue-500 px-4 py-2 rounded';
     }
+  }
 }

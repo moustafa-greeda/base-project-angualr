@@ -7,7 +7,7 @@
     (clickBtn)="openForm()"
   /> 
 <!------------------ page table ----------------------->
-<app-table-spacer>
+<app-table>
   <ng-container table-header>
     <th>ID</th>
     <th>User ID</th>
@@ -21,7 +21,7 @@
       <tr>
         <td>{{ task.id }}</td>
         <td>{{ task.userId }}</td>
-        <td>
+        <td class="min-w-[200px] bg-red-500">
           <span [ngClass]="getStatusClass(task.name)"> {{ task.name }}
           </span>
         </td>
@@ -43,7 +43,7 @@
       </tr>
       }
     </ng-container>
-    </app-table-spacer>
+    </app-table>
     <!------------------ form add ----------------------->
   <app-task-form [task]="selectedTask()" (submitForm)="onConfirmForm($event)" />
   <!-- <app-delete [task]="selectedTask()" (confirmDelete)="onConfirmDelete()" /> -->
