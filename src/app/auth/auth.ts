@@ -11,6 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   styleUrl: './auth.css',
 })
 export class AuthComponent {
+
   ROLE_REDIRECT_MAP = {
     admin: '/dashboard/admin',
     user: '/dashboard/user',
@@ -18,6 +19,7 @@ export class AuthComponent {
     telesales: '/dashboard/telesales',
     accountant: '/dashboard/accountant',
   };
+
   _auth = inject(AuthService);
   _router = inject(Router);
   _fb = inject(FormBuilder);
@@ -28,9 +30,9 @@ export class AuthComponent {
   });
   onSubmit() {
     const mockUser: IUser = {
-      username: 'admin',
+      username: 'telesales',
       password: '123',
-      userType: 'admin',
+      userType: 'telesales',
     };
 
     this._auth.login(mockUser);

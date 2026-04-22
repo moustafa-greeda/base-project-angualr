@@ -1,10 +1,10 @@
-<app-button titleBtn="primary with icon"></app-button>
-<!-- button primary without icon -->
-<app-button titleBtn="primary without icon" [showIcon]="false"></app-button>
-<app-button titleBtn="primary with icon" [varianet]="'secondary'"></app-button>
-<app-button titleBtn="primary with icon" [varianet]="'success'"></app-button>
-<app-button titleBtn="primary with icon" [varianet]="'warning'"></app-button>
-<app-button titleBtn="primary with icon" [varianet]="'error'"></app-button>
-<app-button titleBtn="primary with loading" [loading]="isLoading()"  (click)="save()"></app-button>
-
-
+<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4  items-center justify-between">
+  <app-button titleBtn="primary with icon"></app-button>
+  <!-- button primary without icon -->
+  <app-button titleBtn="primary without icon" [showIcon]="false"></app-button>
+  <app-button titleBtn="primary with icon" [varianet]="'secondary'"></app-button>
+  <app-button titleBtn="primary with icon" [varianet]="'success'"></app-button>
+  <app-button titleBtn="primary with icon" [varianet]="'warning'"></app-button>
+  <app-button titleBtn="primary with icon" [varianet]="'error'"></app-button>
+  <app-button titleBtn="primary with loading" [loading]="isLoading()" (click)="save()"></app-button>
+</div>

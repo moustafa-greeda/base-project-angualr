@@ -27,14 +27,10 @@ export const routes: Routes = [
     canActivate: [redirectDashboardGuard],
 
     children: [
-      // {
-      //   path: '',
-      //   redirectTo: 'admin',
-      //   pathMatch: 'full',
-      // },
       {
         path: 'admin',
         component: HomeAdmin,
+          pathMatch: 'full',
       },
       {
         path: 'user',
@@ -58,7 +54,7 @@ export const routes: Routes = [
       },
       {
         path: 'loader',
-        component: Loader
+        component: Loader,
       },
       {
         path: 'button',

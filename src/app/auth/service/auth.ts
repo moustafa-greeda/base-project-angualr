@@ -10,12 +10,12 @@ export class AuthService {
   _router = inject(Router);
   private _user = signal<IUser | null>(null);
   user = this._user.asReadonly();
+
   private platformId = inject(PLATFORM_ID);
 
   isLogged = computed(() => !!this._user());
 
   constructor() {
-    // console.log('platformId ================>', this.platformId);
     // ✅ اقرأ من localStorage بس في المتصفح
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('user');
