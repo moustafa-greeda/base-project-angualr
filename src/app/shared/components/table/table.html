@@ -1,7 +1,9 @@
 <div class="table-wrapper">
-    <app-search-table />
+    <div class="mb-6">
+        <app-search-table />
+    </div>
 
-    <table class="bg-(--card-bg)">
+    <table>
         <thead>
             <tr>
                 <ng-content select="[table-header]"></ng-content>
@@ -9,11 +11,6 @@
         </thead>
         <tbody>
             <ng-content select="[table-body]"></ng-content>
-            <!-- @empty {
-        <tr>
-            <td [attr.colspan]="columns().length" class="empty">No data found</td>
-        </tr>
-        } -->
         </tbody>
     </table>
 </div>

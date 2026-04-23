@@ -1,3 +1,22 @@
+/* تأثير الطفو ثلاثي الأبعاد */
+@keyframes float3d {
+  0% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px); }
+  50% { transform: perspective(1000px) rotateX(2deg) rotateY(-1deg) translateY(-10px); }
+  100% { transform: perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px); }
+}
+
+.animate-modern-3d {
+  animation: float3d 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* تحسين شكل المدخلات عند الخطأ */
 .invalid {
-  border: 1px solid red;
+  border-color: var(--text-error) !important;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+}
+
+/* تأثير لمعان الزر */
+.btn-glow:hover {
+  box-shadow: 0 0 20px var(--primary);
 }

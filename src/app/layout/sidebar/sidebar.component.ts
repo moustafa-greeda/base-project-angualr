@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../auth/service/auth';
 import { Router, RouterModule } from '@angular/router';
 import { SIDEBAR_MENU } from './sidebar.config';
+import { Button } from '../../shared/ui/button/button';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, Button],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   encapsulation: ViewEncapsulation.None,

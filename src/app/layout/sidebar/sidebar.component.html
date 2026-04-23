@@ -6,9 +6,9 @@
   aria-label="Main navigation"
 >
   <div class="brand" [routerLink]="['/dashboard/admin']">
-    <div class="logo">PF</div>
+    <div class="logo">GS</div>
     @if (!collapsed()) {
-      <div class="brand-text">Prime Finance</div>
+      <div class="brand-text">Greeda</div>
     }
   </div>
 
@@ -30,5 +30,6 @@
   }
   @if (mobileOpen()) {
     <button class="mobile-close" (click)="onCloseMobile()">Close</button>
+  
   }
 </aside>
