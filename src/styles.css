@@ -7,11 +7,11 @@
 /* Global theme tokens */
 :root {
   --primary:#009432;
-  --secondary: #229710;
+  --secondary: #39bb26;
   --success-color: green;
   --warning-color: orange;
   --dark-bg: #000;
-  --dark-card: #0c0a0a;
+  --dark-card: #201e1e;
   --bg-thead: var(--primary);
   --bg-tr: #1f1c1c;
   --text-error: red;

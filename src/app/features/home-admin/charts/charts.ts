@@ -2,6 +2,7 @@ import { HighchartsChartComponent } from 'highcharts-angular';
 
 import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { CHART_COLORS } from '../../../core/constants/chart-colors';
 
 @Component({
   selector: 'app-charts',
@@ -9,9 +10,12 @@ import * as Highcharts from 'highcharts';
   templateUrl: './charts.html',
   styleUrl: './charts.css',
 })
+  
+    
 export class Charts {
   Highcharts: typeof Highcharts = Highcharts;
   chartsOptions: Highcharts.Options = {
+    colors: CHART_COLORS,
     chart: {
       type: 'pie',
       backgroundColor: 'var(--card-bg)',
@@ -26,12 +30,16 @@ export class Charts {
     },
     title: {
       text: 'Egg Yolk Composition',
+      style: { color: `#fff`, textShadow: '2px 0px 0px var(--primary)',  fontWeight: 'bold' }
     },
     tooltip: {
       valueSuffix: '%',
     },
     subtitle: {
-      text: 'Source:<a href="https://www.mdpi.com/2072-6643/11/3/684/htm" target="_default">MDPI</a>',
+      text: 'sub Title',
+      style: {
+        color: "#fff",       
+      }
     },
     plotOptions: {
       pie: {
@@ -48,8 +56,9 @@ export class Charts {
             format: '{point.percentage:.1f}%',
             style: {
               fontSize: '1.2em',
+              color: '#fff',
               textOutline: 'none',
-              opacity: 0.7,
+              opacity: 0.8,
             },
             filter: {
               operator: '>',

@@ -7,16 +7,22 @@
   display: flex;
   flex-direction: column;
   padding: 1rem 0.5rem;
-  box-shadow: 1px 0 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--primary);
+  border-radius: 12px;
   transition:
     width 0.3s ease-in-out,
     transform 0.2s ease-in-out;
   background: var(--card-bg);
   color: var(--text-color);
+  box-shadow:
+    inset 0 1px 1px var(--primary),
+    inset 0 -4px 8px var(--primary);
 }
+
 :host[data-theme='light'] .sidebar {
   box-shadow: 1px 0 8px rgba(0, 0, 0, 0.04);
 }
+
 .sidebar.collapsed {
   width: var(--sidebar-collapsed-width, 80px);
 }
@@ -42,8 +48,10 @@
   gap: 0.25rem;
   margin-top: 1rem;
 }
-.nav-item {
+.nav-item,
+.nav-logout {
   display: flex;
+  gap: 15px;
   align-items: center;
   margin: 2px 0;
 
@@ -52,39 +60,44 @@
   color: inherit;
   text-decoration: none;
   cursor: pointer;
-  transition: all 240ms ease-in-out;
+  transition: all .3s linear;
+}
+
+.nav-item {
   background: var(--bg);
 }
-.nav-item .icon {
+.nav-logout {
+  box-shadow:
+    inset 0 4px 12px var(--bg-error),
+    inset 0 -4px 12px var(--bg-error);
+}
+
+.nav-item:hover , .nav-logout:hover{
+  transform: scale(.98);
+  transform: box-shadow .3s eas-in-out;
+}
+
+.nav-item .icon,
+.nav-logout .icon {
   width: 28px;
   text-align: center;
   font-size: 1.3rem;
 }
-.nav-item.active {
-  background: var(--bg-active);
-  box-shadow: 0 4px 18px rgba(255, 127, 17, 0.08);
-}
+
+.nav-item.active,
 .nav-item:hover {
-  background: rgba(255, 127, 17, 0.08);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 4px 12px var(--primary),
+    inset 0 -4px 12px var(--primary);
 }
+
 .spacer {
   flex: 1;
 }
-.upgrade {
-  margin: 0.5rem 1rem;
-  padding: 0.6rem 0.8rem;
-  border-radius: 8px;
-  background: var(--color-error);
-  color: #fff;
-  text-align: center;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 240ms ease-in-out;
-}
-.upgrade:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 127, 17, 0.3);
+
+.nav-logout.active,
+.nav-logout:hover {
+  background: var(--bg-error);
 }
 .mobile-close {
   display: none;

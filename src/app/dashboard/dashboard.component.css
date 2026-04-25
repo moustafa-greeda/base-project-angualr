@@ -29,6 +29,7 @@ app-header {
   position: sticky;
   top: 0;
   background: transparent;
+  z-index: 100000;
 }
 
 .content {

@@ -25,11 +25,16 @@
   </nav>
 
   <div class="spacer"></div>
-  @if (!collapsed()) {
-    <div class="upgrade" (click)="logout()">sign out</div>
-  }
+
+  <!-------------------  logout  --------------------->
+  <a class="nav-logout" (click)="logout()">
+    <i class="bi bi-box-arrow-right icon"></i>
+    @if (!collapsed()) {
+      <span class="label">Sign Out</span>
+    }
+  </a>
+  <!-- <div class="upgrade" (click)="logout()">sign out </div> -->
   @if (mobileOpen()) {
     <button class="mobile-close" (click)="onCloseMobile()">Close</button>
-  
   }
 </aside>
