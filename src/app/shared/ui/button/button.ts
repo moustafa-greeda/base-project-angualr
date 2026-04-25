@@ -8,14 +8,15 @@ import { Component, computed, input, output } from '@angular/core';
   styleUrl: './button.css',
 })
 export class Button {
-  click = output();
+  clickAction = output();
   titleBtn = input<string>('');
   varianet = input<'primary' | 'secondary' | 'success' | 'warning' | 'error'>('primary');
+  customClass = input<string>('')
   icon = input<string>('bi bi-plus-circle-fill');
   showIcon = input<boolean>(true);
   loading = input<boolean>(false);
 
   clickEvt() {
-    return this.click.emit();
+    return this.clickAction.emit();
   }
 }

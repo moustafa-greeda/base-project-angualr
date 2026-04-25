@@ -15,15 +15,19 @@
 }
 
 .dialog {
-  max-height: 80vh;
+  max-height: 95vh;
   overflow: auto;
-  width: clamp(300px, 90%, 600px);
   border-radius: 6px;
   box-shadow: 0 1px 10px var(--primary);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
-form {
-  overflow: auto;
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb{
+  border-radius: 8px;
+  background-color: var(--primary);
 }

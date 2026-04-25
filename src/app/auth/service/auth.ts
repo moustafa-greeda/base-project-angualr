@@ -11,11 +11,21 @@ export class AuthService {
   private _user = signal<IUser | null>(null);
   user = this._user.asReadonly();
   private platformId = inject(PLATFORM_ID);
-
   isLogged = computed(() => !!this._user());
 
+  private readonly ROLE_ROUTES: Record<string, string> = {
+    admin: '/dashboard/admin',
+    user: '/dashboard/user',
+    sales: '/dashboard/sales',
+    telesales: '/dashboard/telesales',
+    accountant: '/dashboard/accountant',
+  };
+
+  getRedirectUrl(role: string): string {
+    return this.ROLE_ROUTES[role] ;
+  }
+
   constructor() {
-    // console.log('platformId ================>', this.platformId);
     // ✅ اقرأ من localStorage بس في المتصفح
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('user');

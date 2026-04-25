@@ -2,11 +2,10 @@ import { Component, computed, effect, inject, input, output } from '@angular/cor
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogForm } from '../../../shared/components/dialog/dialog-form/dialog-form';
 import { FormDailogService } from '../../../shared/components/dialog/dialog-form/service/form-dialog.service';
-import { log } from 'node:console';
-
+import { Button } from "../../../shared/ui/button/button";
 @Component({
     selector: 'app-task-form',
-    imports: [DialogForm, ReactiveFormsModule],
+    imports: [DialogForm, ReactiveFormsModule, Button],
     templateUrl: './add.html',
     styleUrl: './add.css',
 })

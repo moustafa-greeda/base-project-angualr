@@ -1,39 +1,16 @@
 <div class="table-wrapper">
-  <app-search-table />
+    <div class="mb-6">
+        <app-search-table />
+    </div>
 
-  <table class="bg-(--card-bg)">
-    <thead>
-      <tr>
-        @for (col of columns(); track col.field) {
-          <th>{{ col.header }}</th>
-        }
-      </tr>
-    </thead>
-    <tbody>
-      @for (row of data(); track row.id) {
-        <tr>
-          @for (col of columns(); track col.field) {
-            <td>
-              @if (col.field === 'actions') {
-                <div class="actions">
-                  <button class="btn-edit" (click)="onEdit(row)">
-                    <i class="bi bi-pencil-square"></i>
-                  </button>
-                  <button class="btn-delete" (click)="onDelete(row)">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
-              } @else {
-                {{ row[col.field] ?? '—' }}
-              }
-            </td>
-          }
-        </tr>
-      } @empty {
-        <tr>
-          <td [attr.colspan]="columns().length" class="empty">No data found</td>
-        </tr>
-      }
-    </tbody>
-  </table>
+    <table>
+        <thead>
+            <tr>
+                <ng-content select="[table-header]"></ng-content>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-content select="[table-body]"></ng-content>
+        </tbody>
+    </table>
 </div>

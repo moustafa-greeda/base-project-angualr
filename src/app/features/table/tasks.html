@@ -1,17 +1,50 @@
 <div class="tasks-container">
-  <!-- page header for title & button add  -->
+<!-------------- page header for title & button add  -->
   <app-page-header
     [title]="'item'"
     [titleBtn]="'add item'"
     [icon]="'bi bi-plus-circle'"
     (clickBtn)="openForm()"
-  />
+  /> 
+<!------------------ page table ----------------------->
+<app-table>
+  <ng-container table-header>
+    <th>ID</th>
+    <th>User ID</th>
+    <th>Status/Name</th>
+    <th>Description</th>
+    <th>Actions</th>
+  </ng-container>
 
-  <app-table [data]="data()" [columns]="columns" />
-  
+    <ng-container table-body>
+      @for (task of tasks(); track task.id) {
+      <tr>
+        <td>{{ task.id }}</td>
+        <td>{{ task.userId }}</td>
+        <td class="min-w-[200px] bg-red-500">
+          <span [ngClass]="getStatusClass(task.name)"> {{ task.name }}
+          </span>
+        </td>
+        <td>{{ task.discription }}</td>
+        <td>
+          <div class="actions">
+            <button class="btn-edit">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+            <button class="btn-delete">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      } @empty {
+      <tr>
+        <td colspan="5" class="empty">No tasks available right now.</td>
+      </tr>
+      }
+    </ng-container>
+    </app-table>
+    <!------------------ form add ----------------------->
   <app-task-form [task]="selectedTask()" (submitForm)="onConfirmForm($event)" />
   <!-- <app-delete [task]="selectedTask()" (confirmDelete)="onConfirmDelete()" /> -->
 </div>
-
-<!-- (deleteRow)="onDeleteClick($event)"
-    (rowEdited)="onEditClick($event)" -->

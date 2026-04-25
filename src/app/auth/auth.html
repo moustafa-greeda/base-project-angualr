@@ -1,27 +1,86 @@
-<div class="login-container w-full h-full flex  justify-center items-center">
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()"
-        class="p-[10px] w-[90%] lg:w-[400px] flex flex-col gap-6 rounded-2xl bg-gray-800">
-        <div class="flex flex-col gap-3">
-            <label class="font-bold text-2xl">userName:</label>
-            <input type="text"
-                [class.invalid]="loginForm.controls.username.invalid  && loginForm.controls.username.touched"
-                class="p-2 rounded-[8px] border-[2px] border-[var(--primary)] focus:outline-none focus:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-                formControlName="username">
-            @if(loginForm.controls.username.invalid && loginForm.controls.username.touched &&
-            loginForm.controls.username.hasError('required')){
-            <!-- @if(loginForm.controls.username.required){ -->
-            <small>
-                username is required
-            </small>
-            <!-- } -->
-            }
-        </div>
-        <div class="flex flex-col gap-3">
-            <label class="font-bold text-2xl">Password:</label>
-            <input type="password"
-                class="p-2 rounded-[8px] border-[2px] border-[var(--primary)] focus:outline-none focus:shadow-[0_0_10px_rgba(59,130,246,0.5)]"
-                formControlName="password">
-        </div>
-        <button type="submit" class="block py-2 rounded-[8px] text-white  border-[1px] border-[var(--primary)] bg-[var(--primary)]">دخول</button>
-    </form>
+<div
+  class="login-container w-full h-screen  flex justify-center items-center bg-[--bg] overflow-hidden relative"
+>
+  <form
+    [formGroup]="loginForm"
+    (ngSubmit)="onSubmit()"
+    class="animate-modern-3d p-10 w-[95%] lg:w-[450px] flex flex-col gap-3 rounded-4xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]"
+  >
+    <div class="text-center">
+      <div class="inline-block p-4 rounded-2xl bg-[--primary]/10 mb-4">
+        <i class="bi bi-shield-lock-fill text-[--primary] text-4xl"></i>
+      </div>
+      <h1 class="text-3xl font-black text-[--text-color] tracking-tight">Welcome Back</h1>
+      <p class="text-[--muted] text-sm mt-2 font-medium">Please sign in to your account</p>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label class="text-xs font-bold uppercase tracking-wider text-[--muted] ml-1">Username</label>
+      <div class="relative group">
+        <i
+          class="bi bi-person absolute left-4 top-1/2 -translate-y-1/2 text-[--muted] group-focus-within:text-[--primary] transition-colors"
+        ></i>
+        <input
+          type="text"
+          formControlName="username"
+          [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+          placeholder="Enter username"
+          class="w-full p-3.5 pl-12 rounded-xl bg-black/20 border border-white/10 text-[--text-color] transition-all duration-300 focus:border-[--primary] focus:ring-4 focus:ring-[--primary]/10 outline-none"
+        />
+      </div>
+
+      @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
+        <span
+          class="text-[--text-error] text-[10px] font-bold uppercase mt-1 flex items-center gap-1"
+        >
+          <i class="bi bi-exclamation-circle"></i> Username is required
+        </span>
+      }
+    </div>
+<div class="flex flex-col gap-2">
+  <label class="text-xs font-bold uppercase tracking-wider text-[--muted] ml-1">Password</label>
+  
+  <div class="relative group">
+    <i class="bi bi-lock absolute left-4 top-1/2 -translate-y-1/2 text-[--muted] group-focus-within:text-[--primary] transition-colors"></i>
+    
+    <input
+      [type]="isPasswordVisible ? 'text' : 'password'"
+      formControlName="password"
+      [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+      placeholder="••••••••"
+      class="w-full p-3.5 pl-12 pr-12 rounded-xl bg-black/20 border border-white/10 text-[--text-color] transition-all duration-300 focus:border-[--primary] focus:ring-4 focus:ring-[--primary]/10 outline-none"
+    />
+
+    <button
+      type="button"
+      (click)="togglePasswordVisibility()"
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-[--muted] hover:text-[--primary] transition-colors z-10"
+    >
+      <i [ngClass]="isPasswordVisible ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+    </button>
+  </div>
+
+  @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+    <span class="text-[--text-error] text-[10px] font-bold uppercase mt-1 flex items-center gap-1 animate-pulse">
+      <i class="bi bi-exclamation-circle"></i> Password is required
+    </span>
+  }
+</div>
+
+    <div class="relative group">
+      <div
+        class="absolute -inset-1 bg-linear-to-r from-[--primary] to-[--secondary] rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000"
+      ></div>
+      <button
+        type="submit"
+        class="relative w-full py-4 rounded-xl text-white font-bold bg-linear-to-r from-[--primary] to-[--secondary] shadow-xl transform transition-all active:scale-95 disabled:opacity-50 disabled:grayscale"
+      >
+        SIGN IN
+      </button>
+    </div>
+
+    <p class="text-center text-[--muted] text-[10px] uppercase tracking-[0.2em]">
+      <i class="bi bi-patch-check"></i> Verified System Access
+    </p>
+  </form>
 </div>

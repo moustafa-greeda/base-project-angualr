@@ -1,18 +1,18 @@
 <button
-  class="btn-add px-2 py-2 my-2 min-w-5 inline-flex items-center gap-2 rounded-2xl bg-(--primary)"
-  [ngClass]="varianet()"
+  class="btn-add px-6 py-2 my-2  inline-flex items-center justify-center gap-6 rounded-2xl bg-(--primary)"
+  [ngClass]="[varianet() , customClass()]"
   (click)="clickEvt()"
   [disabled]="loading()"
 >
   @if (loading()) {
-    <div class="min-w-20 flex items-center justify-center">
+    <div class="min-w-30 flex items-center justify-center">
       <span class="loader"></span>
     </div>
   } @else {
     {{ titleBtn() }}
     @if (showIcon()) {
       <span>
-        <i [class]="icon()"></i>
+        <i class="text-[--primary]  text-xl" [class]="icon()"></i>
       </span>
     }
   }

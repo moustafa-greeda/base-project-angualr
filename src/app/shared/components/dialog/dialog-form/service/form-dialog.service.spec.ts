@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ModalService } from './form-dialog.service';
+import { FormDailogService } from './form-dialog.service';
 
 describe('ModalService', () => {
-  let service: ModalService;
+  let service: FormDailogService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ModalService);
+    service = TestBed.inject(FormDailogService);
   });
 
   it('should be created', () => {

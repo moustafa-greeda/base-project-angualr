@@ -1,3 +1,5 @@
+import { Users } from './../features/users/users';
+import { AuthService } from './../auth/service/auth';
 import { Component, OnInit, ViewEncapsulation, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DOCUMENT } from '@angular/common';
@@ -21,6 +23,7 @@ export class DashboardComponent implements OnInit {
   sidebarOpen = false;
   sidebarCollapsed = false;
   theme: 'dark' | 'light' = 'dark';
+  _serviceAuth = inject(AuthService)
 
   private document = inject(DOCUMENT);
   private platformId = inject(PLATFORM_ID);
@@ -44,10 +47,6 @@ export class DashboardComponent implements OnInit {
     this.applyTheme();
     window.addEventListener('resize', () => this.updateViewport());
   }
-
-//   ngAfterViewInit(): void {
-//   this.updateViewport();
-// }
 
   updateViewport() {
     this.isMobile = window.innerWidth < 1024;
