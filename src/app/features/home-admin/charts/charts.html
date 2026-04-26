@@ -1,10 +1,15 @@
 <div class="warpper py-3 flex flex-col md:flex-row gap-2">
+  <!-- pie chart -->
   <highcharts-chart
     [options]="chartsOptions"
     class="w-full md:w-1/2 h-100 block rounded-2xl"
   ></highcharts-chart>
+  <!-- line chart -->
   <highcharts-chart
-    [options]="chartsOptions"
+    [options]="lineOptions"
     class="w-full md:w-1/2 h-100 block rounded-2xl"
   ></highcharts-chart>
 </div>
+
+<!-- bar chart  -->
+<highcharts-chart [options]="barOptions" class="w-full h-100 block rounded-2xl"></highcharts-chart>
