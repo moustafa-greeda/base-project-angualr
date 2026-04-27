@@ -1,7 +1,6 @@
 /* Base dashboard-container */
 .dashboard-container {
   display: flex;
-  gap: 8px;
   min-height: 100vh;
   background: var(--bg);
   color: var(--text-color);

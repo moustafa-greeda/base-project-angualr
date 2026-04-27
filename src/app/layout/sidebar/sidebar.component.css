@@ -7,16 +7,11 @@
   display: flex;
   flex-direction: column;
   padding: 1rem 0.5rem;
-  border: 1px solid var(--primary);
-  border-radius: 12px;
   transition:
     width 0.3s ease-in-out,
     transform 0.2s ease-in-out;
   background: var(--card-bg);
-  color: var(--text-color);
-  box-shadow:
-    inset 0 1px 1px var(--primary),
-    inset 0 -4px 8px var(--primary);
+  color: var(--muted);
 }
 
 :host[data-theme='light'] .sidebar {
@@ -67,9 +62,8 @@
   background: var(--bg);
 }
 .nav-logout {
-  box-shadow:
-    inset 0 4px 12px var(--bg-error),
-    inset 0 -4px 12px var(--bg-error);
+ background-color: var(--primary);
+ color: var(--text-light);
 }
 
 .nav-item:hover , .nav-logout:hover{
@@ -86,9 +80,8 @@
 
 .nav-item.active,
 .nav-item:hover {
-  box-shadow:
-    inset 0 4px 12px var(--primary),
-    inset 0 -4px 12px var(--primary);
+ background-color: var(--primary);
+ color: var(--text-light);
 }
 
 .spacer {
