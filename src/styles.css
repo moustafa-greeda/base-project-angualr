@@ -6,12 +6,12 @@
 
 /* Global theme tokens */
 :root {
-  --primary: #FF4304;
+  --primary:#009432;
   --secondary: #39bb26;
   --success-color: green;
   --warning-color: orange;
-  --dark-bg: #121212;
-  --dark-card: #1E1E1E;
+  --dark-bg: #000;
+  --dark-card: #201e1e;
   --bg-thead: var(--primary);
   --bg-tr: #1f1c1c;
   --text-error: red;
@@ -19,13 +19,16 @@
   --light-bg: #f5f5f5;
   --light-card: #ffffff;
   --text-dark: #1a1a1a;
-  --muted-dark: #717171;
+  --muted-dark: #6b6b6b; 
   --text-light: #ffffff;
   --muted-light: #b5b5b5;
   --sidebar-width: 256px;
   --sidebar-collapsed-width: 80px;
-  --background-active: var(--primary);
-  /* Default dark theme */
+  --background-active: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--secondary)
+  ); /* Default dark theme */
   --bg: var(--dark-bg);
   --card-bg: var(--dark-card);
   --text-color: var(--text-light);
