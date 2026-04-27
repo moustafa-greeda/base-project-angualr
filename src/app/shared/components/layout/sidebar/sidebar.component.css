@@ -1,0 +1,124 @@
+.sidebar {
+  width: var(--sidebar-width, 256px);
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0.5rem;
+  border: 1px solid var(--primary);
+  border-radius: 12px;
+  transition:
+    width 0.3s ease-in-out,
+    transform 0.2s ease-in-out;
+  background: var(--card-bg);
+  color: var(--text-color);
+  box-shadow:
+    inset 0 1px 1px var(--primary),
+    inset 0 -4px 8px var(--primary);
+}
+
+:host[data-theme='light'] .sidebar {
+  box-shadow: 1px 0 8px rgba(0, 0, 0, 0.04);
+}
+
+.sidebar.collapsed {
+  width: var(--sidebar-collapsed-width, 80px);
+}
+.sidebar .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+}
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: var(--bg-active);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 1rem;
+}
+.nav-item,
+.nav-logout {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin: 2px 0;
+
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all .3s linear;
+}
+
+.nav-item {
+  background: var(--bg);
+}
+.nav-logout {
+  box-shadow:
+    inset 0 4px 12px var(--bg-error),
+    inset 0 -4px 12px var(--bg-error);
+}
+
+.nav-item:hover , .nav-logout:hover{
+  transform: scale(.98);
+  transform: box-shadow .3s eas-in-out;
+}
+
+.nav-item .icon,
+.nav-logout .icon {
+  width: 28px;
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  box-shadow:
+    inset 0 4px 12px var(--primary),
+    inset 0 -4px 12px var(--primary);
+}
+
+.spacer {
+  flex: 1;
+}
+
+.nav-logout.active,
+.nav-logout:hover {
+  background: var(--bg-error);
+}
+.mobile-close {
+  display: none;
+}
+
+/* Mobile overlay behaviour */
+@media (max-width: 1023px) {
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 80px;
+    bottom: 0;
+    transform: translateX(-112%);
+    z-index: 1100;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+    width: var(--sidebar-width, 256px);
+  }
+  .mobile-close {
+    display: block;
+    margin: 1rem;
+  }
+}

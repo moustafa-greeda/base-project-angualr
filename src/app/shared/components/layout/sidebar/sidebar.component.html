@@ -1,0 +1,40 @@
+<aside
+  class="sidebar"
+  [class.collapsed]="collapsed()"
+  [class.open]="mobileOpen()"
+  role="navigation"
+  aria-label="Main navigation"
+>
+  <div class="brand" [routerLink]="['/dashboard/admin']">
+    <div class="logo">GS</div>
+    @if (!collapsed()) {
+      <div class="brand-text">Greeda</div>
+    }
+  </div>
+
+  <nav class="nav">
+    @for (item of menu; track item) {
+      <a class="nav-item" [routerLink]="item.route" routerLinkActive="active" [title]="item.label">
+        <i class="bi {{ item.icon }} icon"></i>
+
+        @if (!collapsed()) {
+          <span class="label">{{ item.label }}</span>
+        }
+      </a>
+    }
+  </nav>
+
+  <div class="spacer"></div>
+
+  <!-------------------  logout  --------------------->
+  <a class="nav-logout" (click)="logout()">
+    <i class="bi bi-box-arrow-right icon"></i>
+    @if (!collapsed()) {
+      <span class="label">Sign Out</span>
+    }
+  </a>
+  <!-- <div class="upgrade" (click)="logout()">sign out </div> -->
+  @if (mobileOpen()) {
+    <button class="mobile-close" (click)="onCloseMobile()">Close</button>
+  }
+</aside>
