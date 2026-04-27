@@ -1,0 +1,64 @@
+/* Base dashboard-container */
+.dashboard-container {
+  display: flex;
+  gap: 8px;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-color);
+  transition:
+    background 240ms ease-in-out,
+    color 240ms ease-in-out,
+    margin-left 260ms ease-in-out;
+  margin-left: var(--sidebar-width, 256px);
+}
+
+.dashboard-container.sidebar-collapsed {
+  margin-left: 0;
+}
+
+.main-area {
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: transparent;
+}
+
+/* Header sits at top */
+app-header {
+  position: sticky;
+  top: 0;
+  background: transparent;
+  z-index: 100000;
+}
+
+.content {
+  padding: 1.5rem;
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  box-sizing: border-box;
+  background-color: var(--bg);
+}
+
+/* Responsive adjustments */
+
+.dashboard-container.sidebar-collapsed app-sidebar {
+  width: var(--sidebar-collapsed-width);
+}
+
+/* Smooth transitions */
+.dashboard-container,
+app-sidebar {
+  transition:
+    margin-left 260ms ease-in-out,
+    width 240ms ease-in-out;
+}
+
+/* Mobile layout */
+@media (max-width: 1023px) {
+  .dashboard-container {
+    margin-left: 0;
+    gap: 0;
+  }
+}
