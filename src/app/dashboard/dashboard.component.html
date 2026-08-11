@@ -1,0 +1,37 @@
+﻿<!-- The sidebar is position:fixed (out of flow), so the shell offsets itself by
+     its width AND shrinks by the same amount — otherwise 100% + margin is wider
+     than the viewport. ms-*/w-calc are logical, so it mirrors under dir="rtl". -->
+<div
+  class="flex min-h-screen bg-[var(--bg)] text-[var(--text-color)] transition-[margin,width] duration-[260ms] ease-in-out max-lg:!ms-0 max-lg:!w-full"
+  [class]="
+    sidebarCollapsed
+      ? 'ms-[var(--sidebar-collapsed-width)] w-[calc(100%-var(--sidebar-collapsed-width))]'
+      : 'ms-[var(--sidebar-width)] w-[calc(100%-var(--sidebar-width))]'
+  "
+>
+  <app-sidebar
+    [collapsed]="sidebarCollapsed"
+    [mobileOpen]="sidebarOpen"
+    [isMobile]="isMobile"
+    (closeMobile)="closeMobileSidebar()"
+  ></app-sidebar>
+
+  @if (isMobile && sidebarOpen) {
+    <div class="fixed inset-x-0 bottom-0 top-20 z-[1000] bg-black/50" (click)="closeMobileSidebar()"></div>
+  }
+
+  <div class="grid min-h-screen w-full min-w-0 grid-rows-[auto_1fr_auto] bg-transparent">
+    <app-header
+      class="sticky top-0 z-[100] bg-transparent"
+      [theme]="theme"
+      (toggleSidebar)="toggleSidebar()"
+      (toggleTheme)="toggleTheme()"
+    ></app-header>
+
+    <section class="w-full min-w-0 bg-[var(--bg)] p-6 max-lg:p-4">
+      <router-outlet></router-outlet>
+    </section>
+
+    <app-footer></app-footer>
+  </div>
+</div>

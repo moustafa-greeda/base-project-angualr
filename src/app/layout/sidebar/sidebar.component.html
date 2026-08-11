@@ -1,0 +1,160 @@
+﻿<!-- one Transloco subscription resolves every menu key -->
+<aside
+  *transloco="let t"
+  class="fixed inset-y-0 start-0 z-[1100] flex flex-col border-e border-[var(--border-color)] bg-[var(--card-bg)] transition-[width,transform] duration-200 ease-out
+         max-lg:top-20 max-lg:-translate-x-full max-lg:shadow-2xl max-lg:rtl:translate-x-full"
+  [class]="collapsed() ? 'w-[var(--sidebar-collapsed-width)]' : 'w-[var(--sidebar-width)]'"
+  [class.max-lg:!translate-x-0]="mobileOpen()"
+  role="navigation"
+  [attr.aria-label]="t('nav.mainNavigation')"
+>
+  <!-- ══════════ header / logo ══════════ -->
+  <header class="shrink-0 border-b border-[var(--border-color)] px-3 py-4">
+    <a
+      class="group flex items-center gap-3 rounded-lg p-1.5 outline-none transition-colors duration-200 hover:bg-[var(--row-hover)] focus-visible:ring-2 focus-visible:ring-[var(--primary)]/40"
+      [class.justify-center]="collapsed()"
+      [routerLink]="['/dashboard']"
+      [title]="collapsed() ? t('brand.name') : ''"
+    >
+      <span
+        class="grid size-9 shrink-0 place-items-center rounded-lg bg-[var(--primary)] text-[0.8rem] font-bold tracking-wide text-white"
+      >
+        GS
+      </span>
+      @if (!collapsed()) {
+        <span class="min-w-0 flex-1">
+          <span class="block truncate text-[0.95rem] font-semibold leading-tight text-[var(--text-color)]">
+            {{ t('brand.name') }}
+          </span>
+          <span class="block truncate text-[0.7rem] leading-tight text-[var(--muted)]">
+            {{ t('brand.tagline') }}
+          </span>
+        </span>
+      }
+    </a>
+  </header>
+
+  <!-- ══════════ navigation ══════════ -->
+  <nav
+    class="scrollbar-thin flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto overflow-x-hidden px-3 py-3"
+    [attr.aria-label]="t('nav.menu')"
+  >
+    @if (collapsed()) {
+      <!-- icon-only mode: groups are flattened, labels move into tooltips -->
+      @for (item of flatItems; track item.route) {
+        <a
+          class="nav-link justify-center"
+          [routerLink]="item.route"
+          routerLinkActive="is-active"
+          [title]="t(item.label)"
+          [attr.aria-label]="t(item.label)"
+          (click)="onCloseMobile()"
+        >
+          <i class="bi {{ item.icon }} text-[1.05rem]" aria-hidden="true"></i>
+        </a>
+      }
+    } @else {
+      @for (entry of menu; track entry.label) {
+        @if (isGroup(entry)) {
+          <!-- collapsible group -->
+          <button
+            type="button"
+            class="nav-link w-full"
+            [class.is-parent]="hasActiveChild(entry)"
+            (click)="toggleGroup(entry.label)"
+            [attr.aria-expanded]="isExpanded(entry.label)"
+          >
+            <i class="bi {{ entry.icon }} nav-icon" aria-hidden="true"></i>
+            <span class="flex-1 truncate text-start">{{ t(entry.label) }}</span>
+
+            <!-- marks a closed group that holds the current page -->
+            @if (hasActiveChild(entry) && !isExpanded(entry.label)) {
+              <span class="size-1.5 shrink-0 rounded-full bg-[var(--primary)]"></span>
+            }
+            <i
+              class="bi bi-chevron-down shrink-0 text-[0.6rem] opacity-60 transition-transform duration-200"
+              [class.-rotate-90]="!isExpanded(entry.label)"
+              [class.rtl:rotate-90]="!isExpanded(entry.label)"
+              aria-hidden="true"
+            ></i>
+          </button>
+
+          @if (isExpanded(entry.label)) {
+            <ul class="ms-[1.35rem] flex flex-col gap-0.5 border-s border-[var(--border-color)] ps-2">
+              @for (item of entry.items; track item.route) {
+                <li>
+                  <a
+                    class="nav-link nav-link--sub"
+                    [routerLink]="item.route"
+                    routerLinkActive="is-active"
+                    [title]="t(item.label)"
+                    (click)="onCloseMobile()"
+                  >
+                    <i class="bi {{ item.icon }} nav-icon text-[0.95rem]" aria-hidden="true"></i>
+                    <span class="truncate">{{ t(item.label) }}</span>
+                  </a>
+                </li>
+              }
+            </ul>
+          }
+        } @else {
+          <!-- single item -->
+          <a
+            class="nav-link"
+            [routerLink]="entry.route"
+            routerLinkActive="is-active"
+            [title]="t(entry.label)"
+            (click)="onCloseMobile()"
+          >
+            <i class="bi {{ entry.icon }} nav-icon" aria-hidden="true"></i>
+            <span class="truncate">{{ t(entry.label) }}</span>
+          </a>
+        }
+      }
+    }
+  </nav>
+
+  <!-- ══════════ user / sign out ══════════ -->
+  <footer class="shrink-0 border-t border-[var(--border-color)] p-3">
+    @if (!collapsed() && _auth.user(); as user) {
+      <div class="mb-2 flex items-center gap-3 rounded-lg px-2 py-2">
+        <span
+          class="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--primary)]/12 text-[0.7rem] font-semibold uppercase text-[var(--primary)]"
+        >
+          {{ user.username.slice(0, 2) }}
+        </span>
+        <span class="min-w-0 flex-1">
+          <span class="block truncate text-[0.8rem] font-medium text-[var(--text-color)]">
+            {{ user.username }}
+          </span>
+          <span class="block truncate text-[0.7rem] text-[var(--muted)]">
+            {{ t('roleName.' + user.userType) }}
+          </span>
+        </span>
+      </div>
+    }
+
+    <button
+      type="button"
+      class="nav-link nav-link--danger w-full"
+      [class.justify-center]="collapsed()"
+      [title]="t('nav.signOut')"
+      (click)="logout()"
+    >
+      <i class="bi bi-box-arrow-right" [class.nav-icon]="!collapsed()" aria-hidden="true"></i>
+      @if (!collapsed()) {
+        <span>{{ t('nav.signOut') }}</span>
+      }
+    </button>
+
+    <!-- mobileOpen is true on desktop too, so gate on the viewport itself -->
+    @if (isMobile() && mobileOpen()) {
+      <button
+        type="button"
+        class="nav-link mt-1 w-full justify-center border border-[var(--border-color)]"
+        (click)="onCloseMobile()"
+      >{{ t('common.close') }}</button>
+    }
+  </footer>
+</aside>
+

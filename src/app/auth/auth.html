@@ -1,0 +1,171 @@
+<div class="relative grid min-h-screen place-items-center overflow-hidden bg-[var(--bg)] p-4">
+  <!-- ambient glow behind the card -->
+  <span
+    class="pointer-events-none absolute -top-40 start-1/4 size-[420px] rounded-full bg-[var(--primary)]/20 blur-[120px]"
+    aria-hidden="true"
+  ></span>
+  <span
+    class="pointer-events-none absolute -bottom-40 end-1/4 size-[420px] rounded-full bg-[var(--secondary)]/15 blur-[120px]"
+    aria-hidden="true"
+  ></span>
+
+  <div class="relative grid w-full max-w-4xl gap-6 lg:grid-cols-[1fr_320px]">
+    <!-- ═══════════ Login card ═══════════ -->
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="animate-dialog-pop surface flex flex-col gap-5 p-8 sm:p-10"
+    >
+      <!-- brand -->
+      <div class="flex flex-col items-center text-center">
+        <span
+          class="mb-4 grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-lg font-bold text-white shadow-lg"
+        >
+          GS
+        </span>
+        <h1 class="text-2xl font-bold text-[var(--text-color)]">Welcome back</h1>
+        <p class="mt-1 text-sm text-[var(--muted)]">Sign in to continue to Greeda ERP</p>
+      </div>
+
+      <!-- credentials error -->
+      @if (error()) {
+        <div
+          class="flex items-center gap-2.5 rounded-xl border border-[var(--danger)]/30 bg-[var(--danger)]/10 px-4 py-3"
+        >
+          <i class="bi bi-exclamation-circle shrink-0 text-[var(--danger)]"></i>
+          <p class="text-sm text-[var(--danger)]">{{ error() }}</p>
+        </div>
+      }
+
+      <!-- username -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-[var(--text-color)]" for="username">Username</label>
+        <div class="relative">
+          <i
+            class="bi bi-person pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]"
+          ></i>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+            class="w-full rounded-[10px] border bg-[var(--bg)] px-3.5 py-3 ps-11 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+            [class]="
+              usernameError()
+                ? 'border-[var(--danger)]'
+                : 'border-[var(--border-color)] focus:border-[var(--primary)]'
+            "
+          />
+        </div>
+        @if (usernameError()) {
+          <small class="flex items-center gap-1 text-xs text-[var(--danger)]">
+            <i class="bi bi-exclamation-circle"></i> {{ usernameError() }}
+          </small>
+        }
+      </div>
+
+      <!-- password -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-[var(--text-color)]" for="password">Password</label>
+        <div class="relative">
+          <i
+            class="bi bi-lock pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]"
+          ></i>
+          <input
+            id="password"
+            [type]="isPasswordVisible() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            class="w-full rounded-[10px] border bg-[var(--bg)] px-3.5 py-3 pe-11 ps-11 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+            [class]="
+              passwordError()
+                ? 'border-[var(--danger)]'
+                : 'border-[var(--border-color)] focus:border-[var(--primary)]'
+            "
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="isPasswordVisible() ? 'Hide password' : 'Show password'"
+            class="absolute end-3 top-1/2 grid size-7 -translate-y-1/2 cursor-pointer place-items-center rounded-md text-[var(--muted)] transition-colors hover:text-[var(--primary)]"
+          >
+            <i [class]="isPasswordVisible() ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+        </div>
+        @if (passwordError()) {
+          <small class="flex items-center gap-1 text-xs text-[var(--danger)]">
+            <i class="bi bi-exclamation-circle"></i> {{ passwordError() }}
+          </small>
+        }
+      </div>
+
+      <!-- remember + forgot -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <label class="cbx items-center gap-2.5">
+          <input type="checkbox" formControlName="remember" />
+          <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+          <span class="text-sm leading-none text-[var(--text-color)]">Remember me</span>
+        </label>
+
+        <a
+          href="#"
+          class="text-sm font-medium text-[var(--primary)] transition-opacity hover:opacity-80"
+        >
+          Forgot password?
+        </a>
+      </div>
+
+      <app-button
+        titleBtn="Sign in"
+        type="submit"
+        size="lg"
+        icon="bi bi-box-arrow-in-right"
+        [fullWidth]="true"
+        [loading]="loading()"
+      />
+
+      <p class="text-center text-xs text-[var(--muted)]">
+        <i class="bi bi-shield-check me-1"></i>
+        Protected access — contact your administrator for an account
+      </p>
+    </form>
+
+    <!-- ═══════════ Demo accounts ═══════════ -->
+    <aside class="surface flex flex-col gap-3 p-5">
+      <div>
+        <h2 class="heading-section">Demo accounts</h2>
+        <p class="mt-1 text-xs text-[var(--muted)]">
+          Click any account to fill the form. Password for all:
+          <code class="text-[var(--primary)]">123456</code>
+        </p>
+      </div>
+
+      <ul class="flex flex-col gap-2">
+        @for (a of demoAccounts; track a.username) {
+          <li>
+            <button
+              type="button"
+              (click)="useAccount(a)"
+              class="flex w-full cursor-pointer items-center gap-3 rounded-xl border border-[var(--border-color)] p-3 text-start transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--primary)] hover:bg-[var(--primary)]/5"
+            >
+              <span
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-[var(--primary)]/10 text-[var(--primary)]"
+              >
+                <i [class]="a.icon"></i>
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-sm font-medium text-[var(--text-color)]">
+                  {{ a.displayName }}
+                </span>
+                <span class="block truncate text-xs text-[var(--muted)]">{{ a.description }}</span>
+              </span>
+              <code class="shrink-0 text-[11px] text-[var(--muted)]">{{ a.username }}</code>
+            </button>
+          </li>
+        }
+      </ul>
+    </aside>
+  </div>
+</div>

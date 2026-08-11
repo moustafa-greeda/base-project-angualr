@@ -1,0 +1,18 @@
+<div class="flex items-center gap-2">
+  <app-button
+    [titleBtn]="exportLabel()"
+    icon="bi bi-download"
+    variant="outline"
+    (clickAction)="exportClick.emit()"
+  />
+
+  <app-button
+    [titleBtn]="importLabel()"
+    icon="bi bi-upload"
+    variant="outline"
+    (clickAction)="file.click()"
+  />
+
+  <!-- hidden native file picker, opened by the Import button -->
+  <input #file type="file" class="hidden" [accept]="accept()" (change)="onFile($event)" />
+</div>

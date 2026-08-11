@@ -1,0 +1,65 @@
+<app-dialog-form [formGroup]="form" [form]="form" [title]="title()" (submitForm)="save($event)">
+  <!-- ═══ main fields: 2 columns ═══ -->
+  <app-form-section [cols]="2">
+    <app-form-field
+      label="Name"
+      controlName="name"
+      placeholder="Enter name"
+      [errorMessages]="{ required: 'name is required' }"
+    />
+    <app-form-field
+      label="Description"
+      controlName="description"
+      placeholder="Enter description"
+      [errorMessages]="{ required: 'description is required' }"
+    />
+  </app-form-section>
+
+  <!-- ═══ address (nested group, dot paths): 3 columns ═══ -->
+  <app-form-section title="Address" [cols]="3">
+    <app-form-field label="Phone" controlName="address.phone" placeholder="Enter phone" />
+    <app-form-field label="Line 1" controlName="address.line1" placeholder="Enter line 1" />
+    <app-form-field label="Line 2" controlName="address.line2" placeholder="Enter line 2" />
+  </app-form-section>
+
+  <!-- ═══ skills (form array) ═══ -->
+  <section class="flex flex-col gap-4">
+    <div class="flex items-center justify-between gap-3">
+      <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted)]">Skills</h3>
+      <app-button
+        [titleBtn]="'Add Skill'"
+        variant="outline"
+        size="sm"
+        icon="bi bi-plus-lg"
+        (clickAction)="addSkill()"
+      />
+    </div>
+
+    <ng-container formArrayName="skills">
+      @for (skill of arrayFormSkills.controls; let i = $index; track i) {
+        <div
+          [formGroupName]="i"
+          class="grid grid-cols-1 items-end gap-3 rounded-xl border border-[var(--border-color)] p-4 md:grid-cols-[1fr_1fr_1fr_auto]"
+        >
+          <app-form-field label="Name" controlName="name" placeholder="Skill name" />
+          <app-form-field label="Department" controlName="department" placeholder="Department" />
+          <app-form-field label="Amount" controlName="amount" type="number" placeholder="0" />
+          <button
+            type="button"
+            (click)="removeSkill(i)"
+            aria-label="Remove skill"
+            class="grid size-10 cursor-pointer place-items-center rounded-[10px] border border-[var(--border-color)] text-red-500 transition-colors hover:border-red-500 hover:bg-red-500 hover:text-white"
+          >
+            <i class="bi bi-trash"></i>
+          </button>
+        </div>
+      } @empty {
+        <p
+          class="rounded-xl border border-dashed border-[var(--border-color)] p-4 text-center text-sm text-[var(--muted)]"
+        >
+          No skills added yet — click "Add Skill" to add one.
+        </p>
+      }
+    </ng-container>
+  </section>
+</app-dialog-form>

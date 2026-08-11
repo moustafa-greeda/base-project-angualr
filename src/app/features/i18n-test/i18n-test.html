@@ -1,0 +1,145 @@
+<app-page-header [title]="'Translation (Transloco)'" [showBtn]="false" />
+
+<div class="flex flex-col gap-6">
+  <!-- ═══════════ Status ═══════════ -->
+  <div class="surface flex flex-wrap items-center justify-between gap-3 p-4">
+    <div class="flex flex-wrap items-center gap-3">
+      <app-badge [text]="'Active: ' + current()" variant="primary" [dot]="false" icon="bi bi-translate" />
+      <app-badge
+        [text]="isRtl() ? 'RTL' : 'LTR'"
+        [variant]="isRtl() ? 'warning' : 'info'"
+        [dot]="false"
+      />
+    </div>
+    <app-button
+      titleBtn="Toggle language"
+      variant="outline"
+      icon="bi bi-arrow-left-right"
+      (clickAction)="toggleLang()"
+    />
+  </div>
+
+  <!-- ═══════════ 1. Pipe ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">1 — Pipe</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <div class="flex flex-wrap gap-2">
+        <app-badge [text]="'common.save' | transloco" variant="success" [dot]="false" />
+        <app-badge [text]="'common.cancel' | transloco" variant="neutral" [dot]="false" />
+        <app-badge [text]="'common.delete' | transloco" variant="danger" [dot]="false" />
+        <app-badge [text]="'nav.dashboard' | transloco" variant="info" [dot]="false" />
+        <app-badge [text]="'roles.title' | transloco" variant="primary" [dot]="false" />
+      </div>
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>&lt;!-- simplest form; re-renders on language change --&gt;
+{{ '{{' }} 'common.save' | transloco {{ '}}' }}
+
+&lt;!-- as an input --&gt;
+&lt;app-button [titleBtn]="'common.save' | transloco" /&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ 2. Structural directive ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">2 — Structural directive (scoped, faster)</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <!-- read once per block instead of once per key -->
+      <div *transloco="let t" class="flex flex-col gap-2">
+        <p class="text-sm text-[var(--text-color)]">{{ t('nav.roles') }}</p>
+        <p class="text-sm text-[var(--text-color)]">{{ t('nav.permissions') }}</p>
+        <p class="text-sm text-[var(--text-color)]">{{ t('roles.stats.users') }}</p>
+      </div>
+
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>&lt;!-- one subscription for the whole block — prefer this in big templates --&gt;
+&lt;div *transloco="let t"&gt;
+  {{ '{{' }} t('nav.roles') {{ '}}' }}
+  {{ '{{' }} t('nav.permissions') {{ '}}' }}
+&lt;/div&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ 3. Parameters ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">3 — Parameters</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <div class="flex flex-col gap-2">
+        <p class="text-sm text-[var(--text-color)]">
+          {{ 'demo.greeting' | transloco: { name: name() } }}
+        </p>
+        <p class="text-sm text-[var(--text-color)]">
+          {{ 'demo.itemCount' | transloco: { count: itemCount() } }}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button titleBtn="Add item" variant="outline" size="sm" (clickAction)="addItem()" />
+        <span class="text-xs text-[var(--muted)]">count = {{ itemCount() }}</span>
+      </div>
+
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>// en.json → "greeting": "Hello, {{ '{{' }} name {{ '}}' }}!"
+// ar.json → "greeting": "أهلاً يا {{ '{{' }} name {{ '}}' }}!"
+
+{{ '{{' }} 'demo.greeting' | transloco: {{ '{' }} name: name() {{ '}' }} {{ '}}' }}</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ 4. From TypeScript ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">4 — From TypeScript</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button
+          titleBtn="Translate in code"
+          variant="outline"
+          size="sm"
+          icon="bi bi-code-slash"
+          (clickAction)="readFromCode()"
+        />
+        @if (fromCode()) {
+          <span class="text-sm text-[var(--text-color)]">{{ fromCode() }}</span>
+        }
+      </div>
+
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>private transloco = inject(TranslocoService);
+
+// for toasts, alerts, exported file names...
+this.transloco.translate('demo.greeting', {{ '{' }} name: 'Ahmed' {{ '}' }});</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ 5. RTL check ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">5 — RTL layout check</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <p class="text-xs text-[var(--muted)]">
+        These use logical properties (start/end), so they flip automatically with the language.
+      </p>
+
+      <div class="flex items-center gap-3 rounded-xl border border-[var(--border-color)] p-4">
+        <i class="bi bi-arrow-right text-[var(--primary)] rtl:rotate-180"></i>
+        <span class="flex-1 text-sm text-[var(--text-color)]">
+          {{ 'common.search' | transloco }}
+        </span>
+        <app-badge [text]="'common.actions' | transloco" variant="neutral" [dot]="false" />
+      </div>
+
+      <div class="relative w-full max-w-[320px]">
+        <i
+          class="bi bi-search pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[15px] text-[var(--muted)]"
+        ></i>
+        <input
+          type="text"
+          [placeholder]="'roles.searchPlaceholder' | transloco"
+          class="w-full rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3.5 py-2.5 ps-10 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+        />
+      </div>
+    </div>
+  </section>
+</div>

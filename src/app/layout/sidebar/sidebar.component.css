@@ -1,0 +1,68 @@
+/* Layout and spacing live in the template as Tailwind utilities.
+   Only the repeated link recipe and the active marker live here — writing
+   them inline would mean ~14 identical classes on every nav item. */
+@reference '../../../styles.css';
+
+/* ── base link ─────────────────────────────────────────────── */
+.nav-link {
+  @apply relative flex cursor-pointer items-center gap-3 rounded-lg border-0
+    bg-transparent px-3 py-2 text-[0.875rem] font-medium text-[var(--muted)]
+    no-underline outline-none transition-colors duration-200 ease-out;
+}
+
+.nav-icon {
+  @apply w-5 shrink-0 text-center text-[1.05rem];
+}
+
+.nav-link:hover {
+  @apply bg-[var(--row-hover)] text-[var(--text-color)];
+}
+
+/* visible keyboard focus, invisible to mouse users */
+.nav-link:focus-visible {
+  @apply ring-2 ring-[var(--primary)]/40;
+}
+
+/* nested items read one step quieter */
+.nav-link--sub {
+  @apply py-1.5 text-[0.825rem];
+}
+
+/* ── active page ───────────────────────────────────────────── */
+.nav-link.is-active {
+  @apply font-semibold text-[var(--primary)];
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+}
+
+/* bar pinned to the inline-start edge — the primary "you are here" cue */
+.nav-link.is-active::before {
+  content: '';
+  @apply absolute top-1/2 h-4 w-[3px] -translate-y-1/2 rounded-full bg-[var(--primary)];
+  inset-inline-start: 0;
+}
+
+/* icon-only mode: the bar would crowd the icon */
+.nav-link.justify-center.is-active::before {
+  @apply hidden;
+}
+
+/* a group whose child is active: highlighted, but quieter than the page itself */
+.nav-link.is-parent {
+  @apply text-[var(--text-color)];
+}
+
+.nav-link.is-parent .nav-icon {
+  @apply text-[var(--primary)];
+}
+
+/* ── sign out ──────────────────────────────────────────────── */
+.nav-link--danger:hover {
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  @apply text-[var(--danger)];
+}
+
+/* ── scrollbar ─────────────────────────────────────────────── */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}

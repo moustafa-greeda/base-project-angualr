@@ -1,0 +1,24 @@
+<header class="app-header" *transloco="let t">
+  <div class="left">
+    <button class="icon-btn" [attr.aria-label]="t('header.toggleSidebar')" (click)="onToggleSidebar()">
+      <!-- hamburger / collapse -->
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="search">
+      <input [placeholder]="t('header.search')" [attr.aria-label]="t('header.search')" />
+    </div>
+  </div>
+
+  <div class="right">
+    <button class="icon-btn" [attr.aria-label]="t('header.toggleTheme')" (click)="onToggleTheme()">
+      @if (theme === 'light') {
+        <i class="bi bi-sun theme-icon"></i>
+      } @else {
+        <i class="bi bi-moon-stars theme-icon"></i>
+      }
+    </button>
+    <app-language-switcher />
+    <app-notifications-menu />
+    <app-user-menu />
+  </div>
+</header>

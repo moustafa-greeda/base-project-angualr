@@ -1,0 +1,70 @@
+<div (appClickOutside)="close()">
+  <!-- avatar trigger -->
+  <button
+    type="button"
+    (click)="toggle()"
+    class="flex cursor-pointer items-center gap-2 rounded-full p-0.5 transition-colors hover:bg-[var(--row-hover)]"
+    aria-label="User menu"
+    [attr.aria-expanded]="open()"
+  >
+    <span
+      class="grid size-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-sm font-bold text-white"
+    >
+      {{ initials() }}
+    </span>
+    <i
+      class="bi bi-chevron-down hidden text-xs text-[var(--muted)] transition-transform sm:block"
+      [class.rotate-180]="open()"
+    ></i>
+  </button>
+
+  <!-- dropdown -->
+  @if (open()) {
+    <div
+      class="animate-dropdown-in absolute end-0 top-[calc(100%+10px)] z-50 w-60 overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] shadow-2xl"
+    >
+      <!-- identity -->
+      <div class="flex items-center gap-3 border-b border-[var(--border-color)] px-4 py-3.5">
+        <span
+          class="grid size-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-sm font-bold text-white"
+        >
+          {{ initials() }}
+        </span>
+        <div class="min-w-0">
+          <p class="truncate text-sm font-semibold text-[var(--text-color)]">
+            {{ user()?.username || 'Guest' }}
+          </p>
+          <p class="truncate text-xs text-[var(--muted)]">{{ roleLabel() }}</p>
+        </div>
+      </div>
+
+      <!-- links -->
+      <ul class="py-1.5">
+        @for (l of links; track l.label) {
+          <li>
+            <a
+              [routerLink]="l.route"
+              (click)="close()"
+              class="flex cursor-pointer items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-color)] transition-colors hover:bg-[var(--row-hover)] hover:text-[var(--primary)]"
+            >
+              <i [class]="l.icon" class="w-4 text-[var(--muted)]"></i>
+              {{ l.label }}
+            </a>
+          </li>
+        }
+      </ul>
+
+      <!-- sign out -->
+      <div class="border-t border-[var(--border-color)] py-1.5">
+        <button
+          type="button"
+          (click)="logout()"
+          class="flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-sm text-[var(--text-color)] transition-colors hover:bg-[var(--danger)]/10 hover:text-[var(--danger)]"
+        >
+          <i class="bi bi-box-arrow-right w-4 text-[var(--muted)]"></i>
+          Sign out
+        </button>
+      </div>
+    </div>
+  }
+</div>

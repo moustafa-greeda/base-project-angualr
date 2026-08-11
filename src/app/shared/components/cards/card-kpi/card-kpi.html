@@ -1,0 +1,25 @@
+<div
+  class="group flex items-center gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[var(--primary)]/40 hover:shadow-lg"
+>
+  <div
+    class="grid size-12 shrink-0 place-items-center rounded-xl bg-[var(--primary)]/10 text-xl text-[var(--primary)] transition-colors duration-200 group-hover:bg-[var(--primary)] group-hover:text-white"
+  >
+    <i [class]="icon()"></i>
+  </div>
+
+  <div class="flex min-w-0 flex-col gap-0.5">
+    <span class="truncate text-[13px] font-medium text-[var(--muted)]">{{ title() }}</span>
+    <span class="text-2xl font-bold tracking-tight text-[var(--text-color)]">
+      {{ count() | number: '1.0-2' }}
+    </span>
+    @if (rate()) {
+      <span
+        class="inline-flex items-center gap-1 text-xs font-medium"
+        [class]="trend() >= 0 ? 'text-green-500' : 'text-red-500'"
+      >
+        <i class="bi" [class]="trend() >= 0 ? 'bi-arrow-up-right' : 'bi-arrow-down-right'"></i>
+        {{ rate() }}
+      </span>
+    }
+  </div>
+</div>

@@ -1,0 +1,51 @@
+﻿{
+    "title":  "لوحة التحكم",
+    "kpi":  {
+                "revenue":  "إجمالي الإيرادات",
+                "employees":  "الموظفون النشطون",
+                "projects":  "المشاريع النشطة",
+                "openTasks":  "المهام المفتوحة",
+                "vsLastMonth":  "عن الشهر الماضي",
+                "vsLastWeek":  "عن الأسبوع الماضي"
+            },
+    "stats":  {
+                  "attendance":  "الحضور اليوم",
+                  "pendingInvoices":  "فواتير معلقة",
+                  "newContracts":  "عقود جديدة",
+                  "overdueTasks":  "مهام متأخرة"
+              },
+    "activity":  {
+                     "title":  "آخر النشاطات",
+                     "viewAll":  "عرض الكل"
+                 },
+    "quickActions":  {
+                         "title":  "إجراءات سريعة",
+                         "newTask":  "مهمة جديدة",
+                         "newContract":  "عقد جديد",
+                         "addEmployee":  "إضافة موظف",
+                         "viewReports":  "عرض التقارير"
+                     },
+    "upcoming":  {
+                     "title":  "المهام القادمة",
+                     "task":  "المهمة",
+                     "owner":  "المسؤول",
+                     "due":  "تاريخ الاستحقاق",
+                     "priority":  "الأولوية",
+                     "status":  "الحالة"
+                 },
+    "charts":  {
+                   "revenueTitle":  "الإيرادات مقابل المصروفات",
+                   "revenueSubtitle":  "آخر ١٢ شهرًا (ريال)",
+                   "revenue":  "الإيرادات",
+                   "expenses":  "المصروفات",
+                   "tasksTitle":  "نظرة على المهام",
+                   "tasksSubtitle":  "{{ count }} مهمة هذا الشهر",
+                   "completed":  "مكتملة",
+                   "inProgress":  "قيد التنفيذ",
+                   "overdue":  "متأخرة",
+                   "departmentsTitle":  "الموظفون حسب القسم",
+                   "departmentsSubtitle":  "العدد الفعلي",
+                   "current":  "الحالي",
+                   "target":  "المستهدف"
+               }
+}

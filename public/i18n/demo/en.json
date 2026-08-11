@@ -1,0 +1,4 @@
+﻿{
+    "greeting":  "Hello, {{ name }}!",
+    "itemCount":  "You have {{ count }} items"
+}

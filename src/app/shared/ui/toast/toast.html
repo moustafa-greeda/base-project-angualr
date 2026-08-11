@@ -1,0 +1,43 @@
+<!-- fixed stack, bottom-end of the screen; above dialogs -->
+<div class="pointer-events-none fixed bottom-5 end-5 z-[3000] flex flex-col gap-2.5">
+  @for (t of toasts(); track t.id) {
+    <div
+      class="animate-toast-in pointer-events-auto relative flex w-[360px] max-w-[calc(100vw-2.5rem)] items-start gap-3 overflow-hidden rounded-[var(--radius-lg)] border p-4 ps-5 shadow-xl backdrop-blur-sm"
+      [class]="shellClass(t.type)"
+      role="alert"
+    >
+      <!-- colored edge bar -->
+      <span class="absolute inset-y-0 start-0 w-1" [class]="barClass(t.type)"></span>
+
+      <!-- icon in a soft tinted circle -->
+      <span
+        class="grid size-9 shrink-0 place-items-center rounded-full"
+        [class]="iconWrapClass(t.type)"
+      >
+        <i [class]="icon(t.type)" class="text-base"></i>
+      </span>
+
+      <div class="min-w-0 flex-1 pt-0.5">
+        @if (t.title) {
+          <p class="text-sm font-semibold text-[var(--text-color)]">{{ t.title }}</p>
+        }
+        <p class="text-sm leading-relaxed text-[var(--text-color)]/85">{{ t.message }}</p>
+      </div>
+
+      <button
+        type="button"
+        (click)="dismiss(t.id)"
+        aria-label="Dismiss"
+        class="grid size-6 shrink-0 cursor-pointer place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[var(--row-hover)] hover:text-[var(--text-color)]"
+      >
+        <i class="bi bi-x-lg text-xs"></i>
+      </button>
+
+      <!-- time-remaining bar -->
+      <span
+        class="animate-toast-progress absolute bottom-0 start-0 h-0.5 origin-[left_center] rtl:origin-[right_center]"
+        [class]="barClass(t.type)"
+      ></span>
+    </div>
+  }
+</div>

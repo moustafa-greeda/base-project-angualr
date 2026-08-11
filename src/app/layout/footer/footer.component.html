@@ -1,0 +1,13 @@
+<!-- An internal ERP does not need a marketing footer: one quiet line is enough. -->
+<footer
+  *transloco="let t"
+  class="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--border-color)] px-6 py-4 text-xs text-[var(--muted)] max-lg:px-4"
+>
+  <p>© {{ currentYear }} {{ t('brand.name') }}. {{ t('footer.rights') }}</p>
+
+  <div class="flex items-center gap-4">
+    <span>{{ t('footer.version') }} 1.0.0</span>
+    <a href="#" class="transition-colors hover:text-[var(--primary)]">{{ t('footer.support') }}</a>
+    <a href="#" class="transition-colors hover:text-[var(--primary)]">{{ t('footer.privacy') }}</a>
+  </div>
+</footer>

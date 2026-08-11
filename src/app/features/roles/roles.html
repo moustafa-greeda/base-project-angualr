@@ -1,0 +1,168 @@
+
+<app-page-header [title]="'Roles'" [titleBtn]="'Add role'" [icon]="'bi bi-plus-circle'" />
+
+<div class="flex flex-col gap-4">
+  <!-- ═══════════ Stats ═══════════ -->
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div class="surface flex items-center gap-3 p-4">
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--primary)]/12 text-[var(--primary)]"
+      >
+        <i class="bi bi-person-badge"></i>
+      </span>
+      <div class="min-w-0">
+        <p class="truncate text-xs text-[var(--muted)]">Roles</p>
+        <p class="text-lg font-bold text-[var(--text-color)]">{{ stats().roles }}</p>
+      </div>
+    </div>
+
+    <div class="surface flex items-center gap-3 p-4">
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--info)]/12 text-[var(--info)]"
+      >
+        <i class="bi bi-people"></i>
+      </span>
+      <div class="min-w-0">
+        <p class="truncate text-xs text-[var(--muted)]">Assigned users</p>
+        <p class="text-lg font-bold text-[var(--text-color)]">{{ stats().users }}</p>
+      </div>
+    </div>
+
+    <div class="surface flex items-center gap-3 p-4">
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--success)]/12 text-[var(--success)]"
+      >
+        <i class="bi bi-key"></i>
+      </span>
+      <div class="min-w-0">
+        <p class="truncate text-xs text-[var(--muted)]">Permissions available</p>
+        <p class="text-lg font-bold text-[var(--text-color)]">{{ stats().permissions }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ Search ═══════════ -->
+  <div class="surface p-4">
+    <div class="relative w-full max-w-[320px]">
+      <i
+        class="bi bi-search pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[15px] text-[var(--muted)]"
+      ></i>
+      <input
+        type="text"
+        placeholder="Search roles"
+        [value]="search()"
+        (input)="search.set($any($event.target).value)"
+        class="w-full rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3.5 py-2.5 ps-10 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+      />
+    </div>
+  </div>
+
+  <!-- ═══════════ Role cards ═══════════ -->
+  <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 2xl:grid-cols-3">
+    @for (role of roles(); track role.id; let i = $index) {
+      <div
+        class="surface group flex flex-col overflow-hidden transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+        [style.--accent]="accent(i)"
+      >
+        <!-- accent strip -->
+        <span class="h-1 w-full" [style.background]="accent(i)"></span>
+
+        <div class="flex flex-1 flex-col p-5">
+          <!-- header -->
+          <div class="mb-4 flex items-start gap-3">
+            <span
+              class="grid size-11 shrink-0 place-items-center rounded-xl text-sm font-bold text-white"
+              [style.background]="accent(i)"
+            >
+              {{ initials(role.name) }}
+            </span>
+
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2">
+                <h3 class="truncate text-base font-semibold text-[var(--text-color)]">
+                  {{ role.name }}
+                </h3>
+                @if (role.system) {
+                  <app-badge text="System" variant="neutral" [dot]="false" icon="bi bi-lock-fill" />
+                }
+              </div>
+              <p class="mt-0.5 line-clamp-2 text-xs leading-relaxed text-[var(--muted)]">
+                {{ role.description }}
+              </p>
+            </div>
+          </div>
+
+          <!-- coverage bar -->
+          <div class="mb-4">
+            <div class="mb-1.5 flex items-center justify-between text-xs">
+              <span class="text-[var(--muted)]">Permissions</span>
+              <span class="font-medium text-[var(--text-color)]">
+                {{ role.permissions.length }} / {{ totalPermissions() }}
+                <span class="text-[var(--muted)]">({{ coverage(role) }}%)</span>
+              </span>
+            </div>
+            <div class="h-1.5 w-full overflow-hidden rounded-full bg-[var(--muted)]/15">
+              <span
+                class="block h-full rounded-full transition-all duration-500"
+                [style.width.%]="coverage(role)"
+                [style.background]="accent(i)"
+              ></span>
+            </div>
+          </div>
+
+          <!-- resources this role can reach -->
+          <div class="mb-4 flex flex-wrap gap-1.5">
+            @for (label of resourceLabels(role).slice(0, 5); track label) {
+              <span
+                class="rounded-md bg-[var(--row-hover)] px-2 py-0.5 text-[11px] text-[var(--text-color)]"
+              >
+                {{ label }}
+              </span>
+            }
+            @if (resourceLabels(role).length > 5) {
+              <span class="px-1 py-0.5 text-[11px] text-[var(--muted)]">
+                +{{ resourceLabels(role).length - 5 }} more
+              </span>
+            }
+            @if (!resourceLabels(role).length) {
+              <span class="text-[11px] italic text-[var(--muted)]">No permissions yet</span>
+            }
+          </div>
+
+          <!-- footer -->
+          <div
+            class="mt-auto flex items-center justify-between gap-3 border-t border-[var(--border-color)] pt-4"
+          >
+            <span class="inline-flex items-center gap-1.5 text-xs text-[var(--muted)]">
+              <i class="bi bi-people"></i>
+              {{ role.usersCount }} {{ role.usersCount === 1 ? 'user' : 'users' }}
+            </span>
+
+            <div class="flex items-center gap-2">
+              <app-button
+                titleBtn="Permissions"
+                variant="outline"
+                size="sm"
+                icon="bi bi-key"
+                (clickAction)="openPermissions(role)"
+              />
+              <app-button
+                icon="bi bi-trash"
+                variant="dangerOutline"
+                size="sm"
+                [iconOnly]="true"
+                ariaLabel="Delete role"
+                (clickAction)="onDelete(role)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="surface col-span-full flex flex-col items-center gap-2 p-14 text-[var(--muted)]">
+        <i class="bi bi-search text-4xl"></i>
+        <p class="text-sm">No roles match your search</p>
+      </div>
+    }
+  </div>
+</div>

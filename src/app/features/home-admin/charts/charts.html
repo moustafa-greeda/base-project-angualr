@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-6">
+  <!-- revenue trend: full width -->
+  <div class="surface p-2">
+    <highcharts-chart [options]="areaOptions" class="block h-[320px] w-full"></highcharts-chart>
+  </div>
+
+  <!-- tasks donut + department column.
+       minmax(0,1fr) lets the second column shrink below its content width —
+       a bare 1fr keeps its min-content size and pushes the chart out. -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
+    <div class="surface p-2">
+      <highcharts-chart [options]="chartsOptions" class="block h-[320px] w-full"></highcharts-chart>
+    </div>
+    <div class="surface p-2">
+      <highcharts-chart [options]="barOptions" class="block h-[320px] w-full"></highcharts-chart>
+    </div>
+  </div>
+</div>

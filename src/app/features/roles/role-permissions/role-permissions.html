@@ -1,0 +1,165 @@
+@if (role) {
+  <app-page-header [title]="'Permissions — ' + role.name" [showBtn]="false" />
+
+  <div class="flex flex-col gap-4">
+    <!-- toolbar -->
+    <div class="surface flex flex-wrap items-center justify-between gap-3 p-4">
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- search resources -->
+        <div class="relative w-full max-w-[300px]">
+          <i
+            class="bi bi-search pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[15px] text-[var(--muted)]"
+          ></i>
+          <input
+            type="text"
+            placeholder="Search resources"
+            [value]="search()"
+            (input)="search.set($any($event.target).value)"
+            class="w-full rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3.5 py-2.5 ps-10 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+          />
+        </div>
+
+        <app-badge
+          [text]="selectedCount() + ' / ' + totalCount() + ' granted'"
+          [variant]="selectedCount() ? 'primary' : 'neutral'"
+          [dot]="false"
+          icon="bi bi-key"
+        />
+      </div>
+
+      <div class="flex items-center gap-2">
+        <app-button titleBtn="Select all" variant="ghost" size="sm" (clickAction)="selectAll()" />
+        <app-button titleBtn="Clear all" variant="ghost" size="sm" (clickAction)="clearAll()" />
+      </div>
+    </div>
+
+    <!-- ═══ resource cards, grouped by section ═══ -->
+    @for (g of groups(); track g.group) {
+      <section class="flex flex-col gap-3">
+        <!-- group header with its own toggle -->
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="heading-section">{{ g.group }}</h2>
+          <label class="cbx items-center gap-2">
+            <input
+              type="checkbox"
+              [checked]="groupAll(g.resources)"
+              (change)="toggleGroup(g.resources)"
+              [attr.aria-label]="'Toggle all ' + g.group"
+            />
+            <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+            <span class="text-xs text-[var(--muted)]">Select group</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          @for (r of g.resources; track r.key) {
+            <div
+              class="surface flex flex-col p-5 transition-colors"
+              [class.border-[var(--primary)]]="rowAll(r)"
+            >
+              <!-- card header: resource + "all" toggle -->
+              <div class="mb-4 flex items-center gap-2.5">
+                <span
+                  class="grid size-9 shrink-0 place-items-center rounded-lg transition-colors"
+                  [class]="
+                    rowCount(r)
+                      ? 'bg-[var(--primary)]/12 text-[var(--primary)]'
+                      : 'bg-[var(--muted)]/10 text-[var(--muted)]'
+                  "
+                >
+                  <i [class]="r.icon"></i>
+                </span>
+
+                <div class="min-w-0 flex-1">
+                  <h3 class="truncate text-sm font-semibold text-[var(--text-color)]">
+                    {{ r.label }}
+                  </h3>
+                  <code class="text-xs text-[var(--muted)]">{{ r.key }}</code>
+                </div>
+
+                <span
+                  class="shrink-0 rounded-full px-2 py-0.5 text-[11px] font-medium"
+                  [class]="
+                    rowCount(r)
+                      ? 'bg-[var(--primary)]/12 text-[var(--primary)]'
+                      : 'bg-[var(--muted)]/10 text-[var(--muted)]'
+                  "
+                >
+                  {{ rowCount(r) }}/{{ r.permissions.length }}
+                </span>
+
+                <label class="cbx shrink-0" [title]="'All permissions for ' + r.label">
+                  <input
+                    type="checkbox"
+                    [checked]="rowAll(r)"
+                    [indeterminate]="rowSome(r)"
+                    (change)="toggleRow(r)"
+                    [attr.aria-label]="'All permissions for ' + r.label"
+                  />
+                  <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+                </label>
+              </div>
+
+              <!-- only the actions this model actually declares -->
+              <div class="flex flex-wrap gap-2">
+                @for (p of r.permissions; track p.key) {
+                  <label
+                    class="cbx items-center gap-2 rounded-lg border px-2.5 py-1.5 transition-colors"
+                    [class]="
+                      has(p.key)
+                        ? 'border-[var(--primary)] bg-[var(--primary)]/8'
+                        : 'border-[var(--border-color)] hover:border-[var(--primary)]/50'
+                    "
+                    [title]="p.key"
+                  >
+                    <input
+                      type="checkbox"
+                      [checked]="has(p.key)"
+                      (change)="toggle(r, p.action)"
+                      [attr.aria-label]="r.label + ' ' + p.action"
+                    />
+                    <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+                    <i
+                      [class]="actionIcon(p.action)"
+                      class="text-[11px]"
+                      [style.color]="has(p.key) ? 'var(--primary)' : 'var(--muted)'"
+                    ></i>
+                    <span
+                      class="text-xs font-medium"
+                      [class]="has(p.key) ? 'text-[var(--primary)]' : 'text-[var(--text-color)]'"
+                    >
+                      {{ actionLabel(p.action) }}
+                    </span>
+                  </label>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+    } @empty {
+      <div class="surface flex flex-col items-center gap-2 p-14 text-[var(--muted)]">
+        <i class="bi bi-search text-4xl"></i>
+        <p class="text-sm">No resources match your search</p>
+      </div>
+    }
+
+    <!-- footer actions -->
+    <div class="surface flex flex-wrap items-center justify-between gap-3 p-4">
+      <p class="text-xs text-[var(--muted)]">
+        <i class="bi bi-info-circle me-1"></i>
+        Each model shows only the actions it supports. Granting any action also grants view.
+      </p>
+      <div class="flex items-center gap-3">
+        <app-button titleBtn="Cancel" variant="outline" (clickAction)="cancel()" />
+        <app-button titleBtn="Save permissions" icon="bi bi-check2" (clickAction)="save()" />
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="surface flex flex-col items-center gap-3 p-14 text-center">
+    <i class="bi bi-shield-x text-4xl text-[var(--muted)]"></i>
+    <p class="text-[var(--text-color)]">This role does not exist.</p>
+    <app-button titleBtn="Back to roles" variant="outline" [link]="'/dashboard/roles'" />
+  </div>
+}

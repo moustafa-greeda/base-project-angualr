@@ -1,0 +1,225 @@
+<app-page-header [title]="'Profile'" [showBtn]="false" />
+
+<div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+  <!-- ═══════════ Left: identity card ═══════════ -->
+  <div class="surface flex flex-col">
+    <!-- tabs -->
+    <div class="flex gap-1 overflow-x-auto overflow-y-hidden border-b border-[var(--border-color)] px-3 pt-3">
+      @for (t of tabs; track t.key) {
+        <button
+          type="button"
+          (click)="setTab(t.key)"
+          class="relative flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-t-lg px-4 py-3 text-sm font-medium transition-colors"
+          [class]="
+            activeTab() === t.key
+              ? 'text-[var(--primary)]'
+              : 'text-[var(--muted)] hover:bg-[var(--row-hover)] hover:text-[var(--text-color)]'
+          "
+        >
+          <i [class]="t.icon"></i>
+          {{ t.label }}
+          @if (activeTab() === t.key) {
+            <span class="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-[var(--primary)]"></span>
+          }
+        </button>
+      }
+    </div>
+
+    <!-- ── personal info ── -->
+    @if (activeTab() === 'personal') {
+      <form
+        [formGroup]="profileForm"
+        (ngSubmit)="saveProfile()"
+        class="form-stagger flex flex-col gap-6 p-6"
+      >
+        <app-form-section [cols]="2">
+          <app-form-field label="Username" controlName="username" placeholder="Username" />
+          <app-form-field
+            label="Email"
+            controlName="email"
+            type="email"
+            placeholder="name@company.com"
+          />
+          <app-form-field label="Phone" controlName="phone" placeholder="+966 5x xxx xxxx" />
+          <app-form-field label="Job title" controlName="jobTitle" placeholder="Operations manager" />
+          <app-form-field
+            label="Department"
+            controlName="department"
+            type="select"
+            placeholder="Choose department"
+            [options]="departments"
+          />
+          <app-form-field
+            label="Bio"
+            controlName="bio"
+            type="textarea"
+            placeholder="A short description..."
+            span="full"
+          />
+        </app-form-section>
+
+        <app-form-section title="Avatar" [cols]="1">
+          <app-form-field
+            label="Profile picture"
+            controlName="avatar"
+            type="file"
+            accept="image/*"
+            placeholder="Choose an image"
+          />
+        </app-form-section>
+
+        <div class="flex justify-end gap-3 border-t border-[var(--border-color)] pt-4">
+          <app-button
+            titleBtn="Save changes"
+            type="submit"
+            icon="bi bi-check2"
+            [loading]="saving()"
+          />
+        </div>
+      </form>
+    }
+
+    <!-- ── security ── -->
+    @if (activeTab() === 'security') {
+      <form
+        [formGroup]="passwordForm"
+        (ngSubmit)="changePassword()"
+        class="form-stagger flex flex-col gap-6 p-6"
+      >
+        <app-form-section title="Change password" [cols]="1">
+          <app-form-field
+            label="Current password"
+            controlName="current"
+            type="password"
+            placeholder="••••••••"
+          />
+        </app-form-section>
+
+        <app-form-section [cols]="2">
+          <app-form-field
+            label="New password"
+            controlName="password"
+            type="password"
+            placeholder="At least 8 characters"
+          />
+          <app-form-field
+            label="Confirm new password"
+            controlName="confirm"
+            type="password"
+            placeholder="Repeat the password"
+          />
+        </app-form-section>
+
+        <div class="flex items-start gap-2.5 rounded-xl bg-[var(--warning)]/10 p-4">
+          <i class="bi bi-info-circle mt-0.5 shrink-0 text-[var(--warning)]"></i>
+          <p class="text-sm text-[var(--muted)]">
+            Use at least 8 characters with a mix of letters, numbers and symbols. You will stay
+            signed in on this device.
+          </p>
+        </div>
+
+        <div class="flex justify-end gap-3 border-t border-[var(--border-color)] pt-4">
+          <app-button titleBtn="Update password" type="submit" icon="bi bi-shield-check" />
+        </div>
+      </form>
+    }
+
+    <!-- ── preferences ── -->
+    @if (activeTab() === 'preferences') {
+      <form
+        [formGroup]="preferencesForm"
+        (ngSubmit)="savePreferences()"
+        class="form-stagger flex flex-col gap-6 p-6"
+      >
+        <app-form-section title="Language" [cols]="2">
+          <app-form-field
+            label="Interface language"
+            controlName="language"
+            type="select"
+            [options]="languages"
+          />
+        </app-form-section>
+
+        <app-form-section title="Notifications" [cols]="1">
+          <app-form-field
+            label="Email notifications"
+            controlName="emailNotifications"
+            type="switch"
+          />
+          <app-form-field label="Push notifications" controlName="pushNotifications" type="switch" />
+          <app-form-field label="Weekly summary report" controlName="weeklyReport" type="switch" />
+        </app-form-section>
+
+        <div class="flex justify-end gap-3 border-t border-[var(--border-color)] pt-4">
+          <app-button titleBtn="Save preferences" type="submit" icon="bi bi-check2" />
+        </div>
+      </form>
+    }
+  </div>
+
+  <!-- ═══════════ Right: tabbed forms ═══════════ -->
+
+    <div class="flex flex-col gap-6">
+    <div class="surface overflow-hidden">
+      <!-- cover -->
+      <div class="h-20 bg-gradient-to-r from-[var(--primary)]/70 to-[var(--secondary)]/40"></div>
+
+      <div class="flex flex-col items-center px-6 pb-6 text-center">
+        <!-- avatar overlapping the cover -->
+        <span
+          class="-mt-10 grid size-20 place-items-center rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-xl font-bold text-white ring-4 ring-[var(--card-bg)]"
+        >
+          {{ initials() || 'U' }}
+        </span>
+
+        <h2 class="mt-3 text-lg font-semibold text-[var(--text-color)]">
+          {{ user?.username || 'Unknown user' }}
+        </h2>
+        <p class="mb-3 text-sm text-[var(--muted)]">{{ profileForm.value.jobTitle || '—' }}</p>
+
+        <app-badge [text]="roleLabel()" variant="primary" />
+
+        <div class="mt-5 w-full border-t border-[var(--border-color)] pt-4 text-start">
+          <ul class="flex flex-col gap-3">
+            <li class="flex items-center gap-2.5 text-sm">
+              <i class="bi bi-envelope shrink-0 text-[var(--muted)]"></i>
+              <span class="truncate text-[var(--text-color)]" dir="ltr">
+                {{ profileForm.value.email || 'No email yet' }}
+              </span>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm">
+              <i class="bi bi-telephone shrink-0 text-[var(--muted)]"></i>
+              <span class="truncate text-[var(--text-color)]" dir="ltr">
+                {{ profileForm.value.phone || 'No phone yet' }}
+              </span>
+            </li>
+            <li class="flex items-center gap-2.5 text-sm">
+              <i class="bi bi-diagram-3 shrink-0 text-[var(--muted)]"></i>
+              <span class="truncate text-[var(--text-color)]">
+                {{ profileForm.value.department || 'No department' }}
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- quick stats -->
+    <app-card title="Activity">
+      <ul class="flex flex-col gap-3.5 text-sm">
+        <li class="flex items-center justify-between">
+          <span class="text-[var(--muted)]">Open tasks</span>
+          <span class="font-semibold text-[var(--text-color)]">12</span>
+        </li>
+        <li class="flex items-center justify-between">
+          <span class="text-[var(--muted)]">Completed this month</span>
+          <span class="font-semibold text-[var(--text-color)]">48</span>
+        </li>
+        <li class="flex items-center justify-between">
+          <span class="text-[var(--muted)]">Member since</span>
+          <span class="font-semibold text-[var(--text-color)]">Jan 2024</span>
+        </li>
+      </ul>
+    </app-card>
+  </div>
+</div>

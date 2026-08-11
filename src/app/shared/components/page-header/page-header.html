@@ -1,0 +1,27 @@
+<div *transloco="let t" class="section-header flex flex-wrap items-center justify-between gap-3 pb-4">
+  <div class="min-w-0">
+
+    <h2 class="mb-3 truncate text-2xl font-bold text-[var(--text-color)]">{{ title() }}</h2>
+
+    <!-- trail comes from the sidebar menu, e.g. Design System › Table -->
+    @if (showBreadcrumb() && trail().length) {
+    <nav class="mb-1 flex items-center gap-1.5 text-xl" [attr.aria-label]="t('nav.menu')">
+      <a [routerLink]="['/dashboard']" class="text-[var(--muted)] transition-colors hover:text-[var(--primary)]">
+        {{ t('nav.dashboard') }}
+      </a>
+
+      @for (crumb of trail(); track crumb.label; let last = $last) {
+      <i class="bi bi-chevron-right text-[0.6rem] text-[var(--muted)]/60 rtl:rotate-180"></i>
+      <span [class]="last ? 'font-medium text-[var(--primary)]' : 'text-[var(--muted)]'">
+        {{ t(crumb.label) }}
+      </span>
+      }
+    </nav>
+    }
+
+  </div>
+
+  @if (showBtn()) {
+  <app-button (click)="click()" [titleBtn]="titleBtn()" [icon]="icon()"></app-button>
+  }
+</div>

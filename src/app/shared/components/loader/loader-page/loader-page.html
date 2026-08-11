@@ -1,0 +1,38 @@
+<div class="flex flex-col items-center gap-[18px]">
+  <!-- rings + orbit + logo -->
+  <div class="relative h-[110px] w-[110px]">
+    <span
+      class="animate-pf-spin absolute inset-0 rounded-full border-[3px] border-transparent border-t-[var(--secondary)] border-r-[var(--primary)] drop-shadow-[0_0_6px_var(--secondary)]"
+    ></span>
+    <span
+      class="animate-pf-spin-rev absolute inset-3 rounded-full border-[3px] border-transparent border-t-white opacity-50"
+    ></span>
+    <span class="animate-pf-orbit absolute inset-0">
+      <span
+        class="absolute -top-1 left-1/2 -ml-1 size-[9px] rounded-full bg-white shadow-[0_0_8px_#fff,0_0_18px_var(--secondary)]"
+      ></span>
+    </span>
+    <div
+      class="animate-pf-pulse absolute inset-[26px] grid place-items-center overflow-hidden rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-xl font-extrabold tracking-wider text-white"
+    >
+      GS
+      <span
+        class="animate-pf-shine absolute inset-0 -translate-x-full -skew-x-12 bg-gradient-to-r from-transparent via-white/55 to-transparent"
+      ></span>
+    </div>
+  </div>
+
+  <!-- text with bouncing dots -->
+  <div class="text-[13px] font-bold tracking-[4px] text-white">
+    LOADING<span class="animate-pf-bounce inline-block">.</span
+    ><span class="animate-pf-bounce inline-block [animation-delay:150ms]">.</span
+    ><span class="animate-pf-bounce inline-block [animation-delay:300ms]">.</span>
+  </div>
+
+  <!-- XP-style progress bar -->
+  <div class="h-1.5 w-[190px] overflow-hidden rounded-full bg-white/15">
+    <i
+      class="animate-pf-bar block h-full w-2/5 rounded-full bg-gradient-to-r from-[var(--primary)] via-[var(--secondary)] to-[#b6ffc5] shadow-[0_0_10px_var(--secondary)]"
+    ></i>
+  </div>
+</div>

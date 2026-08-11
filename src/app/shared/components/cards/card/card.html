@@ -1,0 +1,16 @@
+<div
+  class="flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] shadow-sm"
+>
+  @if (title()) {
+    <div
+      class="flex shrink-0 items-center justify-between gap-3 border-b border-[var(--border-color)] px-5 py-4"
+    >
+      <h3 class="text-sm font-semibold text-[var(--text-color)]">{{ title() }}</h3>
+      <ng-content select="[card-actions]"></ng-content>
+    </div>
+  }
+  <!-- body grows to fill the card, so cards in the same row match heights -->
+  <div class="flex-1 p-5">
+    <ng-content></ng-content>
+  </div>
+</div>

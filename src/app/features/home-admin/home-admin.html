@@ -1,0 +1,142 @@
+﻿<!-- one Transloco subscription for the whole page -->
+<ng-container *transloco="let t; read: 'dashboard'">
+  <app-page-header [title]="t('title')" [showBtn]="false" />
+
+  <div class="flex flex-col gap-6">
+    <!-- ═══════════ KPI cards ═══════════ -->
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
+      @for (item of kpis(); track $index) {
+        <app-card-kpi
+          [icon]="item.icon"
+          [title]="t(item.title)"
+          [count]="item.value"
+          [rate]="growthParts(item.growthText).value + ' ' + t(growthParts(item.growthText).key)"
+          [trend]="item.growthValue"
+        />
+      }
+    </div>
+
+    <!-- ═══════════ Mini stats ═══════════ -->
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
+      @for (s of miniStats(); track s.label) {
+        <div class="surface flex items-center gap-3 p-4">
+          <span
+            class="grid size-10 shrink-0 place-items-center rounded-xl"
+            [class]="toneClass(s.tone)"
+          >
+            <i [class]="s.icon"></i>
+          </span>
+          <div class="min-w-0">
+            <p class="truncate text-xs text-[var(--muted)]">{{ t(s.label) }}</p>
+            <p class="text-lg font-bold text-[var(--text-color)]">{{ s.value }}</p>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- ═══════════ Charts ═══════════ -->
+    <app-charts />
+
+    <!-- ═══════════ Activity + quick actions ═══════════ -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <!-- recent activity -->
+      <app-card [title]="t('activity.title')">
+        <app-button
+          card-actions
+          [titleBtn]="t('activity.viewAll')"
+          variant="ghost"
+          size="sm"
+          [link]="'/dashboard/table'"
+        />
+
+        <ul class="flex flex-col">
+          @for (a of activities(); track a.text) {
+            <li
+              class="flex items-center gap-3 border-b border-[var(--border-color)] py-3 first:pt-0 last:border-b-0 last:pb-0"
+            >
+              <span
+                class="grid size-9 shrink-0 place-items-center rounded-lg"
+                [class]="toneClass(a.tone)"
+              >
+                <i [class]="a.icon"></i>
+              </span>
+              <span class="min-w-0 flex-1 truncate text-sm text-[var(--text-color)]">
+                {{ a.text }}
+              </span>
+              <span class="shrink-0 text-xs text-[var(--muted)]">{{ a.time }}</span>
+            </li>
+          }
+        </ul>
+      </app-card>
+
+      <!-- quick actions -->
+      <app-card [title]="t('quickActions.title')">
+        <div class="grid h-full grid-cols-2 gap-3">
+          @for (q of quickActions; track q.label) {
+            <a
+              [routerLink]="q.link"
+              class="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-[var(--border-color)] p-4 text-center transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--primary)] hover:bg-[var(--primary)]/5 hover:shadow-md"
+            >
+              <i [class]="q.icon" class="text-xl text-[var(--primary)]"></i>
+              <span class="text-xs font-medium text-[var(--text-color)]">{{ t(q.label) }}</span>
+            </a>
+          }
+        </div>
+      </app-card>
+    </div>
+
+    <!-- ═══════════ Upcoming tasks ═══════════ -->
+    <app-card [title]="t('upcoming.title')">
+      <app-button
+        card-actions
+        [titleBtn]="t('activity.viewAll')"
+        variant="ghost"
+        size="sm"
+        [link]="'/dashboard/table'"
+      />
+
+      <div class="overflow-x-auto">
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr>
+              @for (h of upcomingHeaders; track h) {
+                <th
+                  class="whitespace-nowrap border-b border-[var(--border-color)] px-3 py-2.5 text-start text-xs font-semibold uppercase tracking-wider text-[var(--muted)]"
+                >
+                  {{ t(h) }}
+                </th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of upcoming(); track row.task) {
+              <tr class="transition-colors hover:bg-[var(--row-hover)]">
+                <td class="border-b border-[var(--border-color)] px-3 py-3 text-[var(--text-color)]">
+                  {{ row.task }}
+                </td>
+                <td
+                  class="whitespace-nowrap border-b border-[var(--border-color)] px-3 py-3 text-[var(--muted)]"
+                >
+                  {{ row.owner }}
+                </td>
+                <td
+                  class="whitespace-nowrap border-b border-[var(--border-color)] px-3 py-3 text-[var(--muted)]"
+                  dir="ltr"
+                >
+                  {{ row.due }}
+                </td>
+                <td class="border-b border-[var(--border-color)] px-3 py-3">
+                  <app-badge [text]="row.priority.label" [variant]="row.priority.variant" />
+                </td>
+                <td class="border-b border-[var(--border-color)] px-3 py-3">
+                  <app-badge [text]="row.status.label" [variant]="row.status.variant" />
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+</ng-container>
+

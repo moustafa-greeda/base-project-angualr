@@ -1,0 +1,39 @@
+﻿<div class="flex items-center justify-center gap-2">
+  @if (canView()) {
+    <app-button
+      icon="bi bi-eye"
+      variant="warning"
+      [titleBtn]="'View'"
+      [iconOnly]="true"
+      [size]="size()"
+      ariaLabel="View"
+      (clickAction)="view.emit()"
+    />
+  }
+
+  @if (canEdit()) {
+    <app-button
+      icon="bi bi-pencil-square"
+      variant="info"
+      [iconOnly]="true"
+      [size]="size()"
+      ariaLabel="Edit"
+      (clickAction)="edit.emit()"
+    />
+  }
+
+  @if (canDelete()) {
+    <app-button
+      icon="bi bi-trash"
+      variant="danger"
+      [iconOnly]="true"
+      [size]="size()"
+      ariaLabel="Delete"
+      (clickAction)="delete.emit()"
+    />
+  }
+
+  <!-- screen-specific extra buttons -->
+  <ng-content></ng-content>
+</div>
+

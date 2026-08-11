@@ -1,0 +1,87 @@
+﻿<div *transloco="let t" (appClickOutside)="close()">
+  <!-- bell -->
+  <button
+    type="button"
+    class="icon-btn"
+    (click)="toggle()"
+    [attr.aria-label]="t('header.notifications')"
+    [attr.aria-expanded]="open()"
+  >
+    <i class="bi bi-bell"></i>
+    @if (unreadCount() > 0) {
+      <span class="badge">{{ unreadCount() }}</span>
+    }
+  </button>
+
+  <!-- dropdown -->
+  @if (open()) {
+    <div
+      class="animate-dropdown-in absolute end-0 top-[calc(100%+10px)] z-50 w-[360px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] shadow-2xl"
+    >
+      <!-- header -->
+      <div
+        class="flex items-center justify-between gap-3 border-b border-[var(--border-color)] px-4 py-3"
+      >
+        <h3 class="text-sm font-semibold text-[var(--text-color)]">
+          {{ t('header.notifications') }}
+          @if (unreadCount() > 0) {
+            <span class="ms-1 text-xs font-normal text-[var(--muted)]">
+              ({{ unreadCount() }} {{ t('header.new') }})
+            </span>
+          }
+        </h3>
+        @if (unreadCount() > 0) {
+          <button
+            type="button"
+            (click)="markAllRead()"
+            class="cursor-pointer text-xs font-medium text-[var(--primary)] hover:underline"
+          >{{ t('header.markAllRead') }}</button>
+        }
+      </div>
+
+      <!-- list -->
+      <ul class="max-h-[380px] overflow-y-auto">
+        @for (n of items(); track n.id) {
+          <li>
+            <a
+              [routerLink]="n.link || null"
+              (click)="onItemClick(n)"
+              class="group flex cursor-pointer gap-3 border-b border-[var(--border-color)] px-4 py-3 transition-colors last:border-b-0 hover:bg-[var(--row-hover)]"
+              [class.bg-[var(--primary)]/5]="!n.read"
+            >
+              <span class="grid size-9 shrink-0 place-items-center rounded-lg" [class]="tone(n.type)">
+                <i [class]="icon(n.type)"></i>
+              </span>
+
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start gap-2">
+                  <p class="flex-1 text-sm font-medium text-[var(--text-color)]">{{ n.title }}</p>
+                  @if (!n.read) {
+                    <span class="mt-1.5 size-2 shrink-0 rounded-full bg-[var(--primary)]"></span>
+                  }
+                </div>
+                <p class="mt-0.5 text-xs leading-relaxed text-[var(--muted)]">{{ n.message }}</p>
+                <p class="mt-1 text-[11px] text-[var(--muted)]">{{ n.time }}</p>
+              </div>
+
+              <button
+                type="button"
+                (click)="remove($event, n.id)"
+                aria-label="Remove"
+                class="grid size-6 shrink-0 cursor-pointer place-items-center self-start rounded-md text-[var(--muted)] opacity-0 transition-all hover:bg-[var(--danger)]/10 hover:text-[var(--danger)] group-hover:opacity-100"
+              >
+                <i class="bi bi-x-lg text-[10px]"></i>
+              </button>
+            </a>
+          </li>
+        } @empty {
+          <li class="flex flex-col items-center gap-2 px-4 py-10 text-[var(--muted)]">
+            <i class="bi bi-bell-slash text-3xl"></i>
+            <p class="text-sm">{{ t('header.noNotifications') }}</p>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>
+

@@ -1,0 +1,65 @@
+<app-page-header [title]="'Loaders'" [showBtn]="false" />
+
+<div class="flex flex-col gap-8">
+  <!-- ═══════════ Building blocks ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      Skeleton Building Blocks
+    </h2>
+    <div
+      class="flex flex-wrap items-center gap-6 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm"
+    >
+      <span class="skeleton size-12 rounded-full"></span>
+      <span class="skeleton size-12 rounded-xl"></span>
+      <span class="skeleton h-10 w-32 rounded-lg"></span>
+      <div class="flex min-w-[220px] flex-1 flex-col gap-2">
+        <span class="skeleton h-4 w-full"></span>
+        <span class="skeleton h-4 w-3/4"></span>
+        <span class="skeleton h-4 w-1/2"></span>
+      </div>
+    </div>
+    <p class="text-xs text-[var(--muted)]">
+      One global utility: <code class="text-[var(--primary)]">.skeleton</code> + Tailwind sizing,
+      e.g. <code class="text-[var(--primary)]">&lt;span class="skeleton h-4 w-3/4"&gt;</code>
+    </p>
+  </section>
+
+  <!-- ═══════════ Full page spinner ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">Page Loader</h2>
+    <div
+      class="flex items-center justify-between gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm"
+    >
+      <p class="text-sm text-[var(--muted)]">
+        Full-page spinner (ngx-spinner) — runs for 3 seconds.
+      </p>
+      <app-button [titleBtn]="'Show page loader'" (click)="loaderPage()"></app-button>
+    </div>
+  </section>
+
+  <!-- ═══════════ Table skeleton ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      Table Skeleton
+      <span class="ms-2 normal-case tracking-normal text-[var(--muted)]/70">
+        &lt;app-loader-table [rows]="5" [cols]="5" /&gt;
+      </span>
+    </h2>
+    <app-loader-table [rows]="5" [cols]="5" />
+  </section>
+
+  <!-- ═══════════ Card skeletons ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      Card Skeleton
+      <span class="ms-2 normal-case tracking-normal text-[var(--muted)]/70">
+        &lt;app-loader-card /&gt;
+      </span>
+    </h2>
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] gap-6">
+      @for (i of cards; track i) {
+        <app-loader-card />
+      }
+    </div>
+  </section>
+</div>

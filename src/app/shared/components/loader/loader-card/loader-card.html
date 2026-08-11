@@ -1,0 +1,29 @@
+<div
+  class="flex flex-col overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] shadow-sm"
+  aria-busy="true"
+  aria-label="Loading card"
+>
+  <!-- thumbnail -->
+  <span class="skeleton aspect-video w-full rounded-none"></span>
+
+  <!-- avatar + text lines -->
+  <div class="flex gap-3 p-4">
+    <span class="skeleton size-10 shrink-0 rounded-full"></span>
+    <div class="flex min-w-0 flex-1 flex-col gap-2 pt-0.5">
+      <span class="skeleton h-4 w-[90%]"></span>
+      <span class="skeleton h-3.5 w-[65%]"></span>
+      <span class="skeleton h-3.5 w-[40%]"></span>
+    </div>
+  </div>
+
+  <!-- footer: badge + action placeholders -->
+  <div
+    class="mt-auto flex items-center justify-between border-t border-[var(--border-color)] px-4 py-3"
+  >
+    <span class="skeleton h-6 w-16 rounded-full"></span>
+    <span class="flex gap-2">
+      <span class="skeleton size-8 rounded-lg"></span>
+      <span class="skeleton size-8 rounded-lg"></span>
+    </span>
+  </div>
+</div>

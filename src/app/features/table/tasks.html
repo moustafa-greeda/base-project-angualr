@@ -1,0 +1,46 @@
+<div class="tasks-container">
+  <!-------------- page header for title & button add  -->
+  <!-- the add button only shows for users allowed to create -->
+  <app-page-header
+    [title]="'item'"
+    [titleBtn]="'add item'"
+    [icon]="'bi bi-plus-circle'"
+    [showBtn]="canCreate()"
+    (clickBtn)="openForm()"
+  />
+
+  <!------------------ page table ----------------------->
+  <app-table
+    [columns]="columns"
+    [data]="tasks()"
+    [loading]="loading()"
+    [selectable]="true"
+    (selectionChange)="onSelectionChange($event)"
+  >
+    <!-- toolbar actions -->
+    <div table-toolbar>
+      <app-export-import (exportClick)="exportCsv()" (importFile)="importCsv($event)" />
+    </div>
+
+    <!-- status badge cell -->
+    <ng-template appCell="name" let-row>
+      <app-badge [text]="row.name" [variant]="statusVariant(row.name)" />
+    </ng-template>
+
+    <!-- actions cell -->
+    <ng-template appCell="actions" let-row>
+      <!-- buttons hide themselves when the user lacks the permission -->
+      <app-table-actions
+        resource="contracts"
+        [showView]="true"
+        (view)="onViewClick(row)"
+        (edit)="onEditClick(row)"
+        (delete)="onDeleteClick(row)"
+      />
+    </ng-template>
+  </app-table>
+
+  <!------------------ form add / edit ----------------------->
+  <app-task-form [task]="selectedTask()" (submitForm)="onConfirmForm($event)" />
+  <app-delete [task]="selectedTask()" (confirmDelete)="onConfirmDelete()" />
+</div>

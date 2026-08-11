@@ -1,0 +1,16 @@
+<app-dialog [open]="open()" [title]="title()" (closed)="close()">
+  <form [formGroup]="form()" (ngSubmit)="submit()">
+    <!-- body: projected fields (scrolls if long, sections fade in one after another) -->
+    <div class="form-stagger max-h-[70vh] space-y-6 overflow-y-auto p-6">
+      <ng-content></ng-content>
+    </div>
+
+    <!-- footer: actions -->
+    <div
+      class="animate-rise-in flex justify-end gap-3 border-t border-[var(--border-color)] px-6 py-4 [animation-delay:300ms]"
+    >
+      <app-button titleBtn="Close" variant="outline" (clickAction)="close()" />
+      <app-button titleBtn="Save" type="submit" icon="bi bi-check2" />
+    </div>
+  </form>
+</app-dialog>

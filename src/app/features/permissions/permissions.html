@@ -1,0 +1,204 @@
+<app-page-header [title]="'Permissions'" [showBtn]="false" />
+
+<div class="flex flex-col gap-4">
+  <!-- ═══════════ Toolbar ═══════════ -->
+  <div class="surface flex flex-wrap items-center justify-between gap-3 p-4">
+    <div class="flex flex-wrap items-center gap-3">
+      <!-- search -->
+      <div class="relative w-full max-w-[300px]">
+        <i
+          class="bi bi-search pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[15px] text-[var(--muted)]"
+        ></i>
+        <input
+          type="text"
+          placeholder="Search permissions"
+          [value]="search()"
+          (input)="search.set($any($event.target).value)"
+          class="w-full rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3.5 py-2.5 ps-10 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+        />
+      </div>
+
+      <!-- action filter — chips come from the API data -->
+      <div class="flex flex-wrap items-center gap-1.5">
+        <button
+          type="button"
+          (click)="setActionFilter('')"
+          class="cursor-pointer rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
+          [class]="
+            actionFilter() === ''
+              ? 'border-[var(--primary)] bg-[var(--primary)] text-white'
+              : 'border-[var(--border-color)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]'
+          "
+        >
+          All
+        </button>
+        @for (a of actions(); track a) {
+          <button
+            type="button"
+            (click)="setActionFilter(a)"
+            class="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors"
+            [class]="
+              actionFilter() === a
+                ? 'border-[var(--primary)] bg-[var(--primary)] text-white'
+                : 'border-[var(--border-color)] text-[var(--muted)] hover:border-[var(--primary)] hover:text-[var(--primary)]'
+            "
+          >
+            <i [class]="actionIcon(a)" class="text-[11px]"></i>
+            {{ actionLabel(a) }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <app-badge
+        [text]="usedCount() + ' / ' + totalPermissions() + ' in use'"
+        variant="primary"
+        [dot]="false"
+        icon="bi bi-key"
+      />
+      <app-button titleBtn="Manage roles" variant="outline" size="sm" [link]="'/dashboard/roles'" />
+    </div>
+  </div>
+
+  <!-- ═══════════ Stats ═══════════ -->
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    <div class="surface flex items-center gap-3 p-4">
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--primary)]/12 text-[var(--primary)]"
+      >
+        <i class="bi bi-key"></i>
+      </span>
+      <div class="min-w-0">
+        <p class="truncate text-xs text-[var(--muted)]">Total permissions</p>
+        <p class="text-lg font-bold text-[var(--text-color)]">{{ totalPermissions() }}</p>
+      </div>
+    </div>
+
+    <div class="surface flex items-center gap-3 p-4">
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--info)]/12 text-[var(--info)]"
+      >
+        <i class="bi bi-box"></i>
+      </span>
+      <div class="min-w-0">
+        <p class="truncate text-xs text-[var(--muted)]">Resources</p>
+        <p class="text-lg font-bold text-[var(--text-color)]">{{ stats().resources }}</p>
+      </div>
+    </div>
+
+    <div class="surface flex items-center gap-3 p-4">
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--success)]/12 text-[var(--success)]"
+      >
+        <i class="bi bi-lightning-charge"></i>
+      </span>
+      <div class="min-w-0">
+        <p class="truncate text-xs text-[var(--muted)]">Distinct actions</p>
+        <p class="text-lg font-bold text-[var(--text-color)]">{{ stats().actions }}</p>
+      </div>
+    </div>
+
+    <div class="surface flex items-center gap-3 p-4">
+      <span
+        class="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--warning)]/12 text-[var(--warning)]"
+      >
+        <i class="bi bi-exclamation-triangle"></i>
+      </span>
+      <div class="min-w-0">
+        <p class="truncate text-xs text-[var(--muted)]">Unassigned</p>
+        <p class="text-lg font-bold text-[var(--text-color)]">{{ stats().unassigned }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ Groups ═══════════ -->
+  @for (g of groups(); track g.group) {
+    <section class="flex flex-col gap-3">
+      <h2 class="heading-section">{{ g.group }}</h2>
+
+      <div class="grid grid-cols-1 gap-4 xl:grid-cols-2">
+        @for (r of g.resources; track r.key) {
+          <div class="surface flex flex-col overflow-hidden">
+            <!-- resource header -->
+            <div
+              class="flex items-center gap-2.5 border-b border-[var(--border-color)] bg-[var(--table-head-bg)] px-5 py-3.5"
+            >
+              <span
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-[var(--primary)]/10 text-[var(--primary)]"
+              >
+                <i [class]="r.icon"></i>
+              </span>
+              <div class="min-w-0 flex-1">
+                <h3 class="truncate text-sm font-semibold text-[var(--text-color)]">
+                  {{ r.label }}
+                </h3>
+                <code class="text-xs text-[var(--muted)]">{{ r.key }}</code>
+              </div>
+
+              @if (unassignedIn(r.permissions); as count) {
+                <app-badge
+                  [text]="count + ' unassigned'"
+                  variant="warning"
+                  [dot]="false"
+                  icon="bi bi-exclamation-triangle"
+                />
+              }
+              <span
+                class="shrink-0 rounded-full bg-[var(--muted)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--muted)]"
+              >
+                {{ r.permissions.length }}
+              </span>
+            </div>
+
+            <!-- permissions of this resource -->
+            <ul class="flex flex-col">
+              @for (p of r.permissions; track p.key) {
+                <li
+                  class="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-[var(--border-color)] px-5 py-3 transition-colors last:border-b-0 hover:bg-[var(--row-hover)]"
+                >
+                  <app-badge
+                    [text]="actionLabel(p.action)"
+                    [variant]="actionVariant(p.action)"
+                    [dot]="false"
+                    [icon]="actionIcon(p.action)"
+                  />
+                  <code class="flex-1 truncate text-xs text-[var(--muted)]">{{ p.key }}</code>
+
+                  <!-- roles holding it, as initial markers -->
+                  @if (rolesFor(p.key).length; as count) {
+                    <div class="flex shrink-0 items-center gap-1">
+                      @for (role of rolesFor(p.key); track role.id) {
+                        <span
+                          class="grid size-6 place-items-center rounded-full bg-[var(--primary)]/12 text-[10px] font-bold text-[var(--primary)]"
+                          [title]="role.name + ' — ' + role.description"
+                        >
+                          {{ roleInitials(role.name) }}
+                        </span>
+                      }
+                      <span class="ms-1 text-[11px] text-[var(--muted)]">
+                        {{ count }} {{ count === 1 ? 'role' : 'roles' }}
+                      </span>
+                    </div>
+                  } @else {
+                    <span
+                      class="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[var(--warning)]/10 px-2.5 py-1 text-[11px] font-medium text-[var(--warning)]"
+                    >
+                      <i class="bi bi-dash-circle"></i>
+                      Not assigned
+                    </span>
+                  }
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    </section>
+  } @empty {
+    <div class="surface flex flex-col items-center gap-2 p-14 text-[var(--muted)]">
+      <i class="bi bi-search text-4xl"></i>
+      <p class="text-sm">No permissions match your search</p>
+    </div>
+  }
+</div>
