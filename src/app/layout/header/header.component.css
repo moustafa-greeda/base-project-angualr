@@ -1,113 +1,61 @@
-.app-header {
+﻿.app-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   background: var(--card-bg);
   color: var(--text-color);
-  transition: all 240ms ease-in-out;
-  
+  border-bottom: 1px solid var(--border-color);
+  /* theme colors are animated globally by .theme-switching in styles.css */
 }
+
 .app-header .left {
-  display: flex;
-  align-items: center;
-  gap: 1.2rem;
-}
-.app-header .right {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
+
+.app-header .right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
 .search input {
   padding: 0.6rem 1rem;
   border-radius: 10px;
-  border: 1px solid var(--primary);
+  border: 1px solid var(--border-color);
   min-width: 400px;
   background: var(--bg);
   color: var(--text-color);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: all 240ms ease-in-out;
 }
 
 .search input:focus {
   outline: none;
   border-color: var(--primary);
-  background: var(--bg);
-  box-shadow: 0 0 3px 1px var(--secondary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
 }
 
 .search input::placeholder {
   color: var(--muted);
 }
 
-.icon-btn {
-  width: 50px;
-  height: 50px;
-  padding: 0.5rem;
-  border-radius: 10px;
-  cursor: pointer;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 240ms ease-in-out;
-  border-radius: 50%;
-  border: var(--border);
-  color: var(--text-color);
-  background: var(--bg);
+/* wider variant for buttons that show a label next to the icon (flag + code) */
+.icon-btn--wide {
+  width: auto;
+  gap: 0.375rem;
+  padding-inline: 0.625rem;
 }
 
-.icon-btn:active {
-  transform: scale(0.95);
-}
-
-.icon-btn i {
-  font-size: clamp(18px, 1.5vw, 25px);
-}
 .theme-icon {
   transition: transform 240ms ease-in-out;
 }
 
 .icon-btn:hover .theme-icon {
   transform: rotate(20deg);
-}
-/************************ count bill ****************************/
-.badge {
-  width: 20px;
-  height: 20px;
-  font-size: 0.85rem;
-  line-height: 17px;
-  border-radius: 24px;
-  font-weight: 600;
-  transition: all 240ms ease-in-out;
-  position: absolute;
-  top: 0;
-  right: 0;
-  color: #fff;
-  background: var(--bg-error);
-}
-/********************** avatar ***********************/
-
-.avatar {
-  position: relative;
-  cursor: pointer;
-  transition: all 240ms ease-in-out;
-}
-
-.avatar .avatar-icon {
-  font-size: 40px;
-  line-height: 1;
-  color: var(--muted);
-  border-radius: 50%;
-  padding: 2px;
-  transition: all 240ms ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 50px;
-  height: 50px;
-  background: transparent;
 }
 
 @media (max-width: 1024px) {
@@ -128,3 +76,5 @@
     gap: 0.75rem;
   }
 }
+
+

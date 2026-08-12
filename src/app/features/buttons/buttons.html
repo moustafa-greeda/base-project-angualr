@@ -1,10 +1,151 @@
-<div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4  items-center justify-between">
-  <app-button titleBtn="primary with icon"></app-button>
-  <!-- button primary without icon -->
-  <app-button titleBtn="primary without icon" [showIcon]="false"></app-button>
-  <app-button titleBtn="primary with icon" [varianet]="'secondary'"></app-button>
-  <app-button titleBtn="primary with icon" [varianet]="'success'"></app-button>
-  <app-button titleBtn="primary with icon" [varianet]="'warning'"></app-button>
-  <app-button titleBtn="primary with icon" [varianet]="'error'"></app-button>
-  <app-button titleBtn="primary with loading" [loading]="isLoading()" (click)="save()"></app-button>
+﻿<app-page-header [title]="'Buttons'" [showBtn]="false" />
+
+<div class="flex flex-col gap-8">
+  <!-- ═══════════ Variants ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">Variants</h2>
+    <div class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button titleBtn="Primary" />
+        <app-button titleBtn="Secondary" variant="secondary" />
+        <app-button titleBtn="Success" variant="success" />
+        <app-button titleBtn="info" variant="info" />
+        <app-button titleBtn="Warning" variant="warning" />
+        <app-button titleBtn="Danger" variant="danger" />
+        <app-button titleBtn="Danger Outline" variant="dangerOutline" />
+        <app-button titleBtn="Outline" variant="outline" />
+        <app-button titleBtn="Ghost" variant="ghost" />
+      </div>
+      <pre class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"><code>&lt;app-button titleBtn="Primary" /&gt;                              &lt;!-- default --&gt;
+&lt;app-button titleBtn="Secondary" variant="secondary" /&gt;
+&lt;app-button titleBtn="Success" variant="success" /&gt;
+&lt;app-button titleBtn="info" variant="info" /&gt;
+&lt;app-button titleBtn="Warning" variant="warning" /&gt;
+&lt;app-button titleBtn="Danger" variant="danger" /&gt;          &lt;!-- destructive / permanent delete --&gt;
+&lt;app-button titleBtn="Danger Outline" variant="dangerOutline" /&gt;  &lt;!-- secondary delete (table rows) --&gt;
+&lt;app-button titleBtn="Outline" variant="outline" /&gt;        &lt;!-- secondary action / cancel --&gt;
+&lt;app-button titleBtn="Ghost" variant="ghost" /&gt;            &lt;!-- lightest — toolbars --&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ Icon only ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">Icon Only</h2>
+    <div class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button icon="bi bi-pencil-square" variant="outline" [iconOnly]="true" ariaLabel="Edit" />
+        <app-button icon="bi bi-trash" variant="dangerOutline" [iconOnly]="true" ariaLabel="Delete" />
+        <app-button icon="bi bi-plus-lg" [iconOnly]="true" ariaLabel="Add" />
+        <app-button icon="bi bi-gear" variant="ghost" [iconOnly]="true" ariaLabel="Settings" />
+        <app-button icon="bi bi-bell" variant="outline" size="sm" [iconOnly]="true" ariaLabel="Notifications" />
+        <app-button icon="bi bi-download" variant="outline" size="lg" [iconOnly]="true" ariaLabel="Download" />
+      </div>
+      <pre class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"><code>&lt;!-- square icon-only button — ariaLabel is required for screen readers --&gt;
+&lt;app-button icon="bi bi-pencil-square" variant="outline" [iconOnly]="true" ariaLabel="Edit"
+            (clickAction)="onEdit(row)" /&gt;
+&lt;app-button icon="bi bi-trash" variant="dangerOutline" [iconOnly]="true" ariaLabel="Delete"
+            (clickAction)="onDelete(row)" /&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ As link (routerLink) ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">As Link</h2>
+    <div class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button titleBtn="Go to Cards" icon="bi bi-card-heading" [link]="'/dashboard/cards'" />
+        <app-button titleBtn="View Loaders" variant="outline" [link]="'/dashboard/loader'" />
+        <app-button titleBtn="Dashboard" variant="ghost" icon="bi bi-house-door" [link]="'/dashboard/admin'" />
+      </div>
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"><code>&lt;!-- [link] switches the render from &lt;button&gt; to a real &lt;a routerLink&gt; with the same styling.
+     A real anchor gives you for free:
+       • Ctrl+Click / middle-click  → opens in a new tab
+       • right-click → copy link
+       • screen readers announce it as a "link"
+     No (clickAction) here — navigation IS the action.
+     Rule: button DOES something → (clickAction) · button TAKES YOU somewhere → [link] --&gt;
+
+&lt;app-button titleBtn="Go to Cards" icon="bi bi-card-heading" [link]="'/dashboard/cards'" /&gt;
+
+&lt;!-- need to run logic BEFORE navigating? use (clickAction) + router.navigate() instead of [link] --&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ Sizes ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">Sizes</h2>
+    <div class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button titleBtn="Small" size="sm" />
+        <app-button titleBtn="Medium" size="md" />
+        <app-button titleBtn="Large" size="lg" />
+      </div>
+      <pre class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"><code>&lt;app-button titleBtn="Small" size="sm" /&gt;    &lt;!-- 32px — inside table rows --&gt;
+&lt;app-button titleBtn="Medium" size="md" /&gt;   &lt;!-- 40px — default --&gt;
+&lt;app-button titleBtn="Large" size="lg" /&gt;    &lt;!-- 48px — login screens and big CTAs --&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ With icons ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">With Icons</h2>
+    <div class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button titleBtn="Add Item" icon="bi bi-plus-circle" />
+        <app-button titleBtn="Download" icon="bi bi-download" variant="outline" />
+        <app-button titleBtn="Delete" icon="bi bi-trash" variant="danger" />
+        <app-button titleBtn="Settings" icon="bi bi-gear" variant="ghost" />
+      </div>
+      <pre class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"><code>&lt;!-- icon = any class name from bootstrap-icons (icons.getbootstrap.com).
+      Icon and text sit side by side automatically (inline-flex + gap-2).
+      While [loading]="true" the spinner REPLACES the icon in the same slot,
+      so the button width never jumps. [showIcon]="false" hides it. --&gt;
+
+      &lt;app-button titleBtn="Add Item" icon="bi bi-plus-circle" (clickAction)="openForm()" /&gt;
+      &lt;app-button titleBtn="Download" icon="bi bi-download" variant="outline" /&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ States ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">States</h2>
+    <div class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button titleBtn="Click to load" icon="bi bi-cloud-arrow-up" [loading]="isLoading()"
+          (clickAction)="save()" />
+        <app-button titleBtn="Disabled" [disabled]="true" />
+        <app-button titleBtn="Disabled outline" variant="outline" [disabled]="true" />
+      </div>
+      <pre class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"><code>&lt;!-- loading: shows a spinner and disables the button — no double-submit --&gt;
+&lt;app-button titleBtn="Save" [loading]="saving()" (clickAction)="save()" /&gt;
+
+&lt;!-- in the component: --&gt;
+saving = signal(false);
+save() {{ '{' }}
+  this.saving.set(true);
+  this.api.save().subscribe({{ '{' }} next: () =&gt; this.saving.set(false) {{ '}' }});
+{{ '}' }}
+
+&lt;app-button titleBtn="Disabled" [disabled]="true" /&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ Full width + submit ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      Full Width &amp; Submit
+    </h2>
+    <div class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm">
+      <div class="flex flex-col gap-3">
+        <app-button titleBtn="Submit" icon="bi bi-check2-circle" [fullWidth]="true" />
+        <app-button titleBtn="Cancel" variant="outline" [fullWidth]="true" />
+      </div>
+      <pre class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"><code>&lt;!-- fullWidth: spans the container — login screens and forms --&gt;
+&lt;app-button titleBtn="Submit" [fullWidth]="true" /&gt;
+
+&lt;!-- inside a form: type="submit" triggers (ngSubmit) — no clickAction needed --&gt;
+&lt;app-button titleBtn="Save" type="submit" /&gt;</code></pre>
+    </div>
+  </section>
 </div>

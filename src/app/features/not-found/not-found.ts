@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
+import { ErrorPage } from '../../shared/components/error-page/error-page';
 
 @Component({
   selector: 'app-not-found',
-  imports: [],
+  imports: [ErrorPage],
   templateUrl: './not-found.html',
-  styleUrl: './not-found.css',
 })
-export class NotFound {
+export class NotFound {}
 
-}

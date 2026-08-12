@@ -1,0 +1,19 @@
+﻿{
+    "title":  "Roles",
+    "addRole":  "Add role",
+    "searchPlaceholder":  "Search roles",
+    "stats":  {
+                  "roles":  "Roles",
+                  "users":  "Assigned users",
+                  "permissions":  "Permissions available"
+              },
+    "card":  {
+                 "permissions":  "Permissions",
+                 "system":  "System",
+                 "noPermissions":  "No permissions yet",
+                 "more":  "{{ count }} more",
+                 "user":  "user",
+                 "users":  "users"
+             },
+    "empty":  "No roles match your search"
+}

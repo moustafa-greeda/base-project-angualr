@@ -1,117 +1,68 @@
-.sidebar {
-  width: var(--sidebar-width, 256px);
-  position: fixed;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem 0.5rem;
-  transition:
-    width 0.3s ease-in-out,
-    transform 0.2s ease-in-out;
-  background: var(--card-bg);
-  color: var(--muted);
+/* Layout and spacing live in the template as Tailwind utilities.
+   Only the repeated link recipe and the active marker live here — writing
+   them inline would mean ~14 identical classes on every nav item. */
+@reference '../../../styles.css';
+
+/* ── base link ─────────────────────────────────────────────── */
+.nav-link {
+  @apply relative flex cursor-pointer items-center gap-3 rounded-lg border-0
+    bg-transparent px-3 py-2 text-[0.875rem] font-medium text-[var(--muted)]
+    no-underline outline-none transition-colors duration-200 ease-out;
 }
 
-:host[data-theme='light'] .sidebar {
-  box-shadow: 1px 0 8px rgba(0, 0, 0, 0.04);
+.nav-icon {
+  @apply w-5 shrink-0 text-center text-[1.05rem];
 }
 
-.sidebar.collapsed {
-  width: var(--sidebar-collapsed-width, 80px);
-}
-.sidebar .brand {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-}
-.logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background: var(--bg-active);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-}
-.nav {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  margin-top: 1rem;
-}
-.nav-item,
-.nav-logout {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  margin: 2px 0;
-
-  padding: 0.6rem 0.8rem;
-  border-radius: 8px;
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all .3s linear;
+.nav-link:hover {
+  @apply bg-[var(--row-hover)] text-[var(--text-color)];
 }
 
-.nav-item {
-  background: var(--bg);
-}
-.nav-logout {
- background-color: var(--primary);
- color: var(--text-light);
+/* visible keyboard focus, invisible to mouse users */
+.nav-link:focus-visible {
+  @apply ring-2 ring-[var(--primary)]/40;
 }
 
-.nav-item:hover , .nav-logout:hover{
-  transform: scale(.98);
-  transform: box-shadow .3s eas-in-out;
+/* nested items read one step quieter */
+.nav-link--sub {
+  @apply py-1.5 text-[0.825rem];
 }
 
-.nav-item .icon,
-.nav-logout .icon {
-  width: 28px;
-  text-align: center;
-  font-size: 1.3rem;
+/* ── active page ───────────────────────────────────────────── */
+.nav-link.is-active {
+  @apply font-semibold text-[var(--primary)];
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
 }
 
-.nav-item.active,
-.nav-item:hover {
- background-color: var(--primary);
- color: var(--text-light);
+/* bar pinned to the inline-start edge — the primary "you are here" cue */
+.nav-link.is-active::before {
+  content: '';
+  @apply absolute top-1/2 h-4 w-[3px] -translate-y-1/2 rounded-full bg-[var(--primary)];
+  inset-inline-start: 0;
 }
 
-.spacer {
-  flex: 1;
+/* icon-only mode: the bar would crowd the icon */
+.nav-link.justify-center.is-active::before {
+  @apply hidden;
 }
 
-.nav-logout.active,
-.nav-logout:hover {
-  background: var(--bg-error);
-}
-.mobile-close {
-  display: none;
+/* a group whose child is active: highlighted, but quieter than the page itself */
+.nav-link.is-parent {
+  @apply text-[var(--text-color)];
 }
 
-/* Mobile overlay behaviour */
-@media (max-width: 1023px) {
-  .sidebar {
-    position: fixed;
-    left: 0;
-    top: 80px;
-    bottom: 0;
-    transform: translateX(-112%);
-    z-index: 1100;
-  }
-  .sidebar.open {
-    transform: translateX(0);
-    width: var(--sidebar-width, 256px);
-  }
-  .mobile-close {
-    display: block;
-    margin: 1rem;
-  }
+.nav-link.is-parent .nav-icon {
+  @apply text-[var(--primary)];
+}
+
+/* ── sign out ──────────────────────────────────────────────── */
+.nav-link--danger:hover {
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
+  @apply text-[var(--danger)];
+}
+
+/* ── scrollbar ─────────────────────────────────────────────── */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
 }

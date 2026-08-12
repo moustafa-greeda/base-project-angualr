@@ -1,13 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { TranslocoDirective } from '@jsverse/transloco';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [TranslocoDirective],
   templateUrl: './footer.component.html',
-  styleUrls: ['./footer.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 export class FooterComponent {
   currentYear = new Date().getFullYear();

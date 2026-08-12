@@ -1,16 +1,140 @@
-<div class="table-wrapper">
-    <div class="mb-6">
-        <app-search-table />
+<div
+  class="overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] shadow-sm"
+  [attr.aria-busy]="loading()"
+>
+  <!-- Toolbar -->
+  @if (searchable()) {
+    <div class="flex items-center justify-between gap-3 p-4">
+      <app-search-table [placeholder]="searchPlaceholder()" (search)="onSearch($event)" />
+      <ng-content select="[table-toolbar]"></ng-content>
     </div>
+  }
 
-    <table>
-        <thead>
-            <tr>
-                <ng-content select="[table-header]"></ng-content>
+  <!-- Table -->
+  <div class="overflow-x-auto">
+    <table class="w-full border-collapse text-sm">
+      <thead>
+        <tr>
+          @if (selectable()) {
+            <th
+              class="w-12 border-y border-[var(--border-color)] bg-[var(--table-head-bg)] px-4 py-3.5 text-center"
+            >
+              <label class="cbx">
+                <input
+                  type="checkbox"
+                  [checked]="allVisibleSelected()"
+                  [indeterminate]="someVisibleSelected()"
+                  (change)="toggleAll()"
+                  aria-label="Select all rows"
+                />
+                <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+              </label>
+            </th>
+          }
+          @for (col of columns(); track col.key) {
+            <th
+              [style.width]="col.width || null"
+              class="whitespace-nowrap border-y border-[var(--border-color)] bg-[var(--table-head-bg)] px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-[var(--muted)]"
+              [class]="alignClass(col)"
+            >
+              @if (col.sortable) {
+                <button
+                  type="button"
+                  (click)="toggleSort(col)"
+                  class="inline-flex cursor-pointer select-none items-center gap-1.5 font-semibold uppercase tracking-wider transition-colors hover:text-[var(--primary)]"
+                >
+                  <span>{{ col.label }}</span>
+                  <i class="bi text-xs" [class]="sortIcon(col.key)"></i>
+                </button>
+              } @else {
+                {{ col.label }}
+              }
+            </th>
+          }
+        </tr>
+      </thead>
+
+      <tbody>
+        @if (loading()) {
+          @for (i of skeletonRows; track i) {
+            <tr class="group">
+              @if (selectable()) {
+                <td class="border-b border-[var(--border-color)] px-4 py-4 group-last:border-b-0">
+                  <span class="skeleton mx-auto block size-4"></span>
+                </td>
+              }
+              @for (col of columns(); track col.key) {
+                <td class="border-b border-[var(--border-color)] px-4 py-4 group-last:border-b-0">
+                  <span class="skeleton block h-4 w-3/4"></span>
+                </td>
+              }
             </tr>
-        </thead>
-        <tbody>
-            <ng-content select="[table-body]"></ng-content>
-        </tbody>
+          }
+        } @else {
+          @for (row of rows(); track $index) {
+            <tr
+              class="group transition-colors hover:bg-[var(--row-hover)]"
+              [class]="isSelected(row) ? 'bg-[var(--row-hover)]' : ''"
+              (click)="rowClick.emit(row)"
+            >
+              @if (selectable()) {
+                <td
+                  class="border-b border-[var(--border-color)] px-4 py-3.5 text-center group-last:border-b-0"
+                  (click)="$event.stopPropagation()"
+                >
+                  <label class="cbx">
+                    <input
+                      type="checkbox"
+                      [checked]="isSelected(row)"
+                      (change)="toggleRow(row)"
+                      aria-label="Select row"
+                    />
+                    <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+                  </label>
+                </td>
+              }
+              @for (col of columns(); track col.key) {
+                <td
+                  class="border-b border-[var(--border-color)] px-4 py-3.5 text-[var(--text-color)] group-last:border-b-0"
+                  [class]="alignClass(col)"
+                >
+                  @if (templateMap().get(col.key); as tpl) {
+                    <ng-container
+                      *ngTemplateOutlet="tpl; context: { $implicit: row, index: $index }"
+                    />
+                  } @else {
+                    {{ row[col.key] }}
+                  }
+                </td>
+              }
+            </tr>
+          } @empty {
+            <tr>
+              <td [attr.colspan]="columns().length + (selectable() ? 1 : 0)" class="px-4">
+                <div class="flex flex-col items-center gap-2 py-14 text-[var(--muted)]">
+                  <i class="bi bi-inbox text-4xl"></i>
+                  <p class="text-sm">{{ emptyMessage() }}</p>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
     </table>
+  </div>
+
+  <!-- Footer: pagination -->
+  @if (!loading() && totalCount() > 0) {
+    <app-table-pagination
+      [currentPage]="currentPage()"
+      [totalPages]="totalPages()"
+      [totalCount]="totalCount()"
+      [rangeStart]="rangeStart()"
+      [rangeEnd]="rangeEnd()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="pageSizeOptions()"
+      (pageChange)="goTo($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    />
+  }
 </div>

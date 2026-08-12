@@ -1,0 +1,11 @@
+<div class="relative w-[400px]">
+  <i
+    class="bi bi-search pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[15px] text-[var(--muted)]"
+  ></i>
+  <input
+    type="text"
+    [placeholder]="placeholder()"
+    (input)="onInput($any($event.target).value)"
+    class="w-full rounded-[10px] border border-[var(--border-color)] bg-[var(--card-bg)] px-3.5 py-2.5 ps-10 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+  />
+</div>

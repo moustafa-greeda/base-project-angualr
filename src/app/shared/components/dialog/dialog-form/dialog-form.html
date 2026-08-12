@@ -1,29 +1,16 @@
-@if (open()) {
-<div class="container-form">
-    <div class="backdrop" (click)="close()"></div>
-    <div class="dialog relative rounded-xl shadow-[0_0_15px_var(--primary)] sm:max-w-md md:max-w-2xl
-                lg:max-w-5xl">
-        <span class="absolute top-2 right-2 w-[50px] h-[50px]  text-4xl font-2xl
-                leading-[50px] text-center rounded-full text-white bg-[var(--bg-error)]  hover:scale-[1.2]" (click)="close()">X</span>
-        <form [formGroup]="form()" (ngSubmit)="submit()" class="p-6  space-y-5 bg-[var(--card-bg)]">
-            <!-- title -->
-            <h2 class="text-3xl font-semibold text-[var(--primary)]">
-                {{ title() }}
-            </h2>
-
-        <!-- projected fields -->
-        <ng-content></ng-content>
-
-        <!-- actions -->
-        <div class="flex justify-end pt-4 gap-5">
-        <button type="button" (click)="close()" class="text-md px-4 py-2 rounded-lg hover:bg-red-700 bg-red-500 text-white">
-            close
-        </button>
-                    <button type="submit" class="text-lg font-bold px-4 py-2 rounded-lg hover:bg-blue-700 bg-blue-600 text-white">
-                        Save
-                    </button>
-                    </div>
-    </form>
+<app-dialog [open]="open()" [title]="title()" (closed)="close()">
+  <form [formGroup]="form()" (ngSubmit)="submit()">
+    <!-- body: projected fields (scrolls if long, sections fade in one after another) -->
+    <div class="form-stagger max-h-[70vh] space-y-6 overflow-y-auto p-6">
+      <ng-content></ng-content>
     </div>
-</div>
-}
+
+    <!-- footer: actions -->
+    <div
+      class="animate-rise-in flex justify-end gap-3 border-t border-[var(--border-color)] px-6 py-4 [animation-delay:300ms]"
+    >
+      <app-button titleBtn="Close" variant="outline" (clickAction)="close()" />
+      <app-button titleBtn="Save" type="submit" icon="bi bi-check2" />
+    </div>
+  </form>
+</app-dialog>

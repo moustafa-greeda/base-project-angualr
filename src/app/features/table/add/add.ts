@@ -1,13 +1,14 @@
-import { Component, computed, effect, inject, input, output } from '@angular/core';
+﻿import { Component, computed, effect, inject, input, output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DialogForm } from '../../../shared/components/dialog/dialog-form/dialog-form';
 import { FormDailogService } from '../../../shared/components/dialog/dialog-form/service/form-dialog.service';
-import { Button } from "../../../shared/ui/button/button";
+import { Button } from '../../../shared/ui/button/button';
+import { FormField } from '../../../shared/ui/form-field/form-field';
+import { FormSection } from '../../../shared/ui/form-section/form-section';
 @Component({
     selector: 'app-task-form',
-    imports: [DialogForm, ReactiveFormsModule, Button],
+    imports: [DialogForm, ReactiveFormsModule, Button, FormField, FormSection],
     templateUrl: './add.html',
-    styleUrl: './add.css',
 })
 export class Add {
     task = input<any>(null); // null = Add, object = Edit
@@ -113,3 +114,4 @@ export class Add {
         }
     ] as const;
 }
+

@@ -1,86 +1,171 @@
-<div
-  class="login-container w-full h-screen  flex justify-center items-center bg-[--bg] overflow-hidden relative"
->
-  <form
-    [formGroup]="loginForm"
-    (ngSubmit)="onSubmit()"
-    class="animate-modern-3d p-10 w-[95%] lg:w-[450px] flex flex-col gap-3 rounded-4xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)]"
-  >
-    <div class="text-center">
-      <div class="inline-block p-4 rounded-2xl bg-[--primary]/10 mb-4">
-        <i class="bi bi-shield-lock-fill text-[--primary] text-4xl"></i>
-      </div>
-      <h1 class="text-3xl font-black text-[--text-color] tracking-tight">Welcome Back</h1>
-      <p class="text-[--muted] text-sm mt-2 font-medium">Please sign in to your account</p>
-    </div>
+<div class="relative grid min-h-screen place-items-center overflow-hidden bg-[var(--bg)] p-4">
+  <!-- ambient glow behind the card -->
+  <span
+    class="pointer-events-none absolute -top-40 start-1/4 size-[420px] rounded-full bg-[var(--primary)]/20 blur-[120px]"
+    aria-hidden="true"
+  ></span>
+  <span
+    class="pointer-events-none absolute -bottom-40 end-1/4 size-[420px] rounded-full bg-[var(--secondary)]/15 blur-[120px]"
+    aria-hidden="true"
+  ></span>
 
-    <div class="flex flex-col gap-2">
-      <label class="text-xs font-bold uppercase tracking-wider text-[--muted] ml-1">Username</label>
-      <div class="relative group">
-        <i
-          class="bi bi-person absolute left-4 top-1/2 -translate-y-1/2 text-[--muted] group-focus-within:text-[--primary] transition-colors"
-        ></i>
-        <input
-          type="text"
-          formControlName="username"
-          [class.invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-          placeholder="Enter username"
-          class="w-full p-3.5 pl-12 rounded-xl bg-black/20 border border-white/10 text-[--text-color] transition-all duration-300 focus:border-[--primary] focus:ring-4 focus:ring-[--primary]/10 outline-none"
-        />
-      </div>
-
-      @if (loginForm.get('username')?.invalid && loginForm.get('username')?.touched) {
-        <span
-          class="text-[--text-error] text-[10px] font-bold uppercase mt-1 flex items-center gap-1"
-        >
-          <i class="bi bi-exclamation-circle"></i> Username is required
-        </span>
-      }
-    </div>
-<div class="flex flex-col gap-2">
-  <label class="text-xs font-bold uppercase tracking-wider text-[--muted] ml-1">Password</label>
-  
-  <div class="relative group">
-    <i class="bi bi-lock absolute left-4 top-1/2 -translate-y-1/2 text-[--muted] group-focus-within:text-[--primary] transition-colors"></i>
-    
-    <input
-      [type]="isPasswordVisible ? 'text' : 'password'"
-      formControlName="password"
-      [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-      placeholder="••••••••"
-      class="w-full p-3.5 pl-12 pr-12 rounded-xl bg-black/20 border border-white/10 text-[--text-color] transition-all duration-300 focus:border-[--primary] focus:ring-4 focus:ring-[--primary]/10 outline-none"
-    />
-
-    <button
-      type="button"
-      (click)="togglePasswordVisibility()"
-      class="absolute right-4 top-1/2 -translate-y-1/2 text-[--muted] hover:text-[--primary] transition-colors z-10"
+  <div class="relative grid w-full max-w-4xl gap-6 lg:grid-cols-[1fr_320px]">
+    <!-- ═══════════ Login card ═══════════ -->
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="animate-dialog-pop surface flex flex-col gap-5 p-8 sm:p-10"
     >
-      <i [ngClass]="isPasswordVisible ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
-    </button>
-  </div>
+      <!-- brand -->
+      <div class="flex flex-col items-center text-center">
+        <span
+          class="mb-4 grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-lg font-bold text-white shadow-lg"
+        >
+          GS
+        </span>
+        <h1 class="text-2xl font-bold text-[var(--text-color)]">Welcome back</h1>
+        <p class="mt-1 text-sm text-[var(--muted)]">Sign in to continue to Greeda ERP</p>
+      </div>
 
-  @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-    <span class="text-[--text-error] text-[10px] font-bold uppercase mt-1 flex items-center gap-1 animate-pulse">
-      <i class="bi bi-exclamation-circle"></i> Password is required
-    </span>
-  }
-</div>
+      <!-- credentials error -->
+      @if (error()) {
+        <div
+          class="flex items-center gap-2.5 rounded-xl border border-[var(--danger)]/30 bg-[var(--danger)]/10 px-4 py-3"
+        >
+          <i class="bi bi-exclamation-circle shrink-0 text-[var(--danger)]"></i>
+          <p class="text-sm text-[var(--danger)]">{{ error() }}</p>
+        </div>
+      }
 
-    <div class="relative group">
-      <div
-        class="absolute -inset-1 bg-linear-to-r from-[--primary] to-[--secondary] rounded-xl blur opacity-25 group-hover:opacity-50 transition duration-1000"
-      ></div>
-      <button
+      <!-- username -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-[var(--text-color)]" for="username">Username</label>
+        <div class="relative">
+          <i
+            class="bi bi-person pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]"
+          ></i>
+          <input
+            id="username"
+            type="text"
+            formControlName="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+            class="w-full rounded-[10px] border bg-[var(--bg)] px-3.5 py-3 ps-11 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+            [class]="
+              usernameError()
+                ? 'border-[var(--danger)]'
+                : 'border-[var(--border-color)] focus:border-[var(--primary)]'
+            "
+          />
+        </div>
+        @if (usernameError()) {
+          <small class="flex items-center gap-1 text-xs text-[var(--danger)]">
+            <i class="bi bi-exclamation-circle"></i> {{ usernameError() }}
+          </small>
+        }
+      </div>
+
+      <!-- password -->
+      <div class="flex flex-col gap-1.5">
+        <label class="text-sm font-medium text-[var(--text-color)]" for="password">Password</label>
+        <div class="relative">
+          <i
+            class="bi bi-lock pointer-events-none absolute start-3.5 top-1/2 -translate-y-1/2 text-[var(--muted)]"
+          ></i>
+          <input
+            id="password"
+            [type]="isPasswordVisible() ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+            class="w-full rounded-[10px] border bg-[var(--bg)] px-3.5 py-3 pe-11 ps-11 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+            [class]="
+              passwordError()
+                ? 'border-[var(--danger)]'
+                : 'border-[var(--border-color)] focus:border-[var(--primary)]'
+            "
+          />
+          <button
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="isPasswordVisible() ? 'Hide password' : 'Show password'"
+            class="absolute end-3 top-1/2 grid size-7 -translate-y-1/2 cursor-pointer place-items-center rounded-md text-[var(--muted)] transition-colors hover:text-[var(--primary)]"
+          >
+            <i [class]="isPasswordVisible() ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+        </div>
+        @if (passwordError()) {
+          <small class="flex items-center gap-1 text-xs text-[var(--danger)]">
+            <i class="bi bi-exclamation-circle"></i> {{ passwordError() }}
+          </small>
+        }
+      </div>
+
+      <!-- remember + forgot -->
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <label class="cbx items-center gap-2.5">
+          <input type="checkbox" formControlName="remember" />
+          <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+          <span class="text-sm leading-none text-[var(--text-color)]">Remember me</span>
+        </label>
+
+        <a
+          href="#"
+          class="text-sm font-medium text-[var(--primary)] transition-opacity hover:opacity-80"
+        >
+          Forgot password?
+        </a>
+      </div>
+
+      <app-button
+        titleBtn="Sign in"
         type="submit"
-        class="relative w-full py-4 rounded-xl text-white font-bold bg-linear-to-r from-[--primary] to-[--secondary] shadow-xl transform transition-all active:scale-95 disabled:opacity-50 disabled:grayscale"
-      >
-        SIGN IN
-      </button>
-    </div>
+        size="lg"
+        icon="bi bi-box-arrow-in-right"
+        [fullWidth]="true"
+        [loading]="loading()"
+      />
 
-    <p class="text-center text-[--muted] text-[10px] uppercase tracking-[0.2em]">
-      <i class="bi bi-patch-check"></i> Verified System Access
-    </p>
-  </form>
+      <p class="text-center text-xs text-[var(--muted)]">
+        <i class="bi bi-shield-check me-1"></i>
+        Protected access — contact your administrator for an account
+      </p>
+    </form>
+
+    <!-- ═══════════ Demo accounts ═══════════ -->
+    <aside class="surface flex flex-col gap-3 p-5">
+      <div>
+        <h2 class="heading-section">Demo accounts</h2>
+        <p class="mt-1 text-xs text-[var(--muted)]">
+          Click any account to fill the form. Password for all:
+          <code class="text-[var(--primary)]">123456</code>
+        </p>
+      </div>
+
+      <ul class="flex flex-col gap-2">
+        @for (a of demoAccounts; track a.username) {
+          <li>
+            <button
+              type="button"
+              (click)="useAccount(a)"
+              class="flex w-full cursor-pointer items-center gap-3 rounded-xl border border-[var(--border-color)] p-3 text-start transition-all duration-150 hover:-translate-y-0.5 hover:border-[var(--primary)] hover:bg-[var(--primary)]/5"
+            >
+              <span
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-[var(--primary)]/10 text-[var(--primary)]"
+              >
+                <i [class]="a.icon"></i>
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block truncate text-sm font-medium text-[var(--text-color)]">
+                  {{ a.displayName }}
+                </span>
+                <span class="block truncate text-xs text-[var(--muted)]">{{ a.description }}</span>
+              </span>
+              <code class="shrink-0 text-[11px] text-[var(--muted)]">{{ a.username }}</code>
+            </button>
+          </li>
+        }
+      </ul>
+    </aside>
+  </div>
 </div>

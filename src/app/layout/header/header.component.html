@@ -1,32 +1,24 @@
-<header class="app-header">
+<header class="app-header" *transloco="let t">
   <div class="left">
-    <button class="icon-btn" aria-label="Toggle sidebar" (click)="onToggleSidebar()">
+    <button class="icon-btn" [attr.aria-label]="t('header.toggleSidebar')" (click)="onToggleSidebar()">
       <!-- hamburger / collapse -->
       <i class="bi bi-list"></i>
     </button>
     <div class="search">
-      <input placeholder="Search" aria-label="Search" />
+      <input [placeholder]="t('header.search')" [attr.aria-label]="t('header.search')" />
     </div>
   </div>
 
   <div class="right">
-    <button class="icon-btn" aria-label="Toggle theme" (click)="onToggleTheme()">
-      <!-- Sun icon (light theme) -->
-      @if(theme === 'light'){
-      <i class="bi bi-sun theme-icon"></i>
-      }
-      <!-- Moon icon (dark mode) -->
-      @if(theme === 'dark'){
-      <i class="bi bi-moon-stars theme-icon"></i>
-
+    <button class="icon-btn" [attr.aria-label]="t('header.toggleTheme')" (click)="onToggleTheme()">
+      @if (theme === 'light') {
+        <i class="bi bi-sun theme-icon"></i>
+      } @else {
+        <i class="bi bi-moon-stars theme-icon"></i>
       }
     </button>
-    <button class="icon-btn" aria-label="Notifications">
-      <i class="bi bi-bell"></i>
-      <span class="badge">{{countNotifications}}</span>
-    </button>
-    <div class="avatar" aria-label="User menu">
-      <i class="bi bi-person-circle avatar-icon" aria-hidden="true"></i>
-    </div>
+    <app-language-switcher />
+    <app-notifications-menu />
+    <app-user-menu />
   </div>
 </header>

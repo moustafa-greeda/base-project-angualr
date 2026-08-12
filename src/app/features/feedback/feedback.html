@@ -1,0 +1,67 @@
+<app-page-header [title]="'Feedback'" [showBtn]="false" />
+
+<div class="flex flex-col gap-8">
+  <!-- ═══════════ Badges ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">Badges</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-badge text="Active" variant="success" />
+        <app-badge text="Pending" variant="warning" />
+        <app-badge text="Rejected" variant="danger" />
+        <app-badge text="In review" variant="info" />
+        <app-badge text="Draft" variant="neutral" />
+        <app-badge text="Featured" variant="primary" />
+      </div>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <app-badge text="No dot" variant="success" [dot]="false" />
+        <app-badge text="With icon" variant="info" [dot]="false" icon="bi bi-star-fill" />
+      </div>
+
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>&lt;!-- variants: success · warning · danger · info · neutral · primary --&gt;
+&lt;app-badge text="Active" variant="success" /&gt;
+
+&lt;!-- [dot]="false" hides the leading dot; icon adds a leading icon --&gt;
+&lt;app-badge text="Featured" variant="primary" [dot]="false" icon="bi bi-star-fill" /&gt;
+
+&lt;!-- inside a table cell: --&gt;
+&lt;ng-template appCell="status" let-row&gt;
+  &lt;app-badge [text]="row.status" [variant]="statusVariant(row.status)" /&gt;
+&lt;/ng-template&gt;</code></pre>
+    </div>
+  </section>
+
+  <!-- ═══════════ Toasts ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">Toasts</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <app-button titleBtn="Success" variant="success" (clickAction)="showSuccess()" />
+        <app-button titleBtn="Error" variant="danger" (clickAction)="showError()" />
+        <app-button titleBtn="Info" variant="info" (clickAction)="showInfo()" />
+        <app-button titleBtn="Warning" variant="warning" (clickAction)="showWarning()" />
+        <app-button titleBtn="With title" variant="outline" (clickAction)="showWithTitle()" />
+      </div>
+
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>&lt;!-- No markup needed — &lt;app-toast /&gt; lives once in app.html.
+     Inject the service anywhere and call it: --&gt;
+
+private toast = inject(ToastService);
+
+this.toast.success('The item was saved successfully');
+this.toast.error('Could not reach the server');
+this.toast.info('3 new requests are waiting');
+this.toast.warning('Your session expires soon');
+
+// optional title as a second argument:
+this.toast.success('Invoice #1042 was sent', 'Invoice sent');
+
+// toasts auto-dismiss after 4s, or via the × button</code></pre>
+    </div>
+  </section>
+</div>

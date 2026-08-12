@@ -1,0 +1,154 @@
+<div class="flex flex-col gap-1.5">
+  <!-- checkbox / switch render their label inline next to the control -->
+  @if (label() && type() !== 'checkbox' && type() !== 'switch') {
+    <label class="text-sm font-medium text-[var(--text-color)]">{{ label() }}</label>
+  }
+
+  @if (control; as ctrl) {
+    @switch (type()) {
+      @case ('textarea') {
+        <textarea
+          [formControl]="ctrl"
+          [placeholder]="placeholder()"
+          rows="3"
+          class="w-full resize-y rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+        ></textarea>
+      }
+
+      @case ('search-select') {
+        <app-select
+          [formControl]="ctrl"
+          [options]="options()"
+          [placeholder]="placeholder() || 'Select...'"
+        />
+      }
+
+      @case ('multi-select') {
+        <app-select
+          [formControl]="ctrl"
+          [options]="options()"
+          [multiple]="true"
+          [placeholder]="placeholder() || 'Select...'"
+        />
+      }
+
+      @case ('select') {
+        <select
+          [formControl]="ctrl"
+          class="w-full cursor-pointer rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-color)] outline-none transition focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+        >
+          @if (placeholder()) {
+            <option [ngValue]="null" disabled hidden>{{ placeholder() }}</option>
+          }
+          @for (opt of options(); track opt.value) {
+            <option [ngValue]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+      }
+
+      @case ('radio') {
+        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 py-1.5">
+          @for (opt of options(); track opt.value) {
+            <label class="flex cursor-pointer items-center gap-2">
+              <input
+                type="radio"
+                [formControl]="ctrl"
+                [value]="opt.value"
+                [name]="controlName()"
+                class="size-4 cursor-pointer accent-[var(--primary)]"
+              />
+              <span class="text-sm text-[var(--text-color)]">{{ opt.label }}</span>
+            </label>
+          }
+        </div>
+      }
+
+      @case ('file') {
+        <input
+          #fileInput
+          type="file"
+          class="hidden"
+          [accept]="accept()"
+          [multiple]="multiple()"
+          (change)="onFileChange($event)"
+        />
+
+        <!-- click-to-pick drop zone -->
+        <button
+          type="button"
+          (click)="fileInput.click()"
+          class="flex w-full cursor-pointer flex-col items-center gap-1.5 rounded-[10px] border border-dashed border-[var(--border-color)] bg-[var(--bg)] px-4 py-6 text-center transition-colors hover:border-[var(--primary)] hover:bg-[var(--primary)]/5"
+        >
+          <i class="bi bi-cloud-arrow-up text-2xl text-[var(--muted)]"></i>
+          <span class="text-sm text-[var(--text-color)]">
+            {{ placeholder() || 'Click to choose a file' }}
+          </span>
+          @if (accept()) {
+            <span class="text-xs text-[var(--muted)]">{{ accept() }}</span>
+          }
+        </button>
+
+        <!-- picked files -->
+        @for (f of files; track f.name; let i = $index) {
+          <div
+            class="flex items-center gap-2.5 rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3 py-2"
+          >
+            <i class="bi bi-file-earmark shrink-0 text-[var(--primary)]"></i>
+            <span class="min-w-0 flex-1 truncate text-sm text-[var(--text-color)]">{{ f.name }}</span>
+            <span class="shrink-0 text-xs text-[var(--muted)]">{{ fileSize(f.size) }}</span>
+            <button
+              type="button"
+              (click)="removeFile(i)"
+              aria-label="Remove file"
+              class="grid size-6 shrink-0 cursor-pointer place-items-center rounded-md text-[var(--muted)] transition-colors hover:bg-[var(--danger)]/10 hover:text-[var(--danger)]"
+            >
+              <i class="bi bi-x-lg text-xs"></i>
+            </button>
+          </div>
+        }
+      }
+
+      @case ('checkbox') {
+        <label class="cbx w-fit items-center gap-2.5 py-1.5">
+          <input type="checkbox" [formControl]="ctrl" />
+          <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+          <span class="text-sm leading-none text-[var(--text-color)]">{{ label() }}</span>
+        </label>
+      }
+
+      @case ('switch') {
+        <label class="flex w-fit cursor-pointer items-center gap-3 py-1.5">
+          <span class="relative inline-block h-6 w-11 shrink-0">
+            <input type="checkbox" [formControl]="ctrl" class="peer sr-only" />
+            <span
+              class="absolute inset-0 rounded-full bg-[var(--muted)]/30 transition-colors peer-checked:bg-[var(--primary)]"
+            ></span>
+            <span
+              class="absolute start-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-5 rtl:peer-checked:-translate-x-5"
+            ></span>
+          </span>
+          <span class="text-sm text-[var(--text-color)]">{{ label() }}</span>
+        </label>
+      }
+
+      @default {
+        <input
+          [type]="type()"
+          [formControl]="ctrl"
+          [placeholder]="placeholder()"
+          class="w-full rounded-[10px] border border-[var(--border-color)] bg-[var(--bg)] px-3.5 py-2.5 text-sm text-[var(--text-color)] outline-none transition placeholder:text-[var(--muted)] focus:border-[var(--primary)] focus:ring-[3px] focus:ring-[var(--primary)]/15"
+        />
+      }
+    }
+
+    @if (errorMessage; as msg) {
+      <small class="flex items-center gap-1 text-xs text-red-500">
+        <i class="bi bi-exclamation-circle"></i>
+        {{ msg }}
+      </small>
+    }
+  } @else {
+    <!-- misconfigured controlName — visible during development instead of failing silently -->
+    <small class="text-xs text-red-500">control "{{ controlName() }}" not found in form</small>
+  }
+</div>

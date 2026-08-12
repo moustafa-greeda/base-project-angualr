@@ -1,22 +1,19 @@
-import { Users } from './../features/users/users';
-import { AuthService } from './../auth/service/auth';
-import { Component, OnInit, ViewEncapsulation, inject, PLATFORM_ID } from '@angular/core';
+﻿import { AuthService } from './../auth/service/auth';
+import { Component, OnInit, inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DOCUMENT } from '@angular/common';
 import { isPlatformBrowser } from '@angular/common';
 import { HeaderComponent } from '../layout/header/header.component';
 import { SidebarComponent } from '../layout/sidebar/sidebar.component';
 import { FooterComponent } from '../layout/footer/footer.component';
-import { HomeAdmin } from '../features/home-admin/home-admin';
 import { RouterOutlet } from '@angular/router';
+import { LanguageService } from '../core/i18n/language.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, HeaderComponent, SidebarComponent, FooterComponent,RouterOutlet],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
-  encapsulation: ViewEncapsulation.None,
 })
 export class DashboardComponent implements OnInit {
   isMobile = false;
@@ -27,6 +24,14 @@ export class DashboardComponent implements OnInit {
 
   private document = inject(DOCUMENT);
   private platformId = inject(PLATFORM_ID);
+
+  
+
+  /** injected for its constructor side effect: reads the saved language and
+
+      sets <html lang/dir>, which every logical CSS property depends on */
+
+  private _language = inject(LanguageService);
 
   ngOnInit(): void {
     // Only run in browser environment
@@ -70,7 +75,13 @@ export class DashboardComponent implements OnInit {
   toggleTheme() {
     this.theme = this.theme === 'dark' ? 'light' : 'dark';
     localStorage.setItem('pf-theme', this.theme);
+
+    // fade every surface together for the swap, then drop the class so it
+    // never slows down normal hover/focus transitions
+    const root = this.document.documentElement;
+    root.classList.add('theme-switching');
     this.applyTheme();
+    setTimeout(() => root.classList.remove('theme-switching'), 220);
   }
 
   private applyTheme() {
@@ -82,3 +93,6 @@ export class DashboardComponent implements OnInit {
     root.setAttribute('data-theme', this.theme);
   }
 }
+
+
+

@@ -4,60 +4,436 @@
 /* You can add other global styles to this file, and also import other style files */
 @import 'tailwindcss';
 
-/* Global theme tokens */
+/* ══════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   Naming: --<role>          semantic value, changes with the theme
+           --<role>-<step>   fixed scale step, same in both themes
+   ══════════════════════════════════════════════════════════════════ */
 :root {
-  --primary:#009432;
+  /* ─── Brand scale (theme-independent) ─────────────────────────── */
+  --primary-50: #e6f5ec;
+  --primary-100: #c2e7d1;
+  --primary-200: #8fd3ac;
+  --primary-300: #5cbf87;
+  --primary-400: #2aab62;
+  --primary-500: #009432; /* base brand */
+  --primary-600: #007a29;
+  --primary-700: #005f20;
+  --primary-800: #004517;
+  --primary-900: #002a0e;
+
+  --primary: var(--primary-500);
   --secondary: #39bb26;
-  --success-color: green;
-  --warning-color: orange;
-  --dark-bg: #000;
-  --dark-card: #201e1e;
-  --bg-thead: var(--primary);
-  --bg-tr: #1f1c1c;
-  --text-error: red;
-  --bg-error: red;
+
+  /* ─── Status colors ───────────────────────────────────────────── */
+  --success: #16a34a;
+  --info: #216cb7;
+  --warning: #d97706;
+  --danger: #dc2626;
+
+  /* ─── Radius scale ────────────────────────────────────────────── */
+  --radius-sm: 8px; /* small chips, skeleton blocks */
+  --radius-md: 10px; /* form controls */
+  --radius-lg: 12px; /* buttons */
+  --radius-xl: 16px; /* cards, dialogs */
+  --radius-full: 9999px; /* pills, avatars */
+
+  /* ─── Layout ──────────────────────────────────────────────────── */
+  --sidebar-width: 256px;
+  --sidebar-collapsed-width: 80px;
+  --background-active: linear-gradient(135deg, var(--primary), var(--secondary));
+
+  /* ─── Palette sources for the two themes ──────────────────────── */
+  --dark-bg: #121212;
+  --dark-card: #1c1b1b;
   --light-bg: #f5f5f5;
   --light-card: #ffffff;
   --text-dark: #1a1a1a;
-  --muted-dark: #6b6b6b; 
   --text-light: #ffffff;
+  --muted-dark: #6b6b6b;
   --muted-light: #b5b5b5;
-  --sidebar-width: 256px;
-  --sidebar-collapsed-width: 80px;
-  --background-active: linear-gradient(
-    135deg,
-    var(--primary),
-    var(--secondary)
-  ); /* Default dark theme */
-  --bg: var(--dark-bg);
-  --card-bg: var(--dark-card);
-  --text-color: var(--text-light);
-  --muted: var(--muted-light);
-  --border: 1px solid var(--primary);
 }
 
-/* Light theme */
-:root[data-theme='light'] {
-  --bg: var(--light-bg);
-  --card-bg: var(--light-card);
-  --bg-th: var(--primary);
-  --bg-td: var(--bg-light);
-  --text-color: var(--text-dark);
-  --muted: var(--muted-dark);
-  --bg-active: var(--background-active);
-  --color-error: linear-gradient(135deg, var(--text-error));
-}
-
-/* Dark theme (explicit) */
+/* ─── Dark theme (default) ──────────────────────────────────────── */
+:root,
 :root[data-theme='dark'] {
   --bg: var(--dark-bg);
   --card-bg: var(--dark-card);
-  --bg-th: var(--bg-thead);
-  --bg-td: var(--bg-tr);
   --text-color: var(--text-light);
   --muted: var(--muted-light);
-  --bg-active: var(--background-active);
-  --color-error: linear-gradient(135deg, var(--text-error));
+  --border-color: #2f2d2d;
+  --table-head-bg: #232121;
+  --row-hover: #272525;
+  --backdrop: rgba(0, 0, 0, 0.7);
+}
+
+/* ─── Light theme ───────────────────────────────────────────────── */
+:root[data-theme='light'] {
+  --bg: var(--light-bg);
+  --card-bg: var(--light-card);
+  --text-color: var(--text-dark);
+  --muted: var(--muted-dark);
+  --border-color: #e5e7eb;
+  --table-head-bg: #f8f9fa;
+  --row-hover: #f6f8fa;
+  --backdrop: rgba(0, 0, 0, 0.45);
+}
+
+/* ─── Legacy aliases — kept so existing markup keeps working.
+       Prefer the names above in new code. ───────────────────────── */
+:root {
+  --success-color: var(--success);
+  --info-color: var(--info);
+  --warning-color: var(--warning);
+  --bg-error: var(--danger);
+  --text-error: var(--danger);
+  --border: 1px solid var(--primary);
+}
+
+/* ─── Skeleton (YouTube-style shimmer) ─────────────────────────
+   Usage: <span class="skeleton h-4 w-3/4"></span>
+   Lives in the components layer so Tailwind utilities (rounded-*, bg-*)
+   can override it per usage. */
+@layer components {
+  /* Section heading used across all showcase/feature pages */
+  .heading-section {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+
+  /* Custom checkbox — replaces the native box while keeping the real input
+     accessible. Markup:
+       <label class="cbx">
+         <input type="checkbox" />
+         <span class="cbx-box"><i class="bi bi-check-lg"></i></span>
+       </label> */
+  .cbx {
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+    line-height: 0;
+  }
+
+  .cbx input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    margin: 0;
+  }
+
+  .cbx-box {
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: var(--bg);
+    color: transparent;
+    transition: all 150ms ease-in-out;
+  }
+
+  .cbx:hover .cbx-box {
+    border-color: var(--primary);
+  }
+
+  .cbx-box > i {
+    font-size: 12px;
+    transform: scale(0.5);
+    transition: transform 150ms ease-in-out;
+  }
+
+  /* checked */
+  .cbx input:checked + .cbx-box {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .cbx input:checked + .cbx-box > i {
+    transform: scale(1);
+  }
+
+  /* indeterminate — dash instead of the check */
+  .cbx input:indeterminate + .cbx-box {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .cbx input:indeterminate + .cbx-box > i {
+    transform: scale(1);
+  }
+
+  .cbx input:indeterminate + .cbx-box > i::before {
+    content: '\F2EA'; /* bi-dash-lg */
+  }
+
+  /* keyboard focus */
+  .cbx input:focus-visible + .cbx-box {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+
+  /* Direct children rise in one after another — used for dialog form bodies.
+     Delays are capped at 5 children; anything past that shares the last step. */
+  .form-stagger > * {
+    animation: rise-in 340ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: 300ms;
+  }
+
+  .form-stagger > *:nth-child(1) {
+    animation-delay: 180ms;
+  }
+
+  .form-stagger > *:nth-child(2) {
+    animation-delay: 220ms;
+  }
+
+  .form-stagger > *:nth-child(3) {
+    animation-delay: 260ms;
+  }
+
+  .form-stagger > *:nth-child(4) {
+    animation-delay: 300ms;
+  }
+
+  /* Square icon button used across the header and its dropdowns.
+     Global because the header defines it but child components apply it. */
+  .icon-btn {
+    display: flex;
+    position: relative;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    background: transparent;
+    transition: all 200ms ease-in-out;
+  }
+
+  /* wider variant for buttons that show a label next to the icon */
+  .icon-btn--wide {
+    width: auto;
+    gap: 0.375rem;
+    padding-inline: 0.625rem;
+  }
+
+  .icon-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 8%, transparent);
+  }
+
+  .icon-btn:active {
+    transform: scale(0.95);
+  }
+
+  .icon-btn i {
+    font-size: 18px;
+  }
+
+  /* counter pinned to an icon button's outer corner */
+  .icon-btn .badge {
+    position: absolute;
+    top: -5px;
+    inset-inline-end: -5px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    font-size: 0.7rem;
+    line-height: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-full);
+    color: #fff;
+    background: var(--danger);
+    border: 2px solid var(--card-bg);
+  }
+
+  /* Standard surface: cards, panels, table wrappers */
+  .surface {
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+  }
+
+  .skeleton {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--muted) 15%, transparent);
+  }
+
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--text-color) 8%, transparent),
+      transparent
+    );
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ─── Full-page loader animations (Tailwind v4 @theme → animate-pf-* utilities) ── */
+.ngx-spinner-overlay {
+  backdrop-filter: blur(6px);
+}
+
+@theme {
+  /* dialog entrance */
+  --animate-dialog-backdrop: dialog-backdrop 200ms ease-out;
+  --animate-dialog-pop: dialog-pop 280ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-pf-spin: pf-spin 1s linear infinite;
+  --animate-pf-spin-rev: pf-spin 1.6s linear infinite reverse;
+  --animate-pf-orbit: pf-spin 1.2s linear infinite;
+  --animate-pf-pulse: pf-pulse 1.6s ease-in-out infinite;
+  --animate-pf-shine: pf-shine 1.8s ease-in-out infinite;
+  --animate-pf-bounce: pf-bounce 1.2s ease-in-out infinite;
+  --animate-pf-bar: pf-bar 1.4s ease-in-out infinite;
+
+  --animate-toast-in: toast-in 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  /* matches ToastService duration (4s) */
+  --animate-toast-progress: toast-progress 4s linear forwards;
+
+  @keyframes toast-progress {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0;
+    }
+  }
+
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateY(12px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  --animate-dropdown-in: dropdown-in 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  @keyframes dropdown-in {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes dialog-backdrop {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* keeps the -50%/-50% centering while popping in */
+  @keyframes dialog-pop {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -44%) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  /* content inside the dialog rises in slightly after the shell */
+  --animate-rise-in: rise-in 340ms cubic-bezier(0.16, 1, 0.3, 1) backwards;
+
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pf-spin {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes pf-pulse {
+    0%,
+    100% {
+      box-shadow: 0 0 18px color-mix(in srgb, var(--secondary) 40%, transparent);
+    }
+    50% {
+      box-shadow: 0 0 34px color-mix(in srgb, var(--secondary) 75%, transparent);
+    }
+  }
+
+  @keyframes pf-shine {
+    0% {
+      transform: translateX(-100%) skewX(-20deg);
+    }
+    60%,
+    100% {
+      transform: translateX(100%) skewX(-20deg);
+    }
+  }
+
+  @keyframes pf-bounce {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  @keyframes pf-bar {
+    0% {
+      transform: translateX(-110%);
+    }
+    100% {
+      transform: translateX(360%);
+    }
+  }
+}
+
+/* Respect users who ask for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Global body styles */
@@ -73,9 +449,20 @@ body {
   color: var(--text-color);
   font-family:
     -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* ─── Theme switching ───────────────────────────────────────────
+   Every themed surface fades together for one frame-perfect switch.
+   Without this the body animated over 240ms while cards flipped
+   instantly, so the header looked like it lagged behind. */
+html.theme-switching,
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
   transition:
-    background-color 240ms ease-in-out,
-    color 240ms ease-in-out;
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease !important;
 }
 
 app-root {

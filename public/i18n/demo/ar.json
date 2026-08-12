@@ -1,0 +1,4 @@
+﻿{
+    "greeting":  "أهلاً يا {{ name }}!",
+    "itemCount":  "لديك {{ count }} عنصر"
+}

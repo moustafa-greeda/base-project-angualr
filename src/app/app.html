@@ -1,11 +1,8 @@
 <router-outlet />
-<ngx-spinner bdColor="rgba(0, 0, 0, 0.5)" size="medium" color="#fff" type="ball-spin-clockwise">
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.65)">
+  <app-loader-page />
 </ngx-spinner>
 
-<ngx-spinner
-  bdColor="rgba(0, 0, 0, 1)"
-  template="<img src='https://media.giphy.com/media/o8igknyuKs6aY/giphy.gif' />"
->
-</ngx-spinner>
-
-
+<!-- global feedback messages (ToastService) -->
+<app-toast />

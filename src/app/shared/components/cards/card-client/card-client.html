@@ -1,0 +1,106 @@
+<div
+  class="group relative flex flex-col overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-[var(--primary)]/40 hover:shadow-lg"
+>
+  <!-- Cover strip -->
+  <div
+    class="h-16 bg-gradient-to-l from-[var(--primary)]/25 via-[var(--primary)]/10 to-transparent transition-opacity duration-200 group-hover:opacity-80"
+  ></div>
+
+  <!-- Status badge floating on the cover -->
+  <span
+    class="absolute end-4 top-4 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium backdrop-blur-sm"
+    [class]="
+      status() === 'active' ? 'bg-green-500/15 text-green-500' : 'bg-red-500/15 text-red-500'
+    "
+  >
+    <span class="size-1.5 rounded-full bg-current"></span>
+    {{ status() === 'active' ? 'نشط' : 'غير نشط' }}
+  </span>
+
+  <!-- Avatar overlapping the cover + identity -->
+  <div class="-mt-8 flex items-end gap-3 px-5">
+    @if (avatarUrl()) {
+      <img
+        [src]="avatarUrl()"
+        [alt]="name()"
+        class="size-16 shrink-0 rounded-full object-cover ring-4 ring-[var(--card-bg)]"
+      />
+    } @else {
+      <span
+        class="grid size-16 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--secondary)] text-lg font-bold text-white ring-4 ring-[var(--card-bg)]"
+      >
+        {{ initials() }}
+      </span>
+    }
+    <div class="min-w-0 flex-1 pb-1">
+      <h3 class="truncate text-base font-semibold text-[var(--text-color)]">{{ name() }}</h3>
+      @if (company()) {
+        <p class="flex items-center gap-1.5 truncate text-xs text-[var(--muted)]">
+          <i class="bi bi-building"></i>
+          {{ company() }}
+        </p>
+      }
+    </div>
+  </div>
+
+  <!-- Contact info -->
+  <div class="flex flex-col gap-1 p-5 pt-4">
+    @if (email()) {
+      <a
+        [href]="'mailto:' + email()"
+        class="flex items-center gap-3 rounded-lg px-2 py-1.5 text-sm text-[var(--text-color)] transition-colors hover:bg-[var(--primary)]/10 hover:text-[var(--primary)]"
+      >
+        <span
+          class="grid size-8 shrink-0 place-items-center rounded-lg bg-[var(--muted)]/10 text-[13px] text-[var(--muted)]"
+        >
+          <i class="bi bi-envelope"></i>
+        </span>
+        <span class="truncate" dir="ltr">{{ email() }}</span>
+      </a>
+    }
+    @if (phone()) {
+      <a
+        [href]="'tel:' + phone()"
+        class="flex items-center gap-3 rounded-lg px-2 py-1.5 text-sm text-[var(--text-color)] transition-colors hover:bg-[var(--primary)]/10 hover:text-[var(--primary)]"
+      >
+        <span
+          class="grid size-8 shrink-0 place-items-center rounded-lg bg-[var(--muted)]/10 text-[13px] text-[var(--muted)]"
+        >
+          <i class="bi bi-telephone"></i>
+        </span>
+        <span class="truncate" dir="ltr">{{ phone() }}</span>
+      </a>
+    }
+    @if (location()) {
+      <div class="flex items-center gap-3 rounded-lg px-2 py-1.5 text-sm text-[var(--text-color)]">
+        <span
+          class="grid size-8 shrink-0 place-items-center rounded-lg bg-[var(--muted)]/10 text-[13px] text-[var(--muted)]"
+        >
+          <i class="bi bi-geo-alt"></i>
+        </span>
+        <span class="truncate">{{ location() }}</span>
+      </div>
+    }
+  </div>
+
+  <!-- Actions -->
+  <div class="mt-auto flex border-t border-[var(--border-color)]">
+    <button
+      type="button"
+      (click)="view.emit()"
+      class="flex-1 cursor-pointer py-3 text-center text-xs font-medium text-[var(--text-color)] transition-colors hover:bg-[var(--primary)]/10 hover:text-[var(--primary)]"
+    >
+      <i class="bi bi-eye me-1.5"></i>
+      عرض الملف
+    </button>
+    <div class="w-px bg-[var(--border-color)]"></div>
+    <button
+      type="button"
+      (click)="edit.emit()"
+      class="flex-1 cursor-pointer py-3 text-center text-xs font-medium text-[var(--text-color)] transition-colors hover:bg-[var(--primary)]/10 hover:text-[var(--primary)]"
+    >
+      <i class="bi bi-pencil-square me-1.5"></i>
+      تعديل
+    </button>
+  </div>
+</div>

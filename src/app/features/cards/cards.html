@@ -1,0 +1,129 @@
+<app-page-header [title]="'Cards'" [showBtn]="false" />
+
+<div class="flex flex-col gap-8">
+  <!-- ═══════════ KPI cards ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">KPI Cards</h2>
+    <div class="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4">
+      @for (item of kpis(); track $index) {
+        <app-card-kpi
+          [icon]="item.icon"
+          [title]="item.title"
+          [count]="item.value"
+          [rate]="item.growthText"
+          [trend]="item.growthValue"
+        />
+      }
+    </div>
+  </section>
+
+  <!-- ═══════════ Basic card variants ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      Basic Cards
+    </h2>
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-3">
+      <!-- plain: no title -->
+      <app-card>
+        <p class="text-sm leading-relaxed text-[var(--text-color)]">
+          Plain card without a title — just a consistent surface for any content.
+        </p>
+      </app-card>
+
+      <!-- with title -->
+      <app-card title="Card with title">
+        <p class="text-sm leading-relaxed text-[var(--text-color)]">
+          The title renders in a separate header with a divider under it.
+        </p>
+      </app-card>
+
+      <!-- with title + actions -->
+      <app-card title="Card with actions">
+        <button
+          card-actions
+          type="button"
+          class="cursor-pointer rounded-lg border border-[var(--border-color)] px-3 py-1.5 text-xs font-medium text-[var(--primary)] transition-colors hover:border-[var(--primary)] hover:bg-[var(--primary)] hover:text-white"
+        >
+          View all
+        </button>
+        <p class="text-sm leading-relaxed text-[var(--text-color)]">
+          Anything marked with <code class="text-[var(--primary)]">card-actions</code> is projected
+          into the header next to the title.
+        </p>
+      </app-card>
+    </div>
+  </section>
+
+  <!-- ═══════════ Client cards ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      Client Cards
+    </h2>
+    <div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+      @for (client of clients; track $index) {
+        <app-card-client
+          [name]="client.name"
+          [company]="client.company"
+          [email]="client.email"
+          [phone]="client.phone"
+          [location]="client.location"
+          [status]="client.status"
+          (view)="onClientView(client.name)"
+          (edit)="onClientEdit(client.name)"
+        />
+      }
+    </div>
+  </section>
+
+  <!-- ═══════════ Card with list content ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      Content Example
+    </h2>
+    <div class="grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <app-card title="Recent activity">
+        <button
+          card-actions
+          type="button"
+          class="cursor-pointer text-xs font-medium text-[var(--primary)] hover:underline"
+        >
+          View all
+        </button>
+        <ul class="flex flex-col">
+          @for (item of activities; track $index) {
+            <li
+              class="flex items-center gap-3 border-b border-[var(--border-color)] py-3 first:pt-0 last:border-b-0 last:pb-0"
+            >
+              <span
+                class="grid size-9 shrink-0 place-items-center rounded-lg bg-[var(--primary)]/10 text-[var(--primary)]"
+              >
+                <i [class]="item.icon"></i>
+              </span>
+              <span class="min-w-0 flex-1 truncate text-sm text-[var(--text-color)]">
+                {{ item.text }}
+              </span>
+              <span class="shrink-0 text-xs text-[var(--muted)]">{{ item.time }}</span>
+            </li>
+          }
+        </ul>
+      </app-card>
+
+      <app-card title="Usage">
+        <pre
+          class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+        ><code>&lt;app-card title="Recent activity"&gt;
+  &lt;button card-actions&gt;View all&lt;/button&gt;
+  ... content ...
+&lt;/app-card&gt;
+
+&lt;app-card-kpi
+  icon="bi bi-graph-up"
+  title="Income"
+  [count]="3145.6"
+  rate="+8.2% growth"
+  [trend]="8.2"
+/&gt;</code></pre>
+      </app-card>
+    </div>
+  </section>
+</div>

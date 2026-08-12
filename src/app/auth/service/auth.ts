@@ -15,14 +15,15 @@ export class AuthService {
 
   private readonly ROLE_ROUTES: Record<string, string> = {
     admin: '/dashboard/admin',
-    user: '/dashboard/user',
-    sales: '/dashboard/sales',
-    telesales: '/dashboard/telesales',
-    accountant: '/dashboard/accountant',
+    hr: '/dashboard/hr',
+    legal: '/dashboard/legal',
+    finance: '/dashboard/finance',
+    operation: '/dashboard/operation',
   };
 
+  /** landing page for a role; falls back to the admin dashboard */
   getRedirectUrl(role: string): string {
-    return this.ROLE_ROUTES[role] ;
+    return this.ROLE_ROUTES[role] ?? '/dashboard/admin';
   }
 
   constructor() {

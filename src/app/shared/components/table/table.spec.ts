@@ -13,6 +13,10 @@ describe('Table', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(Table);
+    fixture.componentRef.setInput('columns', [
+      { key: 'id', label: 'ID' },
+      { key: 'name', label: 'Name' },
+    ]);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

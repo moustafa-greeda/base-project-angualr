@@ -1,19 +1,37 @@
-<button
-  class="btn-add px-6 py-2 my-2  inline-flex items-center justify-center gap-6 rounded-2xl bg-(--primary)"
-  [ngClass]="[varianet() , customClass()]"
-  (click)="clickEvt()"
-  [disabled]="loading()"
->
+<ng-template #content>
   @if (loading()) {
-    <div class="min-w-30 flex items-center justify-center">
-      <span class="loader"></span>
-    </div>
-  } @else {
-    {{ titleBtn() }}
-    @if (showIcon()) {
-      <span>
-        <i class="text-[--primary]  text-xl" [class]="icon()"></i>
-      </span>
-    }
+    <!-- spinner takes the icon slot; label stays visible -->
+    <span
+      class="size-4 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent"
+    ></span>
+  } @else if (showIcon() && icon()) {
+    <i [class]="icon()"></i>
   }
-</button>
+
+  @if (titleBtn() && !iconOnly()) {
+    <span>{{ titleBtn() }}</span>
+  }
+  <ng-content></ng-content>
+</ng-template>
+
+@if (link(); as target) {
+  <a
+    [routerLink]="target"
+    [class]="classes()"
+    [attr.aria-label]="ariaLabelValue()"
+    [attr.title]="ariaLabelValue()"
+  >
+    <ng-container [ngTemplateOutlet]="content" />
+  </a>
+} @else {
+  <button
+    [type]="type()"
+    [class]="classes()"
+    [disabled]="disabled() || loading()"
+    (click)="clickEvt()"
+    [attr.aria-label]="ariaLabelValue()"
+    [attr.title]="ariaLabelValue()"
+  >
+    <ng-container [ngTemplateOutlet]="content" />
+  </button>
+}

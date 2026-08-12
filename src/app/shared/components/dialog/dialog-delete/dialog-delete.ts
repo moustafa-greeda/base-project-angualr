@@ -1,11 +1,16 @@
-import { Component, HostListener, inject, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { ConfirmDeleteService } from './service/confirm-delete.service';
+import { DialogShell } from '../dialog-shell/dialog-shell';
+import { Button } from '../../../ui/button/button';
 
+/**
+ * Confirm-delete dialog: shell behavior comes from app-dialog —
+ * this component only owns the message and the confirm action.
+ */
 @Component({
   selector: 'app-dialog-delete',
-  imports: [],
+  imports: [DialogShell, Button],
   templateUrl: './dialog-delete.html',
-  styleUrl: "./dialog-delete.css"
 })
 export class DialogDelete {
   _modal = inject(ConfirmDeleteService);
@@ -18,16 +23,12 @@ export class DialogDelete {
     this.confirmDelete.emit();
     this._modal.closeModal();
   }
+
   open() {
     return this._modal.open();
   }
 
   close() {
     this._modal.closeModal();
-  }
-
-  @HostListener('document:keydown.escape')
-  onEsc() {
-    if (this.open()) this.close();
   }
 }

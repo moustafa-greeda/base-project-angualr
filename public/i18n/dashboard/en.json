@@ -1,0 +1,51 @@
+﻿{
+    "title":  "Dashboard",
+    "kpi":  {
+                "revenue":  "Total Revenue",
+                "employees":  "Active Employees",
+                "projects":  "Active Projects",
+                "openTasks":  "Open Tasks",
+                "vsLastMonth":  "vs last month",
+                "vsLastWeek":  "vs last week"
+            },
+    "stats":  {
+                  "attendance":  "Attendance today",
+                  "pendingInvoices":  "Pending invoices",
+                  "newContracts":  "New contracts",
+                  "overdueTasks":  "Overdue tasks"
+              },
+    "activity":  {
+                     "title":  "Recent Activity",
+                     "viewAll":  "View all"
+                 },
+    "quickActions":  {
+                         "title":  "Quick Actions",
+                         "newTask":  "New task",
+                         "newContract":  "New contract",
+                         "addEmployee":  "Add employee",
+                         "viewReports":  "View reports"
+                     },
+    "upcoming":  {
+                     "title":  "Upcoming Tasks",
+                     "task":  "Task",
+                     "owner":  "Owner",
+                     "due":  "Due date",
+                     "priority":  "Priority",
+                     "status":  "Status"
+                 },
+    "charts":  {
+                   "revenueTitle":  "Revenue vs Expenses",
+                   "revenueSubtitle":  "Last 12 months (SAR)",
+                   "revenue":  "Revenue",
+                   "expenses":  "Expenses",
+                   "tasksTitle":  "Tasks Overview",
+                   "tasksSubtitle":  "{{ count }} tasks this month",
+                   "completed":  "Completed",
+                   "inProgress":  "In progress",
+                   "overdue":  "Overdue",
+                   "departmentsTitle":  "Employees by Department",
+                   "departmentsSubtitle":  "Active headcount",
+                   "current":  "Current",
+                   "target":  "Target"
+               }
+}

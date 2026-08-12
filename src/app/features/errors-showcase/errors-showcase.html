@@ -1,0 +1,83 @@
+<app-page-header [title]="'Error Pages'" [showBtn]="false" />
+
+<div class="flex flex-col gap-8">
+  <!-- ═══════════ Live pages ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">Live Routes</h2>
+    <div class="surface flex flex-wrap items-center gap-3 p-6">
+      <app-button titleBtn="Open 404" variant="outline" icon="bi bi-compass" [link]="'/does-not-exist'" />
+      <app-button titleBtn="Open 403" variant="outline" icon="bi bi-shield-lock" [link]="'/not-authorized'" />
+      <span class="text-xs text-[var(--muted)]">
+        404 is the wildcard route; 403 is /not-authorized
+      </span>
+    </div>
+  </section>
+
+  <!-- ═══════════ 404 ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">404 — Not Found</h2>
+    <div class="surface overflow-hidden">
+      <app-error-page
+        code="404"
+        title="Page not found"
+        message="The page you are looking for was moved, removed, or never existed."
+        icon="bi bi-compass"
+        tone="primary"
+      />
+    </div>
+  </section>
+
+  <!-- ═══════════ 403 ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">403 — Not Authorized</h2>
+    <div class="surface overflow-hidden">
+      <app-error-page
+        code="403"
+        title="Not authorized"
+        message="You don't have permission to open this page. Contact your system administrator."
+        icon="bi bi-shield-lock"
+        tone="danger"
+      />
+    </div>
+  </section>
+
+  <!-- ═══════════ Other tones ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">Reusable For Any Error</h2>
+    <div class="surface overflow-hidden">
+      <app-error-page
+        code="500"
+        title="Something went wrong"
+        message="An unexpected error occurred on the server. Please try again in a moment."
+        icon="bi bi-hdd-network"
+        tone="warning"
+      />
+    </div>
+  </section>
+
+  <!-- ═══════════ Usage ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="heading-section">Usage</h2>
+    <div class="surface flex flex-col gap-4 p-6">
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>&lt;!-- one shared layout for every error screen --&gt;
+&lt;app-error-page
+  code="404"
+  title="Page not found"
+  message="..."
+  icon="bi bi-compass"
+  tone="primary"        &lt;!-- primary | danger | warning --&gt;
+  [homeLink]="'/dashboard/admin'"
+  homeLabel="Back to dashboard"
+/&gt;
+
+// Guarding a route by role — sends unauthorized users to /not-authorized:
+{{ '{' }}
+  path: 'payrolls',
+  canActivate: [roleGuard(['admin', 'finance'])],
+  loadComponent: () =&gt; import('./payrolls').then(m =&gt; m.Payrolls),
+{{ '}' }}</code></pre>
+    </div>
+  </section>
+</div>

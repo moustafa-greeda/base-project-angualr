@@ -1,0 +1,36 @@
+@if (open()) {
+  <div class="fixed inset-0 z-[2000]" appScrollLock>
+    <!-- backdrop: color token from styles.css -->
+    <div
+      class="animate-dialog-backdrop absolute inset-0 bg-[var(--backdrop)] backdrop-blur-[6px]"
+      (click)="closed.emit()"
+    ></div>
+
+    <div
+      class="animate-dialog-pop absolute left-1/2 top-1/2 max-h-[92vh] w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] shadow-2xl"
+      [class]="size()"
+      role="dialog"
+      aria-modal="true"
+    >
+      <!-- header: title + close -->
+      <div
+        class="animate-rise-in flex items-center justify-between gap-3 border-b border-[var(--border-color)] px-6 py-4 [animation-delay:80ms]"
+      >
+        <h2 class="text-lg font-semibold text-[var(--text-color)]">{{ title() }}</h2>
+        <button
+          type="button"
+          (click)="closed.emit()"
+          aria-label="Close"
+          class="grid size-9 cursor-pointer place-items-center rounded-full border border-[var(--border-color)] text-[var(--muted)] transition-all duration-200 hover:rotate-90 hover:border-red-500 hover:bg-red-500 hover:text-white active:scale-90"
+        >
+          <i class="bi bi-x-lg text-sm"></i>
+        </button>
+      </div>
+
+      <!-- free-form content (body + footer come from the specific dialog) -->
+      <div class="animate-rise-in [animation-delay:140ms]">
+        <ng-content></ng-content>
+      </div>
+    </div>
+  </div>
+}

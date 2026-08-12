@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
+/**
+ * YouTube-style card skeleton: thumbnail + avatar + two text lines.
+ * <app-loader-card />
+ */
 @Component({
   selector: 'app-loader-card',
-  imports: [],
   templateUrl: './loader-card.html',
-  styleUrl: './loader-card.css',
 })
 export class LoaderCard {}

@@ -1,0 +1,146 @@
+<app-page-header [title]="'Forms'" [showBtn]="false" />
+
+<div class="flex flex-col gap-8">
+  <!-- ═══════════ Live demo form ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">
+      All Field Types
+    </h2>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="flex flex-col gap-6 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm"
+    >
+      <!-- 2 columns -->
+      <app-form-section title="Basic — [cols]=2" [cols]="2">
+        <app-form-field label="Name" controlName="name" placeholder="Full name" />
+        <app-form-field label="Email" controlName="email" type="email" placeholder="name@company.com" />
+        <app-form-field label="Password" controlName="password" type="password" placeholder="••••••••" />
+        <app-form-field label="Salary" controlName="salary" type="number" placeholder="0" />
+        <app-form-field label="Hire Date" controlName="hireDate" type="date" />
+        <app-form-field
+          label="Department"
+          controlName="department"
+          type="select"
+          placeholder="Choose department"
+          [options]="departments"
+        />
+        <app-form-field label="Gender" controlName="gender" type="radio" [options]="genders" />
+        <app-form-field label="Bio" controlName="bio" type="textarea" placeholder="A few words..." span="full" />
+      </app-form-section>
+
+      <!-- searchable + multi select -->
+      <app-form-section title="Searchable selects" [cols]="2">
+        <app-form-field
+          label="Reporting manager"
+          controlName="manager"
+          type="search-select"
+          placeholder="Choose a manager"
+          [options]="employees"
+        />
+        <app-form-field
+          label="Skills"
+          controlName="skillSet"
+          type="multi-select"
+          placeholder="Choose skills"
+          [options]="skills"
+        />
+      </app-form-section>
+
+      <!-- file inputs -->
+      <app-form-section title="Attachments" [cols]="2">
+        <app-form-field
+          label="Contract (PDF)"
+          controlName="contract"
+          type="file"
+          accept=".pdf"
+          placeholder="Click to choose the contract"
+        />
+        <app-form-field
+          label="Extra files"
+          controlName="attachments"
+          type="file"
+          [multiple]="true"
+          accept="image/*,.pdf"
+          placeholder="Choose one or more files"
+        />
+      </app-form-section>
+
+      <!-- 3 columns + nested group with dot paths -->
+      <app-form-section title="Address (nested group) — [cols]=3" [cols]="3">
+        <app-form-field label="City" controlName="address.city" placeholder="City" />
+        <app-form-field label="Street" controlName="address.street" placeholder="Street" />
+        <app-form-field label="Building" controlName="address.building" placeholder="No." />
+      </app-form-section>
+
+      <!-- toggles -->
+      <app-form-section title="Toggles" [cols]="2">
+        <app-form-field label="Active employee" controlName="active" type="switch" />
+        <app-form-field label="I agree to the terms" controlName="terms" type="checkbox" />
+      </app-form-section>
+
+      <div class="flex justify-end gap-3 border-t border-[var(--border-color)] pt-4">
+        <app-button titleBtn="Submit" type="submit" icon="bi bi-check2-circle" />
+      </div>
+
+      @if (submitted()) {
+        <pre
+          class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+        ><code>{{ printableValue | json }}</code></pre>
+      }
+    </form>
+  </section>
+
+  <!-- ═══════════ Usage ═══════════ -->
+  <section class="flex flex-col gap-3">
+    <h2 class="text-sm font-semibold uppercase tracking-wider text-[var(--muted)]">Usage</h2>
+    <div
+      class="flex flex-col gap-4 rounded-2xl border border-[var(--border-color)] bg-[var(--card-bg)] p-6 shadow-sm"
+    >
+      <pre
+        class="overflow-x-auto rounded-lg bg-[var(--bg)] p-4 text-xs leading-relaxed text-[var(--text-color)]"
+      ><code>&lt;!-- section = grid: [cols] 1 | 2 | 3 (mobile always collapses to 1) --&gt;
+&lt;app-form-section title="Basic" [cols]="2"&gt;
+
+  &lt;!-- default type is text; validation messages are automatic --&gt;
+  &lt;app-form-field label="Name" controlName="name" /&gt;
+
+  &lt;!-- types: text · number · email · password · date · textarea · select
+       search-select · multi-select · radio · checkbox · switch · file --&gt;
+
+  &lt;!-- searchable dropdown; add a `hint` to an option for a second line --&gt;
+  &lt;app-form-field label="Manager" controlName="manager" type="search-select"
+                  [options]="employees" /&gt;
+
+  &lt;!-- same, but the control holds an array of values --&gt;
+  &lt;app-form-field label="Skills" controlName="skillSet" type="multi-select"
+                  [options]="skills" /&gt;
+  &lt;app-form-field label="Department" controlName="department" type="select"
+                  placeholder="Choose department" [options]="departments" /&gt;
+  &lt;app-form-field label="Gender" controlName="gender" type="radio" [options]="genders" /&gt;
+  &lt;app-form-field label="Active" controlName="active" type="switch" /&gt;
+
+  &lt;!-- file: control value is a File (or File[] with [multiple]) --&gt;
+  &lt;app-form-field label="Contract" controlName="contract" type="file" accept=".pdf" /&gt;
+  &lt;app-form-field label="Files" controlName="attachments" type="file"
+                  [multiple]="true" accept="image/*,.pdf" /&gt;
+
+  &lt;!-- span="full" → field takes the whole row --&gt;
+  &lt;app-form-field label="Bio" controlName="bio" type="textarea" span="full" /&gt;
+
+  &lt;!-- nested groups via dot path — no formGroupName needed --&gt;
+  &lt;app-form-field label="City" controlName="address.city" /&gt;
+
+  &lt;!-- custom error text (optional) --&gt;
+  &lt;app-form-field label="Name" controlName="name"
+                  [errorMessages]="{{ '{' }} required: 'الاسم مطلوب' {{ '}' }}" /&gt;
+&lt;/app-form-section&gt;
+
+// options shape:
+departments: FieldOption[] = [
+  {{ '{' }} label: 'Engineering', value: 'eng' {{ '}' }},
+];</code></pre>
+    </div>
+  </section>
+</div>

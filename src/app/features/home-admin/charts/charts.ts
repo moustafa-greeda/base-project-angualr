@@ -1,237 +1,154 @@
-import { HighchartsChartComponent } from 'highcharts-angular';
+﻿import { HighchartsChartComponent } from 'highcharts-angular';
 
 import { Component } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { CHART_COLORS } from '../../../core/constants/chart-colors';
-import { inherits } from 'node:util';
+
+/** shared look so every chart matches the design system */
+const AXIS_LABEL = { style: { color: 'var(--muted)', fontSize: '11px' } };
+
+const TITLE_STYLE = {
+  color: 'var(--text-color)',
+  fontSize: '15px',
+  fontWeight: '600',
+};
+
+const LEGEND: Highcharts.LegendOptions = {
+  itemStyle: { color: 'var(--muted)', fontWeight: '500' },
+  itemHoverStyle: { color: 'var(--primary)' },
+};
+
+const CHART_BASE: Highcharts.ChartOptions = {
+  backgroundColor: 'transparent',
+  style: { fontFamily: 'inherit' },
+  spacing: [16, 16, 12, 12],
+};
 
 @Component({
   selector: 'app-charts',
   imports: [HighchartsChartComponent],
   templateUrl: './charts.html',
-  styleUrl: './charts.css',
 })
 export class Charts {
   Highcharts: typeof Highcharts = Highcharts;
 
-  // -------------- pie chart
+  // ─────────── revenue trend (area) ───────────
+  areaOptions: Highcharts.Options = {
+    colors: CHART_COLORS,
+    chart: { ...CHART_BASE, type: 'areaspline' },
+    title: { text: 'Revenue vs Expenses', align: 'left', style: TITLE_STYLE },
+    subtitle: {
+      text: 'Last 12 months (SAR)',
+      align: 'left',
+      style: { color: 'var(--muted)', fontSize: '12px' },
+    },
+    credits: { enabled: false },
+    xAxis: {
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      labels: AXIS_LABEL,
+      lineColor: 'var(--border-color)',
+      tickColor: 'var(--border-color)',
+    },
+    yAxis: {
+      title: { text: '' },
+      labels: AXIS_LABEL,
+      gridLineColor: 'var(--border-color)',
+      gridLineDashStyle: 'Dash',
+    },
+    legend: LEGEND,
+    tooltip: { shared: true, valuePrefix: 'SAR ' },
+    plotOptions: {
+      areaspline: {
+        fillOpacity: 0.15,
+        lineWidth: 2,
+        marker: { radius: 3, symbol: 'circle' },
+      },
+    },
+    series: [
+      {
+        type: 'areaspline',
+        name: 'Revenue',
+        data: [180, 210, 195, 245, 230, 280, 265, 310, 295, 340, 320, 380],
+      },
+      {
+        type: 'areaspline',
+        name: 'Expenses',
+        data: [120, 135, 128, 150, 145, 165, 158, 180, 172, 195, 188, 210],
+      },
+    ],
+  };
+
+  // ─────────── task status (donut) ───────────
   chartsOptions: Highcharts.Options = {
     colors: CHART_COLORS,
-    chart: {
-      type: 'pie',
-      backgroundColor: 'var(--card-bg)',
-    },
-    title: {
-      text: 'Pie Chart',
-      style: {
-        color: 'var(--text-color)',
-        textShadow: '2px 0px 0px var(--primary)',
-        fontWeight: 'bold',
-      },
-    },
-    tooltip: {
-      valueSuffix: '%',
-    },
+    chart: { ...CHART_BASE, type: 'pie' },
+    title: { text: 'Tasks Overview', align: 'left', style: TITLE_STYLE },
     subtitle: {
-      text: 'sub Title',
-      style: {
-        color: '#fff',
-      },
+      text: '284 tasks this month',
+      align: 'left',
+      style: { color: 'var(--muted)', fontSize: '12px' },
     },
+    credits: { enabled: false },
+    tooltip: { pointFormat: '<b>{point.y}</b> ({point.percentage:.1f}%)' },
+    legend: { ...LEGEND, align: 'center', verticalAlign: 'bottom', layout: 'horizontal' },
     plotOptions: {
       pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: [
-          {
-            enabled: true,
-            distance: 30,
-          },
-          {
-            enabled: true,
-            distance: -40,
-            format: '{point.percentage:.1f}%',
-            style: {
-              fontSize: '1.2em',
-              color: '#fff',
-              // textOutline: 'none',
-              opacity: 0.8,
-            },
-            // not appear point in precentage < 10%
-            filter: {
-              operator: '>',
-              property: 'percentage',
-              value: 10,
-            },
-          },
-        ],
+        innerSize: '62%',
+        borderWidth: 0,
+        showInLegend: true,
+        dataLabels: { enabled: false },
       },
     },
     series: [
       {
-        name: 'Percentage',
-        colorByPoint: true,
+        type: 'pie',
+        name: 'Tasks',
         data: [
-          {
-            name: 'Water',
-            y: 55.02,
-          },
-          {
-            name: 'Fat',
-            sliced: true,
-            selected: true,
-            y: 26.71,
-          },
-          {
-            name: 'Carbohydrates',
-            y: 1.09,
-          },
-          {
-            name: 'Protein',
-            y: 15.5,
-          },
-          {
-            name: 'Ash',
-            y: 1.68,
-          },
+          { name: 'Completed', y: 164 },
+          { name: 'In progress', y: 92 },
+          { name: 'Overdue', y: 28 },
         ],
       },
     ],
   };
 
-  // ---------------------- line chart -------------------
-  lineOptions: Highcharts.Options = {
-    colors: CHART_COLORS,
-
-    chart: {
-      type: 'line',
-      backgroundColor: 'var(--card-bg)',
-      zooming: {
-        type: 'xy',
-      },
-      panning: {
-        enabled: true,
-        type: 'xy',
-      },
-      panKey: 'shift',
-    },
-    title: {
-      text: 'Line Chart',
-      style: {
-        color: 'var(--text-color)',
-        textShadow: '2px 0px 0px var(--primary)',
-        fontWeight: 'bold',
-      },
-    },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-      labels: {
-        style: { color: '#fff' },
-      },
-      lineWidth: 1,
-      lineColor: '#ddd',
-    },
-    yAxis: {
-      title: {
-        text: 'Values',
-        style: { color: 'var(--secondary' },
-      },
-      labels: { style: { color: `#fff` } },
-      // lineWidth: 1,
-      tickColor: 'var(--primary)',
-      gridLineColor: '#ddd',
-    },
-    legend: {
-      itemStyle: {
-        color: 'var(--text-color)',
-      },
-      itemHoverStyle: {
-        color: 'var(--primary)',
-      },
-    },
-
-    series: [
-      {
-        type: 'line',
-        name: 'Data 1',
-        data: [10, 20, 15, 30, 25],
-      },
-      {
-        type: 'line',
-        name: 'Data 2',
-        data: [5, 15, 10, 20, 18],
-      },
-    ],
-  };
-
-  // ---------------------- bar chart -------------------
+  // ─────────── headcount by department (column) ───────────
   barOptions: Highcharts.Options = {
     colors: CHART_COLORS,
-    chart: {
-      type: 'column',
-      backgroundColor: 'var(--card-bg)',
+    chart: { ...CHART_BASE, type: 'column' },
+    title: { text: 'Employees by Department', align: 'left', style: TITLE_STYLE },
+    subtitle: {
+      text: 'Active headcount',
+      align: 'left',
+      style: { color: 'var(--muted)', fontSize: '12px' },
     },
-    title: {
-      text: 'bar chart',
-      style: {
-        color: 'var(--text-color)',
-        textShadow: '2px 0px 0px var(--primary)',
-        fontWeight: 'bold',
-      },
-    },
+    credits: { enabled: false },
     xAxis: {
-      categories: ['USA', 'China', 'Brazil', 'EU', 'Argentina', 'India'],
-      labels: {
-        style: { color: 'var(--text-color)' },
-      },
-
-      // crosshair: true,
-      // accessibility: {
-      //   description: 'Countries',
-      // },
-    },
-    yAxis: {
-      min: 0,
-      title: {
-        text: '1000 metric tons (MT)',
-        style: { color: 'var(--text-color)' },
-      },
-      labels: {
-        style: {
-          color: 'var(--text-color)',
-        },
-      },
-      gridLineWidth: 0,
-      lineWidth: 0,
+      categories: ['Security', 'Maintenance', 'Cleaning', 'Admin', 'Sales', 'Accounting'],
+      labels: AXIS_LABEL,
+      lineColor: 'var(--border-color)',
       tickWidth: 0,
     },
-    tooltip: {
-      valueSuffix: ' (1000 MT)',
+    yAxis: {
+      title: { text: '' },
+      labels: AXIS_LABEL,
+      gridLineColor: 'var(--border-color)',
+      gridLineDashStyle: 'Dash',
     },
+    legend: LEGEND,
+    tooltip: { shared: true },
     plotOptions: {
       column: {
-        pointPadding: 0.2,
+        pointPadding: 0.15,
+        groupPadding: 0.12,
         borderWidth: 0,
-        borderRadius: 10,
-      },
-    },
-    legend: {
-      itemStyle: {
-        color: 'var(--text-color)',
-      },
-      itemHoverStyle: {
-        color: 'var(--primary)',
+        borderRadius: 6,
       },
     },
     series: [
-      {
-        name: 'Corn',
-        data: [387749, 280000, 129000, 64300, 54000, 34300],
-      },
-      {
-        name: 'Wheat',
-        data: [45321, 140000, 10000, 140500, 19500, 113500],
-      },
+      { type: 'column', name: 'Current', data: [210, 96, 78, 54, 48, 46] },
+      { type: 'column', name: 'Target', data: [230, 110, 85, 60, 55, 50] },
     ],
   };
 }
+

@@ -1,15 +1,18 @@
-<div class="warpper py-3 flex flex-col md:flex-row gap-2">
-  <!-- pie chart -->
-  <highcharts-chart
-    [options]="chartsOptions"
-    class="w-full md:w-1/2 h-100 block rounded-2xl"
-  ></highcharts-chart>
-  <!-- line chart -->
-  <highcharts-chart
-    [options]="lineOptions"
-    class="w-full md:w-1/2 h-100 block rounded-2xl"
-  ></highcharts-chart>
-</div>
+<div class="flex flex-col gap-6">
+  <!-- revenue trend: full width -->
+  <div class="surface p-2">
+    <highcharts-chart [options]="areaOptions" class="block h-[320px] w-full"></highcharts-chart>
+  </div>
 
-<!-- bar chart  -->
-<highcharts-chart [options]="barOptions" class="w-full h-100 block rounded-2xl"></highcharts-chart>
+  <!-- tasks donut + department column.
+       minmax(0,1fr) lets the second column shrink below its content width —
+       a bare 1fr keeps its min-content size and pushes the chart out. -->
+  <div class="grid grid-cols-1 gap-6 lg:grid-cols-[380px_minmax(0,1fr)]">
+    <div class="surface p-2">
+      <highcharts-chart [options]="chartsOptions" class="block h-[320px] w-full"></highcharts-chart>
+    </div>
+    <div class="surface p-2">
+      <highcharts-chart [options]="barOptions" class="block h-[320px] w-full"></highcharts-chart>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,6 @@
-# Permission
+# ERP
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.2.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.2.
 
 ## Development server
 
@@ -57,9 +57,3 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
-
-
-<!--============================  liberaries install =============================-->
-<!-- bootstrab icon -->
-<!-- highcharts  -->
-<!-- ngx spinner -->

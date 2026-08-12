@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, output } from '@angular/core';
+﻿import { Component, computed, inject, input, output } from '@angular/core';
 import { ConfirmDeleteService } from '../../../shared/components/dialog/dialog-delete/service/confirm-delete.service';
 import { DialogDelete } from '../../../shared/components/dialog/dialog-delete/dialog-delete';
 
@@ -7,7 +7,6 @@ import { DialogDelete } from '../../../shared/components/dialog/dialog-delete/di
   standalone: true,
   imports: [DialogDelete], 
   templateUrl: './delete.html',
-  styleUrl: './delete.css',
 })
 export class Delete {
   task          = input<any>(null);
