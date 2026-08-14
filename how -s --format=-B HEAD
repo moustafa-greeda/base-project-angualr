@@ -1,0 +1,19 @@
+[33mcommit 15377544824f5496a7ede7a0157733ebe63e9f9f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: b134476 41bf028
+Author:     moustafa-greeda <moustafagreeda@gmail.com>
+AuthorDate: Wed Aug 12 08:45:35 2026 +0300
+Commit:     moustafa-greeda <moustafagreeda@gmail.com>
+CommitDate: Wed Aug 12 08:45:35 2026 +0300
+
+    Merge refactor system design into main
+    
+    Resolved all 66 conflicts in favour of the refactor branch, which carries
+    the current design system:
+    
+    - design system: tokens, button/badge/select/form-field/table/dialog/toast
+    - i18n: Transloco with scoped translation files, full RTL support
+    - permissions: PermissionService, *appCan directive, route guards
+    - layout: Tailwind-only shells, no ViewEncapsulation.None
+    - cleanup: removed duplicate token file, dead main-layout, empty stylesheets
+    
+    The local ERP/ folder is a separate clone and is now gitignored.
